@@ -7,11 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0E13CAB5A6E2FECD067EC448 /* CircularTimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74762706299D832463DA5444 /* CircularTimerView.swift */; };
 		10D5789AC603C4C66C2BB034 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A18B41D6A2A58E6C20FCB92E /* Preview Assets.xcassets */; };
+		1F615068D5B910B47E067063 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31C8D5D062037C2A404ED7FF /* NotificationService.swift */; };
 		2113359B964EA7EB0757CCE5 /* TodayProgressHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ADC142064E874AD4AED6070 /* TodayProgressHeader.swift */; };
+		43C4CCB35B77BA031742CCAE /* TimerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A0DFC1A816F2EBD707CCC7 /* TimerViewModel.swift */; };
 		47521C1E2C7D21951D320EBD /* SwiftData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E79F9ACCC2C898B3414A940 /* SwiftData.framework */; };
 		5CA943B8CEF61B823CF1DDD6 /* CompletionRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = F644147ADF700DFCDB78176A /* CompletionRecord.swift */; };
 		6EACC462E97A4E553E605E92 /* TodayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8113D70FEF3D824E66F9F92 /* TodayView.swift */; };
+		7CDEB6939EE36E363F456D76 /* TimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE80C7F1F055B5B70DD22435 /* TimerView.swift */; };
 		AD13434054AD342AA844BD63 /* TodayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77C0064506423CB4AF88B3D /* TodayViewModel.swift */; };
 		C0D235348D87FB35B990A7FE /* HabitFormViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B75E0AA76766AB90717D599 /* HabitFormViewModel.swift */; };
 		D4588258B34A6744AA8F0F30 /* HabitRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3EBF0E961EC91AB5E94187C /* HabitRowView.swift */; };
@@ -46,7 +50,9 @@
 		0ADC142064E874AD4AED6070 /* TodayProgressHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayProgressHeader.swift; sourceTree = "<group>"; };
 		2B75E0AA76766AB90717D599 /* HabitFormViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitFormViewModel.swift; sourceTree = "<group>"; };
 		2E1271FEEE06792C59EE22DF /* HabitermUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = HabitermUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		31C8D5D062037C2A404ED7FF /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		35760C3B91BFFA5247BFE604 /* HabitermTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = HabitermTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		35A0DFC1A816F2EBD707CCC7 /* TimerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerViewModel.swift; sourceTree = "<group>"; };
 		3A71019ED87715525F7743F0 /* Habit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Habit.swift; sourceTree = "<group>"; };
 		481DEE806BAC1A4085E398C1 /* HabitFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitFormView.swift; sourceTree = "<group>"; };
 		4A0B9117EB8CAEBE19595980 /* FrequencyType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrequencyType.swift; sourceTree = "<group>"; };
@@ -54,12 +60,14 @@
 		50023E98B79A1A3E72D9AAE4 /* HabitermUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitermUITests.swift; sourceTree = "<group>"; };
 		5E51B48635012359D1A2F3E8 /* Habiterm.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Habiterm.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		718A9F09CD9176AC9C084138 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		74762706299D832463DA5444 /* CircularTimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularTimerView.swift; sourceTree = "<group>"; };
 		A18B41D6A2A58E6C20FCB92E /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		AE6EDD4AE56707A7FDC91E76 /* HabitermTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitermTests.swift; sourceTree = "<group>"; };
 		B3EBF0E961EC91AB5E94187C /* HabitRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitRowView.swift; sourceTree = "<group>"; };
 		B77C0064506423CB4AF88B3D /* TodayViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewModel.swift; sourceTree = "<group>"; };
 		C01CCEA52F5142247443F989 /* HabitermApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitermApp.swift; sourceTree = "<group>"; };
 		C2607D9315ECD28A4C85C416 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		EE80C7F1F055B5B70DD22435 /* TimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerView.swift; sourceTree = "<group>"; };
 		F644147ADF700DFCDB78176A /* CompletionRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompletionRecord.swift; sourceTree = "<group>"; };
 		F8113D70FEF3D824E66F9F92 /* TodayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -108,9 +116,27 @@
 			isa = PBXGroup;
 			children = (
 				2B75E0AA76766AB90717D599 /* HabitFormViewModel.swift */,
+				35A0DFC1A816F2EBD707CCC7 /* TimerViewModel.swift */,
 				B77C0064506423CB4AF88B3D /* TodayViewModel.swift */,
 			);
 			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		5530F030B7EEBF9F4E7ADAA4 /* Timer */ = {
+			isa = PBXGroup;
+			children = (
+				74762706299D832463DA5444 /* CircularTimerView.swift */,
+				EE80C7F1F055B5B70DD22435 /* TimerView.swift */,
+			);
+			path = Timer;
+			sourceTree = "<group>";
+		};
+		58B037F478ECB2037322F3E0 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				31C8D5D062037C2A404ED7FF /* NotificationService.swift */,
+			);
+			path = Services;
 			sourceTree = "<group>";
 		};
 		5A262776BBE038F4AC111607 = {
@@ -162,6 +188,7 @@
 			isa = PBXGroup;
 			children = (
 				03DEA4B1F88CBDEC128CD506 /* HabitForm */,
+				5530F030B7EEBF9F4E7ADAA4 /* Timer */,
 				05BD59678A9BAF787B36DDDC /* Today */,
 			);
 			path = Views;
@@ -175,6 +202,7 @@
 				C01CCEA52F5142247443F989 /* HabitermApp.swift */,
 				61C44DBE674940DA9B80BB4E /* Models */,
 				6C96EFE6990348111CFB5FFC /* Preview Content */,
+				58B037F478ECB2037322F3E0 /* Services */,
 				3BCD9A53788918FC2A955ED3 /* ViewModels */,
 				B15B8D0973301D3597D1D0FA /* Views */,
 			);
@@ -307,6 +335,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0E13CAB5A6E2FECD067EC448 /* CircularTimerView.swift in Sources */,
 				5CA943B8CEF61B823CF1DDD6 /* CompletionRecord.swift in Sources */,
 				D97B3667808091C39AD74534 /* ContentView.swift in Sources */,
 				E560A1CB00E487C294CEE0E1 /* FrequencyType.swift in Sources */,
@@ -315,6 +344,9 @@
 				C0D235348D87FB35B990A7FE /* HabitFormViewModel.swift in Sources */,
 				D4588258B34A6744AA8F0F30 /* HabitRowView.swift in Sources */,
 				FF7382523CACC3221557C987 /* HabitermApp.swift in Sources */,
+				1F615068D5B910B47E067063 /* NotificationService.swift in Sources */,
+				7CDEB6939EE36E363F456D76 /* TimerView.swift in Sources */,
+				43C4CCB35B77BA031742CCAE /* TimerViewModel.swift in Sources */,
 				2113359B964EA7EB0757CCE5 /* TodayProgressHeader.swift in Sources */,
 				6EACC462E97A4E553E605E92 /* TodayView.swift in Sources */,
 				AD13434054AD342AA844BD63 /* TodayViewModel.swift in Sources */,

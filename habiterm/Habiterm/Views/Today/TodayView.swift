@@ -8,6 +8,7 @@ struct TodayView: View {
 
     @State private var showAddSheet = false
     @State private var selectedHabit: Habit?
+    @State private var timerHabit: Habit?
 
     var body: some View {
         NavigationStack {
@@ -28,7 +29,9 @@ struct TodayView: View {
                 if !incomplete.isEmpty {
                     Section("未完了") {
                         ForEach(incomplete) { habit in
-                            HabitRowView(habit: habit, isCompleted: false) {
+                            HabitRowView(habit: habit, isCompleted: false, onStartTimer: {
+                                timerHabit = habit
+                            }) {
                                 viewModel.completeHabit(habit)
                             }
                             .contentShape(Rectangle())
@@ -42,7 +45,7 @@ struct TodayView: View {
                 if !completed.isEmpty {
                     Section("完了済み") {
                         ForEach(completed) { habit in
-                            HabitRowView(habit: habit, isCompleted: true) {}
+                            HabitRowView(habit: habit, isCompleted: true, onStartTimer: {}) {}
                                 .foregroundStyle(.secondary)
                                 .contentShape(Rectangle())
                                 .onTapGesture {
@@ -51,6 +54,9 @@ struct TodayView: View {
                         }
                     }
                 }
+            }
+            .navigationDestination(item: $timerHabit) { habit in
+                TimerView(habit: habit, todayViewModel: viewModel)
             }
             .navigationTitle("Today")
             .toolbar {

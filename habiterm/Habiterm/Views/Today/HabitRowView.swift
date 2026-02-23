@@ -3,6 +3,7 @@ import SwiftUI
 struct HabitRowView: View {
     let habit: Habit
     let isCompleted: Bool
+    var onStartTimer: () -> Void
     var onComplete: () -> Void
 
     var body: some View {
@@ -23,6 +24,17 @@ struct HabitRowView: View {
             }
 
             Spacer()
+
+            if !isCompleted {
+                Button {
+                    onStartTimer()
+                } label: {
+                    Image(systemName: "timer")
+                        .foregroundStyle(.blue)
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel("タイマーを開始")
+            }
 
             if isCompleted {
                 Image(systemName: "checkmark.circle.fill")
@@ -63,7 +75,8 @@ struct HabitRowView: View {
                 weeklyCount: 7,
                 sortOrder: 0
             ),
-            isCompleted: false
+            isCompleted: false,
+            onStartTimer: {}
         ) {}
 
         HabitRowView(
@@ -74,7 +87,8 @@ struct HabitRowView: View {
                 weeklyCount: 3,
                 sortOrder: 1
             ),
-            isCompleted: true
+            isCompleted: true,
+            onStartTimer: {}
         ) {}
         .foregroundStyle(.secondary)
     }
