@@ -14,13 +14,18 @@
 		43C4CCB35B77BA031742CCAE /* TimerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A0DFC1A816F2EBD707CCC7 /* TimerViewModel.swift */; };
 		47521C1E2C7D21951D320EBD /* SwiftData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E79F9ACCC2C898B3414A940 /* SwiftData.framework */; };
 		5CA943B8CEF61B823CF1DDD6 /* CompletionRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = F644147ADF700DFCDB78176A /* CompletionRecord.swift */; };
+		5D560D56E9AA51CA2A2A060C /* CalendarHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF029707CF03D80E77EEF8B9 /* CalendarHelper.swift */; };
 		6EACC462E97A4E553E605E92 /* TodayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8113D70FEF3D824E66F9F92 /* TodayView.swift */; };
 		7CDEB6939EE36E363F456D76 /* TimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE80C7F1F055B5B70DD22435 /* TimerView.swift */; };
+		902C124A5A0096E8C749CF2C /* WeekHeaderRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035B1560BF908585DE2570E1 /* WeekHeaderRow.swift */; };
+		9DE62859391D8026CD6450D1 /* WeeklyCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D84F7B78C4A63019E6E4865 /* WeeklyCalendarView.swift */; };
+		AA4CA4D6590FD4EC1BD35941 /* ModelContainerHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF07143204C208589DF02BEA /* ModelContainerHelper.swift */; };
 		AD13434054AD342AA844BD63 /* TodayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77C0064506423CB4AF88B3D /* TodayViewModel.swift */; };
 		C0D235348D87FB35B990A7FE /* HabitFormViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B75E0AA76766AB90717D599 /* HabitFormViewModel.swift */; };
 		D4588258B34A6744AA8F0F30 /* HabitRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3EBF0E961EC91AB5E94187C /* HabitRowView.swift */; };
 		D97B3667808091C39AD74534 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2607D9315ECD28A4C85C416 /* ContentView.swift */; };
 		DE0D2D47FDB847E7252D76A9 /* HabitermUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50023E98B79A1A3E72D9AAE4 /* HabitermUITests.swift */; };
+		E4250917D47050771B295390 /* WeeklyHabitRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = C78169B2DF59E0241B4F5AC5 /* WeeklyHabitRow.swift */; };
 		E560A1CB00E487C294CEE0E1 /* FrequencyType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A0B9117EB8CAEBE19595980 /* FrequencyType.swift */; };
 		E6E3E0F4572029D80A827B30 /* HabitFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481DEE806BAC1A4085E398C1 /* HabitFormView.swift */; };
 		E7A221BD59EFB8B7BECEB98A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 718A9F09CD9176AC9C084138 /* Assets.xcassets */; };
@@ -47,6 +52,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		035B1560BF908585DE2570E1 /* WeekHeaderRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekHeaderRow.swift; sourceTree = "<group>"; };
 		0ADC142064E874AD4AED6070 /* TodayProgressHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayProgressHeader.swift; sourceTree = "<group>"; };
 		2B75E0AA76766AB90717D599 /* HabitFormViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitFormViewModel.swift; sourceTree = "<group>"; };
 		2E1271FEEE06792C59EE22DF /* HabitermUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = HabitermUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -58,6 +64,7 @@
 		4A0B9117EB8CAEBE19595980 /* FrequencyType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrequencyType.swift; sourceTree = "<group>"; };
 		4E79F9ACCC2C898B3414A940 /* SwiftData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftData.framework; path = System/Library/Frameworks/SwiftData.framework; sourceTree = SDKROOT; };
 		50023E98B79A1A3E72D9AAE4 /* HabitermUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitermUITests.swift; sourceTree = "<group>"; };
+		5D84F7B78C4A63019E6E4865 /* WeeklyCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyCalendarView.swift; sourceTree = "<group>"; };
 		5E51B48635012359D1A2F3E8 /* Habiterm.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Habiterm.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		718A9F09CD9176AC9C084138 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		74762706299D832463DA5444 /* CircularTimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularTimerView.swift; sourceTree = "<group>"; };
@@ -67,7 +74,10 @@
 		B77C0064506423CB4AF88B3D /* TodayViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewModel.swift; sourceTree = "<group>"; };
 		C01CCEA52F5142247443F989 /* HabitermApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitermApp.swift; sourceTree = "<group>"; };
 		C2607D9315ECD28A4C85C416 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		C78169B2DF59E0241B4F5AC5 /* WeeklyHabitRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyHabitRow.swift; sourceTree = "<group>"; };
+		DF029707CF03D80E77EEF8B9 /* CalendarHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarHelper.swift; sourceTree = "<group>"; };
 		EE80C7F1F055B5B70DD22435 /* TimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerView.swift; sourceTree = "<group>"; };
+		EF07143204C208589DF02BEA /* ModelContainerHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelContainerHelper.swift; sourceTree = "<group>"; };
 		F644147ADF700DFCDB78176A /* CompletionRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompletionRecord.swift; sourceTree = "<group>"; };
 		F8113D70FEF3D824E66F9F92 /* TodayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -122,6 +132,14 @@
 			path = ViewModels;
 			sourceTree = "<group>";
 		};
+		42942B3DA1F16674C786577D /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				EF07143204C208589DF02BEA /* ModelContainerHelper.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
 		5530F030B7EEBF9F4E7ADAA4 /* Timer */ = {
 			isa = PBXGroup;
 			children = (
@@ -148,6 +166,16 @@
 				EA16E016EB26CE8B796EB58B /* Frameworks */,
 				1498B6DAFAECFCDF42FF8500 /* Products */,
 			);
+			sourceTree = "<group>";
+		};
+		5B0895981B652832D50120D3 /* Weekly */ = {
+			isa = PBXGroup;
+			children = (
+				035B1560BF908585DE2570E1 /* WeekHeaderRow.swift */,
+				5D84F7B78C4A63019E6E4865 /* WeeklyCalendarView.swift */,
+				C78169B2DF59E0241B4F5AC5 /* WeeklyHabitRow.swift */,
+			);
+			path = Weekly;
 			sourceTree = "<group>";
 		};
 		61C44DBE674940DA9B80BB4E /* Models */ = {
@@ -180,6 +208,7 @@
 			isa = PBXGroup;
 			children = (
 				AE6EDD4AE56707A7FDC91E76 /* HabitermTests.swift */,
+				42942B3DA1F16674C786577D /* Helpers */,
 			);
 			path = HabitermTests;
 			sourceTree = "<group>";
@@ -190,8 +219,17 @@
 				03DEA4B1F88CBDEC128CD506 /* HabitForm */,
 				5530F030B7EEBF9F4E7ADAA4 /* Timer */,
 				05BD59678A9BAF787B36DDDC /* Today */,
+				5B0895981B652832D50120D3 /* Weekly */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		D789515D85016C407F6FE43B /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				DF029707CF03D80E77EEF8B9 /* CalendarHelper.swift */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 		D8859EB22DFB1A0AFD1BB40B /* Habiterm */ = {
@@ -200,6 +238,7 @@
 				718A9F09CD9176AC9C084138 /* Assets.xcassets */,
 				C2607D9315ECD28A4C85C416 /* ContentView.swift */,
 				C01CCEA52F5142247443F989 /* HabitermApp.swift */,
+				D789515D85016C407F6FE43B /* Helpers */,
 				61C44DBE674940DA9B80BB4E /* Models */,
 				6C96EFE6990348111CFB5FFC /* Preview Content */,
 				58B037F478ECB2037322F3E0 /* Services */,
@@ -335,6 +374,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5D560D56E9AA51CA2A2A060C /* CalendarHelper.swift in Sources */,
 				0E13CAB5A6E2FECD067EC448 /* CircularTimerView.swift in Sources */,
 				5CA943B8CEF61B823CF1DDD6 /* CompletionRecord.swift in Sources */,
 				D97B3667808091C39AD74534 /* ContentView.swift in Sources */,
@@ -350,6 +390,9 @@
 				2113359B964EA7EB0757CCE5 /* TodayProgressHeader.swift in Sources */,
 				6EACC462E97A4E553E605E92 /* TodayView.swift in Sources */,
 				AD13434054AD342AA844BD63 /* TodayViewModel.swift in Sources */,
+				902C124A5A0096E8C749CF2C /* WeekHeaderRow.swift in Sources */,
+				9DE62859391D8026CD6450D1 /* WeeklyCalendarView.swift in Sources */,
+				E4250917D47050771B295390 /* WeeklyHabitRow.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -358,6 +401,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F5259F25D7C114FCC6FF3F9A /* HabitermTests.swift in Sources */,
+				AA4CA4D6590FD4EC1BD35941 /* ModelContainerHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

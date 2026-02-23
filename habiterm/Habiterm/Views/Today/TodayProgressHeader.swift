@@ -9,19 +9,53 @@ struct TodayProgressHeader: View {
         return Double(completedCount) / Double(totalCount)
     }
 
+    private var percentText: String {
+        "\(Int(progress * 100))%"
+    }
+
+    private var progressColor: Color {
+        progress >= 1.0 ? .green : .blue
+    }
+
+    // MARK: - Body
+
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(spacing: 12) {
+            // MARK: - 円形プログレスバー
+            ZStack {
+                Circle()
+                    .stroke(lineWidth: 12)
+                    .opacity(0.2)
+                    .foregroundColor(progressColor)
+
+                Circle()
+                    .trim(from: 0.0, to: progress)
+                    .stroke(style: StrokeStyle(lineWidth: 12, lineCap: .round))
+                    .foregroundColor(progressColor)
+                    .rotationEffect(.degrees(-90))
+                    .animation(.easeInOut, value: progress)
+
+                Text(percentText)
+                    .font(.title)
+                    .bold()
+            }
+            .frame(width: 120, height: 120)
+
+            // MARK: - 完了数/全体数テキスト
             Text("\(completedCount) / \(totalCount)")
                 .font(.headline)
-                .accessibilityLabel("\(totalCount)件中\(completedCount)件完了")
-
-            ProgressView(value: progress)
-                .tint(progress >= 1.0 ? .green : .blue)
+                .foregroundColor(.secondary)
         }
         .padding()
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("\(totalCount)件中\(completedCount)件完了、達成率\(Int(progress * 100))パーセント")
     }
 }
 
 #Preview {
-    TodayProgressHeader(completedCount: 3, totalCount: 5)
+    VStack(spacing: 20) {
+        TodayProgressHeader(completedCount: 2, totalCount: 3)
+        TodayProgressHeader(completedCount: 3, totalCount: 3)
+        TodayProgressHeader(completedCount: 0, totalCount: 0)
+    }
 }

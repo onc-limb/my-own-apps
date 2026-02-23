@@ -8,9 +8,7 @@ struct ContentView: View {
                     Label("Today", systemImage: "checklist")
                 }
 
-            Text("Coming Soon")
-                .font(.title2)
-                .foregroundStyle(.secondary)
+            WeeklyCalendarView()
                 .tabItem {
                     Label("Weekly", systemImage: "calendar")
                 }

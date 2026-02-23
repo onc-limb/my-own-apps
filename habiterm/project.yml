@@ -55,3 +55,16 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: com.example.HabitermUITests
         GENERATE_INFOPLIST_FILE: YES
         SWIFT_VERSION: "6.0"
+
+schemes:
+  Habiterm:
+    build:
+      targets:
+        Habiterm: all
+    run:
+      config: Debug
+    test:
+      config: Debug
+      targets:
+        - HabitermTests
+        - HabitermUITests

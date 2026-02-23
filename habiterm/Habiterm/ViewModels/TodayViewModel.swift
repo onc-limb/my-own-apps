@@ -76,6 +76,13 @@ final class TodayViewModel {
         return (completed: completedCount, total: todayHabits.count)
     }
 
+    /// Returns the completion rate for today's habits as a value between 0.0 and 1.0.
+    func completionRate() throws -> Double {
+        let summary = try progressSummary()
+        guard summary.total > 0 else { return 0.0 }
+        return Double(summary.completed) / Double(summary.total)
+    }
+
     // MARK: - Private Helpers
 
     /// Counts how many times the habit was completed in the current week (Monday-start).
