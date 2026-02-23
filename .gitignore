@@ -1,1 +1,31 @@
 .ol-soldiers/
+
+# Xcode build output
+build/
+DerivedData/
+
+# Xcode user-specific files
+xcuserdata/
+*.xcuserdatad
+*.xcuserstate
+*.xcworkspace/xcuserdata/
+
+# Debug symbols
+*.dSYM
+*.dSYM.zip
+
+# Archives
+*.ipa
+*.xcarchive
+
+# Swift Package Manager
+.build/
+.swiftpm/
+
+# Misc
+*.hmap
+*.moved-aside
+*.pbxuser
+*.mode1v3
+*.mode2v3
+*.perspectivev3
