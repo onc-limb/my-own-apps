@@ -1,0 +1,57 @@
+name: Habiterm
+
+options:
+  bundleIdPrefix: com.example
+  deploymentTarget:
+    iOS: "18.0"
+  xcodeVersion: "16.0"
+
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    GENERATE_INFOPLIST_FILE: YES
+
+targets:
+  Habiterm:
+    type: application
+    platform: iOS
+    deploymentTarget: "18.0"
+    sources:
+      - Habiterm
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.example.Habiterm
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_UIApplicationSceneManifest_Generation: YES
+        INFOPLIST_KEY_UILaunchScreen_Generation: YES
+        SWIFT_VERSION: "6.0"
+    dependencies:
+      - sdk: SwiftData.framework
+
+  HabitermTests:
+    type: bundle.unit-test
+    platform: iOS
+    deploymentTarget: "18.0"
+    sources:
+      - HabitermTests
+    dependencies:
+      - target: Habiterm
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.example.HabitermTests
+        GENERATE_INFOPLIST_FILE: YES
+        SWIFT_VERSION: "6.0"
+
+  HabitermUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    deploymentTarget: "18.0"
+    sources:
+      - HabitermUITests
+    dependencies:
+      - target: Habiterm
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.example.HabitermUITests
+        GENERATE_INFOPLIST_FILE: YES
+        SWIFT_VERSION: "6.0"
