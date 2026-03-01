@@ -18,6 +18,10 @@ struct WeeklyCalendarView: View {
         return Calendar.current.isDate(selectedWeekStart, inSameDayAs: currentStart)
     }
 
+    private var activeHabits: [Habit] {
+        habits.filter { $0.isActive }
+    }
+
     private var weekRangeText: String {
         let days = currentWeekDays
         guard let first = days.first, let last = days.last else { return "" }
@@ -36,10 +40,10 @@ struct WeeklyCalendarView: View {
 
                     WeekHeaderRow(dates: currentWeekDays)
 
-                    if habits.isEmpty {
+                    if activeHabits.isEmpty {
                         emptyStateView
                     } else {
-                        ForEach(habits) { habit in
+                        ForEach(activeHabits) { habit in
                             WeeklyHabitRow(habit: habit, dates: currentWeekDays)
                         }
                     }

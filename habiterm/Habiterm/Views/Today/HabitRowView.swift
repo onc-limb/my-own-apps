@@ -5,6 +5,7 @@ struct HabitRowView: View {
     let isCompleted: Bool
     var onStartTimer: () -> Void
     var onUncomplete: () -> Void
+    var onMoveToBackyard: () -> Void
     var onComplete: () -> Void
 
     var body: some View {
@@ -14,9 +15,11 @@ struct HabitRowView: View {
                     .font(.body)
 
                 HStack(spacing: 12) {
-                    Label("\(habit.timeLimitMinutes)分", systemImage: "clock")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
+                    if habit.timeLimitMinutes > 0 {
+                        Label("\(habit.timeLimitMinutes)分", systemImage: "clock")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
 
                     Label(frequencyLabel, systemImage: "repeat")
                         .font(.caption)
@@ -27,20 +30,39 @@ struct HabitRowView: View {
             Spacer()
 
             if !isCompleted {
-                Button {
-                    onStartTimer()
-                } label: {
-                    Image(systemName: "timer")
-                        .foregroundStyle(.blue)
+                if habit.timeLimitMinutes > 0 {
+                    Button {
+                        onStartTimer()
+                    } label: {
+                        Image(systemName: "timer")
+                            .foregroundStyle(.blue)
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityLabel("タイマーを開始")
+                } else {
+                    Button {
+                        onComplete()
+                    } label: {
+                        Image(systemName: "checkmark.circle")
+                            .foregroundStyle(.green)
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityLabel("完了にする")
                 }
-                .buttonStyle(.plain)
-                .accessibilityLabel("タイマーを開始")
             }
 
             if isCompleted {
                 Image(systemName: "checkmark.circle.fill")
                     .foregroundStyle(.green)
             }
+        }
+        .swipeActions(edge: .leading) {
+            Button {
+                onMoveToBackyard()
+            } label: {
+                Label("バックヤード", systemImage: "archivebox")
+            }
+            .tint(.purple)
         }
         .swipeActions(edge: .trailing) {
             if !isCompleted {
@@ -60,7 +82,7 @@ struct HabitRowView: View {
             }
         }
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("\(habit.name)、\(habit.timeLimitMinutes)分、\(frequencyLabel)\(isCompleted ? "、完了済み、スワイプで取消" : "")")
+        .accessibilityLabel("\(habit.name)\(habit.timeLimitMinutes > 0 ? "、\(habit.timeLimitMinutes)分" : "")、\(frequencyLabel)\(isCompleted ? "、完了済み、スワイプで取消" : "")、左スワイプでバックヤードに移動")
     }
 
     private var frequencyLabel: String {
@@ -85,7 +107,8 @@ struct HabitRowView: View {
             ),
             isCompleted: false,
             onStartTimer: {},
-            onUncomplete: {}
+            onUncomplete: {},
+            onMoveToBackyard: {}
         ) {}
 
         HabitRowView(
@@ -98,8 +121,23 @@ struct HabitRowView: View {
             ),
             isCompleted: true,
             onStartTimer: {},
-            onUncomplete: {}
+            onUncomplete: {},
+            onMoveToBackyard: {}
         ) {}
         .foregroundStyle(.secondary)
+
+        HabitRowView(
+            habit: Habit(
+                name: "瞑想",
+                timeLimitMinutes: 0,
+                frequencyType: .daily,
+                weeklyCount: 7,
+                sortOrder: 2
+            ),
+            isCompleted: false,
+            onStartTimer: {},
+            onUncomplete: {},
+            onMoveToBackyard: {}
+        ) {}
     }
 }

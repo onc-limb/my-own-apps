@@ -16,7 +16,10 @@ final class TimerViewModel {
     private(set) var totalSeconds: Int
     private(set) var remainingSeconds: Int
     private(set) var timerState: TimerState = .idle
+    private(set) var hasCompleted: Bool = false
     let habit: Habit
+
+    var onAutoComplete: (() -> Void)?
 
     private var timer: Timer?
     private var backgroundDate: Date?
@@ -84,6 +87,10 @@ final class TimerViewModel {
         notificationService.cancelTimerNotification()
     }
 
+    func markAsCompleted() {
+        hasCompleted = true
+    }
+
     // MARK: - Private Helpers
 
     private func startTimer() {
@@ -105,6 +112,10 @@ final class TimerViewModel {
             timerState = .finished
             timer?.invalidate()
             timer = nil
+            if !hasCompleted {
+                hasCompleted = true
+                onAutoComplete?()
+            }
         }
     }
 
@@ -142,6 +153,10 @@ final class TimerViewModel {
             timerState = .finished
             timer?.invalidate()
             timer = nil
+            if !hasCompleted {
+                hasCompleted = true
+                onAutoComplete?()
+            }
         }
         backgroundDate = nil
     }

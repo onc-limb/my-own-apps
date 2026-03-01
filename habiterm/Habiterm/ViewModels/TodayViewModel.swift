@@ -30,12 +30,13 @@ final class TodayViewModel {
 
     // MARK: - Fetching
 
-    /// Fetch all habits from the store, sorted by sortOrder.
+    /// Fetch active habits from the store, sorted by sortOrder.
     func fetchHabits() throws -> [Habit] {
         let descriptor = FetchDescriptor<Habit>(
             sortBy: [SortDescriptor(\.sortOrder)]
         )
-        return try modelContext.fetch(descriptor)
+        let allHabits = try modelContext.fetch(descriptor)
+        return allHabits.filter { $0.isActive }
     }
 
     // MARK: - Habit Visibility
@@ -68,6 +69,18 @@ final class TodayViewModel {
     func habitsForToday() throws -> [Habit] {
         let allHabits = try fetchHabits()
         return allHabits.filter { shouldShowToday($0) }
+    }
+
+    // MARK: - Backyard
+
+    /// Moves a habit to the backyard (sets isActive to false).
+    func moveToBackyard(_ habit: Habit) {
+        habit.isActive = false
+    }
+
+    /// Activates a habit from the backyard (sets isActive to true).
+    func activateHabit(_ habit: Habit) {
+        habit.isActive = true
     }
 
     // MARK: - Completion

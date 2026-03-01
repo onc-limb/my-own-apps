@@ -11,6 +11,7 @@ final class HabitFormViewModel {
     var frequencyType: FrequencyType = .daily
     var weeklyCount: Int = 7
     var assignedWeekdays: [Int] = []
+    var useTimer: Bool = true
 
     // MARK: - State
 
@@ -30,6 +31,7 @@ final class HabitFormViewModel {
         if let habit {
             self.name = habit.name
             self.timeLimitMinutes = habit.timeLimitMinutes
+            self.useTimer = habit.timeLimitMinutes > 0
             self.frequencyType = habit.frequencyType
             self.weeklyCount = habit.weeklyCount
             self.assignedWeekdays = habit.assignedWeekdays
@@ -40,10 +42,12 @@ final class HabitFormViewModel {
 
     /// Saves the habit. Creates a new one or updates the existing one.
     func save() throws {
+        let effectiveTimeLimitMinutes = useTimer ? timeLimitMinutes : 0
+
         if let habit = editingHabit {
             // Update existing
             habit.name = name
-            habit.timeLimitMinutes = timeLimitMinutes
+            habit.timeLimitMinutes = effectiveTimeLimitMinutes
             habit.frequencyType = frequencyType
             habit.weeklyCount = frequencyType == .daily ? 7 : weeklyCount
             habit.assignedWeekdays = frequencyType == .daily ? [] : assignedWeekdays
@@ -52,7 +56,7 @@ final class HabitFormViewModel {
             let maxSortOrder = try fetchMaxSortOrder()
             let newHabit = Habit(
                 name: name,
-                timeLimitMinutes: timeLimitMinutes,
+                timeLimitMinutes: effectiveTimeLimitMinutes,
                 frequencyType: frequencyType,
                 weeklyCount: frequencyType == .daily ? 7 : weeklyCount,
                 assignedWeekdays: frequencyType == .daily ? [] : assignedWeekdays,

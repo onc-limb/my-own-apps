@@ -39,14 +39,22 @@ struct TimerView: View {
 
             Spacer()
 
-            // Complete button (always visible except idle)
-            if timerViewModel.timerState != .idle {
+            // Complete button (visible when running/paused and not yet completed)
+            if timerViewModel.timerState != .idle && !timerViewModel.hasCompleted {
                 completeButton
             }
         }
         .padding()
         .navigationTitle(timerViewModel.habit.name)
         .navigationBarTitleDisplayMode(.inline)
+        .onAppear {
+            timerViewModel.onAutoComplete = {
+                todayViewModel.completeHabit(
+                    timerViewModel.habit,
+                    durationSeconds: timerViewModel.habit.timeLimitMinutes * 60
+                )
+            }
+        }
         .onDisappear {
             timerViewModel.cleanup()
         }
@@ -107,16 +115,39 @@ struct TimerView: View {
             }
 
         case .finished:
-            Button {
-                completeAndDismiss()
-            } label: {
-                Label("完了として記録", systemImage: "checkmark.circle.fill")
+            if timerViewModel.hasCompleted {
+                VStack(spacing: 12) {
+                    HStack {
+                        Image(systemName: "checkmark.seal.fill")
+                            .foregroundStyle(.green)
+                        Text("完了しました")
+                    }
+                    .font(.title2)
+                    .fontWeight(.semibold)
+
+                    Button {
+                        dismiss()
+                    } label: {
+                        Label("閉じる", systemImage: "xmark.circle")
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .controlSize(.large)
+                    .tint(.blue)
+                    .accessibilityLabel("閉じる")
+                    .accessibilityHint("タップするとこの画面を閉じます")
+                }
+            } else {
+                Button {
+                    completeAndDismiss()
+                } label: {
+                    Label("完了として記録", systemImage: "checkmark.circle.fill")
+                }
+                .buttonStyle(.borderedProminent)
+                .controlSize(.large)
+                .tint(.green)
+                .accessibilityLabel("完了として記録")
+                .accessibilityHint("タップすると習慣を完了として記録します")
             }
-            .buttonStyle(.borderedProminent)
-            .controlSize(.large)
-            .tint(.green)
-            .accessibilityLabel("完了として記録")
-            .accessibilityHint("タップすると習慣を完了として記録します")
         }
     }
 
@@ -139,6 +170,11 @@ struct TimerView: View {
     // MARK: - Actions
 
     private func completeAndDismiss() {
+        guard !timerViewModel.hasCompleted else {
+            dismiss()
+            return
+        }
+        timerViewModel.markAsCompleted()
         todayViewModel.completeHabit(timerViewModel.habit, durationSeconds: timerViewModel.elapsedSeconds)
         dismiss()
     }

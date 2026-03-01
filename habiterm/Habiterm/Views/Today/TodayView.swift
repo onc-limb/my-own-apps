@@ -11,11 +11,12 @@ struct TodayView: View {
     @State private var showAddSheet = false
     @State private var selectedHabit: Habit?
     @State private var timerHabit: Habit?
+    @State private var habitToMoveToBackyard: Habit?
 
     var body: some View {
         NavigationStack {
             if let viewModel {
-                let todayHabits = habits.filter { viewModel.shouldShowToday($0) }
+                let todayHabits = habits.filter { $0.isActive && viewModel.shouldShowToday($0) }
                 let completed = todayHabits.filter { viewModel.isCompletedToday($0) }
                 let incomplete = todayHabits.filter { !viewModel.isCompletedToday($0) }
 
@@ -70,7 +71,9 @@ struct TodayView: View {
                             ForEach(incomplete) { habit in
                                 HabitRowView(habit: habit, isCompleted: false, onStartTimer: {
                                     timerHabit = habit
-                                }, onUncomplete: {}) {
+                                }, onUncomplete: {}, onMoveToBackyard: {
+                                    habitToMoveToBackyard = habit
+                                }) {
                                     viewModel.completeHabit(habit)
                                 }
                                 .contentShape(Rectangle())
@@ -86,6 +89,8 @@ struct TodayView: View {
                             ForEach(completed) { habit in
                                 HabitRowView(habit: habit, isCompleted: true, onStartTimer: {}, onUncomplete: {
                                     viewModel.uncompleteHabit(habit)
+                                }, onMoveToBackyard: {
+                                    habitToMoveToBackyard = habit
                                 }) {}
                                     .foregroundStyle(.secondary)
                                     .contentShape(Rectangle())
@@ -115,6 +120,22 @@ struct TodayView: View {
                 }
                 .sheet(item: $selectedHabit) { habit in
                     HabitFormView(habit: habit)
+                }
+                .alert("バックヤードに移動", isPresented: .init(
+                    get: { habitToMoveToBackyard != nil },
+                    set: { if !$0 { habitToMoveToBackyard = nil } }
+                )) {
+                    Button("移動する") {
+                        if let habit = habitToMoveToBackyard {
+                            viewModel.moveToBackyard(habit)
+                        }
+                        habitToMoveToBackyard = nil
+                    }
+                    Button("キャンセル", role: .cancel) {
+                        habitToMoveToBackyard = nil
+                    }
+                } message: {
+                    Text("バックヤードに移動しますか？過去の記録は保持されます。")
                 }
             }
         }

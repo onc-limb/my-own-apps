@@ -57,14 +57,21 @@ struct HabitFormView: View {
                     set: { viewModel.name = $0 }
                 ))
 
-                Stepper(
-                    "制限時間: \(viewModel.timeLimitMinutes)分",
-                    value: Binding(
-                        get: { viewModel.timeLimitMinutes },
-                        set: { viewModel.timeLimitMinutes = $0 }
-                    ),
-                    in: 1...120
-                )
+                Toggle("タイマーを使用する", isOn: Binding(
+                    get: { viewModel.useTimer },
+                    set: { viewModel.useTimer = $0 }
+                ))
+
+                if viewModel.useTimer {
+                    Stepper(
+                        "制限時間: \(viewModel.timeLimitMinutes)分",
+                        value: Binding(
+                            get: { viewModel.timeLimitMinutes },
+                            set: { viewModel.timeLimitMinutes = $0 }
+                        ),
+                        in: 1...120
+                    )
+                }
             }
 
             Section("頻度") {
