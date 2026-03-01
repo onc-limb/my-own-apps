@@ -4,7 +4,7 @@ struct WeekHeaderRow: View {
 
     // MARK: - Properties
 
-    private let dates = CalendarHelper.pastSevenDays()
+    let dates: [Date]
 
     // MARK: - Body
 
@@ -72,6 +72,6 @@ struct WeekHeaderRow: View {
 // MARK: - Preview
 
 #Preview {
-    WeekHeaderRow()
+    WeekHeaderRow(dates: CalendarHelper.weekDays(for: Date()))
         .padding()
 }

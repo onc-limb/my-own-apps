@@ -10,6 +10,7 @@ final class HabitFormViewModel {
     var timeLimitMinutes: Int = 25
     var frequencyType: FrequencyType = .daily
     var weeklyCount: Int = 7
+    var assignedWeekdays: [Int] = []
 
     // MARK: - State
 
@@ -31,6 +32,7 @@ final class HabitFormViewModel {
             self.timeLimitMinutes = habit.timeLimitMinutes
             self.frequencyType = habit.frequencyType
             self.weeklyCount = habit.weeklyCount
+            self.assignedWeekdays = habit.assignedWeekdays
         }
     }
 
@@ -44,6 +46,7 @@ final class HabitFormViewModel {
             habit.timeLimitMinutes = timeLimitMinutes
             habit.frequencyType = frequencyType
             habit.weeklyCount = frequencyType == .daily ? 7 : weeklyCount
+            habit.assignedWeekdays = frequencyType == .daily ? [] : assignedWeekdays
         } else {
             // Create new
             let maxSortOrder = try fetchMaxSortOrder()
@@ -52,6 +55,7 @@ final class HabitFormViewModel {
                 timeLimitMinutes: timeLimitMinutes,
                 frequencyType: frequencyType,
                 weeklyCount: frequencyType == .daily ? 7 : weeklyCount,
+                assignedWeekdays: frequencyType == .daily ? [] : assignedWeekdays,
                 sortOrder: maxSortOrder + 1,
                 createdAt: Date()
             )

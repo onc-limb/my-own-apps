@@ -9,6 +9,11 @@ struct HabitFormView: View {
 
     @State private var viewModel: HabitFormViewModel?
 
+    private let weekdayOptions: [(label: String, value: Int)] = [
+        ("月", 2), ("火", 3), ("水", 4), ("木", 5),
+        ("金", 6), ("土", 7), ("日", 1)
+    ]
+
     init(habit: Habit? = nil) {
         self.habit = habit
     }
@@ -83,6 +88,36 @@ struct HabitFormView: View {
                 }
             }
 
+            if viewModel.frequencyType == .weeklyN {
+                Section {
+                    HStack {
+                        ForEach(weekdayOptions, id: \.value) { option in
+                            Button {
+                                toggleWeekday(option.value, viewModel: viewModel)
+                            } label: {
+                                Text(option.label)
+                                    .font(.subheadline)
+                                    .frame(width: 36, height: 36)
+                                    .background(
+                                        viewModel.assignedWeekdays.contains(option.value)
+                                        ? Color.blue : Color.gray.opacity(0.2)
+                                    )
+                                    .foregroundStyle(
+                                        viewModel.assignedWeekdays.contains(option.value)
+                                        ? .white : .primary
+                                    )
+                                    .clipShape(Circle())
+                            }
+                            .buttonStyle(.plain)
+                        }
+                    }
+                } header: {
+                    Text("実施曜日")
+                } footer: {
+                    Text("未選択の場合は全曜日に表示されます")
+                }
+            }
+
             if viewModel.isEditing {
                 Section {
                     Button(role: .destructive) {
@@ -97,6 +132,14 @@ struct HabitFormView: View {
                     }
                 }
             }
+        }
+    }
+
+    private func toggleWeekday(_ weekday: Int, viewModel: HabitFormViewModel) {
+        if viewModel.assignedWeekdays.contains(weekday) {
+            viewModel.assignedWeekdays.removeAll { $0 == weekday }
+        } else {
+            viewModel.assignedWeekdays.append(weekday)
         }
     }
 }

@@ -4,6 +4,7 @@ struct HabitRowView: View {
     let habit: Habit
     let isCompleted: Bool
     var onStartTimer: () -> Void
+    var onUncomplete: () -> Void
     var onComplete: () -> Void
 
     var body: some View {
@@ -49,10 +50,17 @@ struct HabitRowView: View {
                     Label("完了", systemImage: "checkmark")
                 }
                 .tint(.green)
+            } else {
+                Button {
+                    onUncomplete()
+                } label: {
+                    Label("取消", systemImage: "arrow.uturn.backward")
+                }
+                .tint(.orange)
             }
         }
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("\(habit.name)、\(habit.timeLimitMinutes)分、\(frequencyLabel)\(isCompleted ? "、完了済み" : "")")
+        .accessibilityLabel("\(habit.name)、\(habit.timeLimitMinutes)分、\(frequencyLabel)\(isCompleted ? "、完了済み、スワイプで取消" : "")")
     }
 
     private var frequencyLabel: String {
@@ -76,7 +84,8 @@ struct HabitRowView: View {
                 sortOrder: 0
             ),
             isCompleted: false,
-            onStartTimer: {}
+            onStartTimer: {},
+            onUncomplete: {}
         ) {}
 
         HabitRowView(
@@ -88,7 +97,8 @@ struct HabitRowView: View {
                 sortOrder: 1
             ),
             isCompleted: true,
-            onStartTimer: {}
+            onStartTimer: {},
+            onUncomplete: {}
         ) {}
         .foregroundStyle(.secondary)
     }

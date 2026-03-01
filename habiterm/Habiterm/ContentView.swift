@@ -12,6 +12,11 @@ struct ContentView: View {
                 .tabItem {
                     Label("Weekly", systemImage: "calendar")
                 }
+
+            SettingsView()
+                .tabItem {
+                    Label("Settings", systemImage: "gearshape")
+                }
         }
     }
 }

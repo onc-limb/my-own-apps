@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 63;
+	objectVersion = 77;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -21,6 +21,7 @@
 		9DE62859391D8026CD6450D1 /* WeeklyCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D84F7B78C4A63019E6E4865 /* WeeklyCalendarView.swift */; };
 		AA4CA4D6590FD4EC1BD35941 /* ModelContainerHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF07143204C208589DF02BEA /* ModelContainerHelper.swift */; };
 		AD13434054AD342AA844BD63 /* TodayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77C0064506423CB4AF88B3D /* TodayViewModel.swift */; };
+		B2644D4C37E4D4BAC5AD9117 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FA38CCAD76F6E0F0D52783 /* SettingsView.swift */; };
 		C0D235348D87FB35B990A7FE /* HabitFormViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B75E0AA76766AB90717D599 /* HabitFormViewModel.swift */; };
 		D4588258B34A6744AA8F0F30 /* HabitRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3EBF0E961EC91AB5E94187C /* HabitRowView.swift */; };
 		D97B3667808091C39AD74534 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2607D9315ECD28A4C85C416 /* ContentView.swift */; };
@@ -54,6 +55,7 @@
 /* Begin PBXFileReference section */
 		035B1560BF908585DE2570E1 /* WeekHeaderRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekHeaderRow.swift; sourceTree = "<group>"; };
 		0ADC142064E874AD4AED6070 /* TodayProgressHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayProgressHeader.swift; sourceTree = "<group>"; };
+		12FA38CCAD76F6E0F0D52783 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		2B75E0AA76766AB90717D599 /* HabitFormViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitFormViewModel.swift; sourceTree = "<group>"; };
 		2E1271FEEE06792C59EE22DF /* HabitermUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = HabitermUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		31C8D5D062037C2A404ED7FF /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
@@ -65,7 +67,7 @@
 		4E79F9ACCC2C898B3414A940 /* SwiftData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftData.framework; path = System/Library/Frameworks/SwiftData.framework; sourceTree = SDKROOT; };
 		50023E98B79A1A3E72D9AAE4 /* HabitermUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitermUITests.swift; sourceTree = "<group>"; };
 		5D84F7B78C4A63019E6E4865 /* WeeklyCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyCalendarView.swift; sourceTree = "<group>"; };
-		5E51B48635012359D1A2F3E8 /* Habiterm.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Habiterm.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5E51B48635012359D1A2F3E8 /* Habiterm.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Habiterm.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		718A9F09CD9176AC9C084138 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		74762706299D832463DA5444 /* CircularTimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularTimerView.swift; sourceTree = "<group>"; };
 		A18B41D6A2A58E6C20FCB92E /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -217,11 +219,20 @@
 			isa = PBXGroup;
 			children = (
 				03DEA4B1F88CBDEC128CD506 /* HabitForm */,
+				CD55BA554F6BC0B4FE1420E9 /* Settings */,
 				5530F030B7EEBF9F4E7ADAA4 /* Timer */,
 				05BD59678A9BAF787B36DDDC /* Today */,
 				5B0895981B652832D50120D3 /* Weekly */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		CD55BA554F6BC0B4FE1420E9 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				12FA38CCAD76F6E0F0D52783 /* SettingsView.swift */,
+			);
+			path = Settings;
 			sourceTree = "<group>";
 		};
 		D789515D85016C407F6FE43B /* Helpers */ = {
@@ -338,6 +349,7 @@
 			);
 			mainGroup = 5A262776BBE038F4AC111607;
 			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -384,6 +396,7 @@
 				D4588258B34A6744AA8F0F30 /* HabitRowView.swift in Sources */,
 				FF7382523CACC3221557C987 /* HabitermApp.swift in Sources */,
 				1F615068D5B910B47E067063 /* NotificationService.swift in Sources */,
+				B2644D4C37E4D4BAC5AD9117 /* SettingsView.swift in Sources */,
 				7CDEB6939EE36E363F456D76 /* TimerView.swift in Sources */,
 				43C4CCB35B77BA031742CCAE /* TimerViewModel.swift in Sources */,
 				2113359B964EA7EB0757CCE5 /* TodayProgressHeader.swift in Sources */,
@@ -489,7 +502,6 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEVELOPMENT_TEAM = 26C67672TW;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -510,7 +522,6 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEVELOPMENT_TEAM = 26C67672TW;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

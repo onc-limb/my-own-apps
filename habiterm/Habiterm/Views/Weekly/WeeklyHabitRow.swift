@@ -5,6 +5,9 @@ struct WeeklyHabitRow: View {
     // MARK: - Properties
 
     let habit: Habit
+    let dates: [Date]
+    @AppStorage("dayStartHour") private var dayStartHour: Int = 4
+    @State private var isExpanded: Bool = false
 
     // MARK: - Body
 
@@ -12,10 +15,15 @@ struct WeeklyHabitRow: View {
         HStack {
             Text(habit.name)
                 .frame(width: 100, alignment: .leading)
-                .lineLimit(1)
+                .lineLimit(isExpanded ? nil : 1)
                 .truncationMode(.tail)
+                .onTapGesture {
+                    withAnimation(.easeInOut(duration: 0.2)) {
+                        isExpanded.toggle()
+                    }
+                }
 
-            ForEach(CalendarHelper.pastSevenDays(), id: \.self) { date in
+            ForEach(dates, id: \.self) { date in
                 cellView(for: date)
                     .frame(maxWidth: .infinity)
                     .accessibilityLabel(accessibilityLabel(for: date))
@@ -27,10 +35,16 @@ struct WeeklyHabitRow: View {
 
     @ViewBuilder
     private func cellView(for date: Date) -> some View {
-        if !CalendarHelper.isApplicable(habit: habit, on: date) {
+        let weekday = Calendar.current.component(.weekday, from: date)
+        let isAssignedDay = habit.assignedWeekdays.isEmpty || habit.assignedWeekdays.contains(weekday)
+
+        if !isAssignedDay {
             Image(systemName: "minus")
                 .foregroundStyle(.gray.opacity(0.3))
-        } else if CalendarHelper.isCompleted(habit: habit, on: date) {
+        } else if !CalendarHelper.isApplicable(habit: habit, on: date, dayStartHour: dayStartHour) {
+            Image(systemName: "minus")
+                .foregroundStyle(.gray.opacity(0.3))
+        } else if CalendarHelper.isCompleted(habit: habit, on: date, dayStartHour: dayStartHour) {
             Image(systemName: "circle.fill")
                 .foregroundStyle(.green)
         } else {
@@ -46,9 +60,14 @@ struct WeeklyHabitRow: View {
         formatter.dateFormat = "M月d日"
         let dateString = formatter.string(from: date)
 
-        if !CalendarHelper.isApplicable(habit: habit, on: date) {
+        let weekday = Calendar.current.component(.weekday, from: date)
+        let isAssignedDay = habit.assignedWeekdays.isEmpty || habit.assignedWeekdays.contains(weekday)
+
+        if !isAssignedDay {
             return "\(habit.name) \(dateString) 対象外"
-        } else if CalendarHelper.isCompleted(habit: habit, on: date) {
+        } else if !CalendarHelper.isApplicable(habit: habit, on: date, dayStartHour: dayStartHour) {
+            return "\(habit.name) \(dateString) 対象外"
+        } else if CalendarHelper.isCompleted(habit: habit, on: date, dayStartHour: dayStartHour) {
             return "\(habit.name) \(dateString) 完了"
         } else {
             return "\(habit.name) \(dateString) 未完了"
@@ -67,7 +86,8 @@ struct WeeklyHabitRow: View {
                 frequencyType: .daily,
                 weeklyCount: 7,
                 sortOrder: 0
-            )
+            ),
+            dates: CalendarHelper.weekDays(for: Date())
         )
 
         WeeklyHabitRow(
@@ -77,7 +97,8 @@ struct WeeklyHabitRow: View {
                 frequencyType: .weeklyN,
                 weeklyCount: 3,
                 sortOrder: 1
-            )
+            ),
+            dates: CalendarHelper.weekDays(for: Date())
         )
     }
     .padding()
