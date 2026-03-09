@@ -58,11 +58,13 @@ enum CalendarHelper {
     }
 
     static func weekStartDate(for date: Date, dayStartHour: Int = 0) -> Date {
-        var calendar = Calendar.current
-        calendar.firstWeekday = 2 // Monday
+        let calendar = Calendar.current
         let logical = logicalDate(for: date, dayStartHour: dayStartHour)
-        let components = calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: logical)
-        return calendar.date(from: components) ?? date
+        // weekday: 1=Sun, 2=Mon, 3=Tue, ..., 7=Sat
+        let weekday = calendar.component(.weekday, from: logical)
+        // Days back to Monday: Mon(2)→0, Tue(3)→1, ..., Sun(1)→6
+        let daysBack = (weekday - 2 + 7) % 7
+        return calendar.date(byAdding: .day, value: -daysBack, to: calendar.startOfDay(for: logical))!
     }
 
     static func completionCountInWeek(habit: Habit, weekOf date: Date, dayStartHour: Int = 0) -> Int {
@@ -74,6 +76,16 @@ enum CalendarHelper {
         return habit.completionRecords.filter { record in
             record.completedAt >= logicalStart && record.completedAt < logicalEnd
         }.count
+    }
+
+    // MARK: - Default Weekdays
+
+    /// Returns default weekdays for a given weekly count, prioritizing weekends first.
+    /// Priority order: Sun(1) → Sat(7) → Fri(6) → Thu(5) → Wed(4) → Tue(3) → Mon(2)
+    static func defaultWeekdays(for count: Int) -> [Int] {
+        let priority = [1, 7, 6, 5, 4, 3, 2]
+        let clamped = min(max(count, 0), 7)
+        return Array(priority.prefix(clamped)).sorted()
     }
 
     // MARK: - Applicability

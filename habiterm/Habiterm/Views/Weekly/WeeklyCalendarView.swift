@@ -7,7 +7,10 @@ struct WeeklyCalendarView: View {
 
     @Query(sort: \Habit.sortOrder) private var habits: [Habit]
     @AppStorage("dayStartHour") private var dayStartHour: Int = 4
-    @State private var selectedWeekStart: Date = CalendarHelper.weekStartDate(for: Date())
+    @State private var selectedWeekStart: Date = {
+        let hour = UserDefaults.standard.object(forKey: "dayStartHour") as? Int ?? 4
+        return CalendarHelper.weekStartDate(for: Date(), dayStartHour: hour)
+    }()
 
     private var currentWeekDays: [Date] {
         CalendarHelper.weekDays(for: selectedWeekStart, dayStartHour: dayStartHour)
@@ -16,6 +19,14 @@ struct WeeklyCalendarView: View {
     private var isCurrentWeek: Bool {
         let currentStart = CalendarHelper.weekStartDate(for: Date(), dayStartHour: dayStartHour)
         return Calendar.current.isDate(selectedWeekStart, inSameDayAs: currentStart)
+    }
+
+    private var isBeyondMaxFutureWeek: Bool {
+        let currentStart = CalendarHelper.weekStartDate(for: Date(), dayStartHour: dayStartHour)
+        guard let maxFuture = Calendar.current.date(byAdding: .weekOfYear, value: 5, to: currentStart) else {
+            return true
+        }
+        return selectedWeekStart >= maxFuture
     }
 
     private var activeHabits: [Habit] {
@@ -86,7 +97,7 @@ struct WeeklyCalendarView: View {
             } label: {
                 Image(systemName: "chevron.right")
             }
-            .disabled(isCurrentWeek)
+            .disabled(isBeyondMaxFutureWeek)
 
             if !isCurrentWeek {
                 Button("今週") {

@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 63;
+	objectVersion = 77;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -17,6 +17,7 @@
 		5D560D56E9AA51CA2A2A060C /* CalendarHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF029707CF03D80E77EEF8B9 /* CalendarHelper.swift */; };
 		6EACC462E97A4E553E605E92 /* TodayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8113D70FEF3D824E66F9F92 /* TodayView.swift */; };
 		7CDEB6939EE36E363F456D76 /* TimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE80C7F1F055B5B70DD22435 /* TimerView.swift */; };
+		7E10F849200D0DA3AD945C3F /* ManageHabitsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 234B3E4E4BF2D28AC316956D /* ManageHabitsView.swift */; };
 		902C124A5A0096E8C749CF2C /* WeekHeaderRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035B1560BF908585DE2570E1 /* WeekHeaderRow.swift */; };
 		9B9F2CAA6EC23E8388616520 /* BackyardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8C02ED6C4D75F585C693694 /* BackyardView.swift */; };
 		9DE62859391D8026CD6450D1 /* WeeklyCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D84F7B78C4A63019E6E4865 /* WeeklyCalendarView.swift */; };
@@ -57,10 +58,11 @@
 		035B1560BF908585DE2570E1 /* WeekHeaderRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekHeaderRow.swift; sourceTree = "<group>"; };
 		0ADC142064E874AD4AED6070 /* TodayProgressHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayProgressHeader.swift; sourceTree = "<group>"; };
 		12FA38CCAD76F6E0F0D52783 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		234B3E4E4BF2D28AC316956D /* ManageHabitsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageHabitsView.swift; sourceTree = "<group>"; };
 		2B75E0AA76766AB90717D599 /* HabitFormViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitFormViewModel.swift; sourceTree = "<group>"; };
-		2E1271FEEE06792C59EE22DF /* HabitermUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HabitermUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		2E1271FEEE06792C59EE22DF /* HabitermUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = HabitermUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		31C8D5D062037C2A404ED7FF /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
-		35760C3B91BFFA5247BFE604 /* HabitermTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HabitermTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		35760C3B91BFFA5247BFE604 /* HabitermTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = HabitermTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		35A0DFC1A816F2EBD707CCC7 /* TimerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerViewModel.swift; sourceTree = "<group>"; };
 		3A71019ED87715525F7743F0 /* Habit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Habit.swift; sourceTree = "<group>"; };
 		481DEE806BAC1A4085E398C1 /* HabitFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitFormView.swift; sourceTree = "<group>"; };
@@ -68,7 +70,7 @@
 		4E79F9ACCC2C898B3414A940 /* SwiftData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftData.framework; path = System/Library/Frameworks/SwiftData.framework; sourceTree = SDKROOT; };
 		50023E98B79A1A3E72D9AAE4 /* HabitermUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitermUITests.swift; sourceTree = "<group>"; };
 		5D84F7B78C4A63019E6E4865 /* WeeklyCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyCalendarView.swift; sourceTree = "<group>"; };
-		5E51B48635012359D1A2F3E8 /* Habiterm.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Habiterm.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5E51B48635012359D1A2F3E8 /* Habiterm.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Habiterm.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		718A9F09CD9176AC9C084138 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		74762706299D832463DA5444 /* CircularTimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularTimerView.swift; sourceTree = "<group>"; };
 		A18B41D6A2A58E6C20FCB92E /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -124,6 +126,14 @@
 				2E1271FEEE06792C59EE22DF /* HabitermUITests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		39B7C94A9801F9B5F0EA34AB /* Manage */ = {
+			isa = PBXGroup;
+			children = (
+				234B3E4E4BF2D28AC316956D /* ManageHabitsView.swift */,
+			);
+			path = Manage;
 			sourceTree = "<group>";
 		};
 		3BCD9A53788918FC2A955ED3 /* ViewModels */ = {
@@ -222,6 +232,7 @@
 			children = (
 				B233D12250FA8B5B7556BC5B /* Backyard */,
 				03DEA4B1F88CBDEC128CD506 /* HabitForm */,
+				39B7C94A9801F9B5F0EA34AB /* Manage */,
 				CD55BA554F6BC0B4FE1420E9 /* Settings */,
 				5530F030B7EEBF9F4E7ADAA4 /* Timer */,
 				05BD59678A9BAF787B36DDDC /* Today */,
@@ -343,7 +354,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
-				LastUpgradeCheck = 2620;
+				LastUpgradeCheck = 1600;
 				TargetAttributes = {
 					74CCF3735520BEB07F8ABFF2 = {
 						TestTargetID = 6784A95ED62FC0C8DA051F15;
@@ -360,6 +371,7 @@
 			);
 			mainGroup = 5A262776BBE038F4AC111607;
 			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -406,6 +418,7 @@
 				C0D235348D87FB35B990A7FE /* HabitFormViewModel.swift in Sources */,
 				D4588258B34A6744AA8F0F30 /* HabitRowView.swift in Sources */,
 				FF7382523CACC3221557C987 /* HabitermApp.swift in Sources */,
+				7E10F849200D0DA3AD945C3F /* ManageHabitsView.swift in Sources */,
 				1F615068D5B910B47E067063 /* NotificationService.swift in Sources */,
 				B2644D4C37E4D4BAC5AD9117 /* SettingsView.swift in Sources */,
 				7CDEB6939EE36E363F456D76 /* TimerView.swift in Sources */,
@@ -481,7 +494,6 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -503,7 +515,6 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
-				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 6.0;
@@ -515,7 +526,6 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEVELOPMENT_TEAM = 26C67672TW;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -536,7 +546,6 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEVELOPMENT_TEAM = 26C67672TW;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -665,7 +674,6 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -680,7 +688,6 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
-				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 6.0;

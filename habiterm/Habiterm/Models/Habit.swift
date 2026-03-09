@@ -15,6 +15,13 @@ final class Habit {
     @Relationship(deleteRule: .cascade, inverse: \CompletionRecord.habit)
     var completionRecords: [CompletionRecord] = []
 
+    var effectiveWeekdays: [Int] {
+        if assignedWeekdays.isEmpty && frequencyType == .weeklyN {
+            return CalendarHelper.defaultWeekdays(for: weeklyCount)
+        }
+        return assignedWeekdays
+    }
+
     init(name: String, timeLimitMinutes: Int, frequencyType: FrequencyType, weeklyCount: Int, assignedWeekdays: [Int] = [], sortOrder: Int, createdAt: Date = .now, isActive: Bool = true) {
         self.name = name
         self.timeLimitMinutes = timeLimitMinutes

@@ -8,8 +8,6 @@ struct TodayView: View {
     @AppStorage("dayStartHour") private var dayStartHour: Int = 4
 
     @State private var viewModel: TodayViewModel?
-    @State private var showAddSheet = false
-    @State private var selectedHabit: Habit?
     @State private var timerHabit: Habit?
     @State private var habitToMoveToBackyard: Habit?
 
@@ -78,7 +76,11 @@ struct TodayView: View {
                                 }
                                 .contentShape(Rectangle())
                                 .onTapGesture {
-                                    selectedHabit = habit
+                                    if habit.timeLimitMinutes > 0 {
+                                        timerHabit = habit
+                                    } else {
+                                        viewModel.completeHabit(habit)
+                                    }
                                 }
                             }
                         }
@@ -93,10 +95,6 @@ struct TodayView: View {
                                     habitToMoveToBackyard = habit
                                 }) {}
                                     .foregroundStyle(.secondary)
-                                    .contentShape(Rectangle())
-                                    .onTapGesture {
-                                        selectedHabit = habit
-                                    }
                             }
                         }
                     }
@@ -105,22 +103,6 @@ struct TodayView: View {
                     TimerView(habit: habit, todayViewModel: viewModel)
                 }
                 .navigationTitle("Today")
-                .toolbar {
-                    ToolbarItem(placement: .primaryAction) {
-                        Button {
-                            showAddSheet = true
-                        } label: {
-                            Image(systemName: "plus")
-                        }
-                        .accessibilityLabel("習慣を追加")
-                    }
-                }
-                .sheet(isPresented: $showAddSheet) {
-                    HabitFormView()
-                }
-                .sheet(item: $selectedHabit) { habit in
-                    HabitFormView(habit: habit)
-                }
                 .alert("バックヤードに移動", isPresented: .init(
                     get: { habitToMoveToBackyard != nil },
                     set: { if !$0 { habitToMoveToBackyard = nil } }

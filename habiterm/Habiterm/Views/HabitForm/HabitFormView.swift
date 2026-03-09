@@ -121,7 +121,7 @@ struct HabitFormView: View {
                 } header: {
                     Text("実施曜日")
                 } footer: {
-                    Text("未選択の場合は全曜日に表示されます")
+                    Text("未選択の場合は週末から順に自動設定されます")
                 }
             }
 

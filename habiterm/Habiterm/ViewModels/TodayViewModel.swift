@@ -47,9 +47,9 @@ final class TodayViewModel {
         case .daily:
             return true
         case .weeklyN:
-            if !habit.assignedWeekdays.isEmpty {
+            if !habit.effectiveWeekdays.isEmpty {
                 let weekday = Calendar.current.component(.weekday, from: date)
-                if !habit.assignedWeekdays.contains(weekday) {
+                if !habit.effectiveWeekdays.contains(weekday) {
                     return false
                 }
             }
