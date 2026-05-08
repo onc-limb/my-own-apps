@@ -2,7 +2,7 @@
   "$schema": "Voice-to-knowledge presets. Each preset combines audio2text CLI flags + Whisper prompt-style + summary template reference.",
   "default": {
     "model": "large-v3-turbo",
-    "preprocess": ["normalize"],
+    "preprocess": [],
     "postprocess": ["dedupe", "paragraphs"],
     "paragraph-gap": 2.0,
     "segment-length": 40,
@@ -15,7 +15,7 @@
   },
   "business-meeting": {
     "model": "large-v3-turbo",
-    "preprocess": ["normalize"],
+    "preprocess": [],
     "postprocess": ["dedupe", "fillers", "paragraphs"],
     "paragraph-gap": 2.5,
     "segment-length": 40,
@@ -29,7 +29,7 @@
   },
   "business-chat": {
     "model": "large-v3-turbo",
-    "preprocess": ["normalize"],
+    "preprocess": [],
     "postprocess": ["dedupe", "paragraphs"],
     "paragraph-gap": 2.0,
     "segment-length": 35,
@@ -42,7 +42,7 @@
   },
   "monologue": {
     "model": "large-v3-turbo",
-    "preprocess": ["normalize"],
+    "preprocess": [],
     "postprocess": ["dedupe", "paragraphs"],
     "paragraph-gap": 2.5,
     "segment-length": 40,
@@ -55,7 +55,7 @@
   },
   "private-chat": {
     "model": "large-v3-turbo",
-    "preprocess": ["normalize"],
+    "preprocess": [],
     "postprocess": ["dedupe", "paragraphs"],
     "paragraph-gap": 1.5,
     "segment-length": 30,
@@ -68,7 +68,7 @@
   },
   "interview": {
     "model": "large-v3-turbo",
-    "preprocess": ["normalize", "denoise"],
+    "preprocess": ["denoise"],
     "postprocess": ["dedupe", "paragraphs"],
     "paragraph-gap": 1.5,
     "segment-length": 30,
@@ -78,11 +78,11 @@
     "vad-threshold": 0.55,
     "summary-template": "interview.md",
     "category": "interview",
-    "_notes": "発言の細部（言い淀み等）も意味を持つため fillers は外している。VAD 閾値はやや低め"
+    "_notes": "発言の細部（言い淀み等）も意味を持つため fillers は外している。VAD 閾値はやや低め。normalize は VAD と相性悪く除外"
   },
   "lecture": {
     "model": "large-v3-turbo",
-    "preprocess": ["normalize", "voice-band"],
+    "preprocess": ["voice-band"],
     "postprocess": ["dedupe", "fillers", "paragraphs"],
     "paragraph-gap": 3.0,
     "segment-length": 50,
@@ -92,11 +92,11 @@
     "vad-threshold": 0.6,
     "summary-template": "lecture.md",
     "category": "lecture",
-    "_notes": "専門用語があれば sidecar で渡すこと"
+    "_notes": "専門用語があれば sidecar で渡すこと。normalize は VAD と相性悪く除外"
   },
   "english-meeting": {
     "model": "large-v3-turbo",
-    "preprocess": ["normalize"],
+    "preprocess": [],
     "postprocess": ["dedupe", "fillers", "paragraphs"],
     "paragraph-gap": 2.5,
     "segment-length": 40,
