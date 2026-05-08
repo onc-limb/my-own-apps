@@ -1,0 +1,36 @@
+.navbar {
+  background: var(--color-header-bg);
+  padding: 0.8rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.navbar-brand {
+  color: #fff;
+  font-size: 1.1rem;
+}
+
+.navbar-link {
+  color: var(--color-header-text);
+  font-weight: 500;
+  text-decoration: none;
+  padding: 0.2rem 0.4rem;
+  border-radius: var(--radius);
+  transition: opacity 0.15s;
+}
+
+.navbar-link:hover {
+  opacity: 0.85;
+  text-decoration: underline;
+}
+
+.navbar-link:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+.active-link {
+  border-bottom: 2px solid #fff;
+  padding-bottom: 0.15rem;
+}
