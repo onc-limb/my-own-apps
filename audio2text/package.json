@@ -1,0 +1,40 @@
+{
+  "name": "audio2text",
+  "version": "0.1.0",
+  "description": "Local Whisper (whisper.cpp) audio transcription tool with markdown output for Claude knowledge maps",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "audio2text": "dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "tsx src/index.ts",
+    "clean": "rm -rf dist"
+  },
+  "keywords": [
+    "whisper",
+    "whisper.cpp",
+    "transcription",
+    "audio",
+    "local",
+    "markdown"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "commander": "^12.1.0",
+    "ffmpeg-static": "^5.2.0",
+    "nodejs-whisper": "^0.3.0",
+    "ora": "^8.1.0",
+    "picocolors": "^1.1.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
