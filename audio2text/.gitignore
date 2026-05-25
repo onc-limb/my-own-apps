@@ -1,0 +1,39 @@
+node_modules/
+dist/
+*.log
+.env
+.env.local
+.DS_Store
+
+# Output / temp
+output/
+tmp/
+*.mp3
+*.m4a
+*.wav
+*.mp4
+*.flac
+*.ogg
+*.webm
+*.aac
+
+# Keep example markers
+!examples/*.gitkeep
+
+# Workspace: keep directory structure (.gitkeep) but ignore content (privacy)
+workspace/inbox/*
+workspace/transcripts/*
+workspace/archive/audio/*
+workspace/archive/transcripts/*
+
+# Knowledge base — both layers ignored (sensitive content), keep structure only
+workspace/knowledge/**/*
+!workspace/knowledge/**/
+!workspace/knowledge/**/.gitkeep
+!workspace/inbox/.gitkeep
+!workspace/transcripts/.gitkeep
+!workspace/archive/audio/.gitkeep
+!workspace/archive/transcripts/.gitkeep
+
+# Local-only assumption notes (per-project private memo)
+ASSUMPTIONS.md
