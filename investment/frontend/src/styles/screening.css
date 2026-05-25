@@ -1,0 +1,9 @@
+.screening-title {
+  font-size: 1.4rem;
+  margin-bottom: 1.2rem;
+}
+
+.screening-error {
+  color: var(--color-loss);
+  margin-bottom: 1rem;
+}

@@ -1,0 +1,13 @@
+.table-wrap {
+  overflow-x: auto;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.table-empty {
+  text-align: center;
+  padding: 2rem;
+  color: var(--color-text-secondary);
+}

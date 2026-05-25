@@ -1,0 +1,25 @@
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.summary-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 1rem 1.2rem;
+  box-shadow: var(--shadow);
+}
+
+.summary-card-label {
+  color: var(--color-text-secondary);
+  font-size: 0.85rem;
+  margin-bottom: 0.3rem;
+}
+
+.summary-card-value {
+  font-size: 1.3rem;
+  font-weight: 700;
+}
