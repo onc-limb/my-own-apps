@@ -1,9 +1,11 @@
 # Phase 0 / 01 — Environment Setup
 
 ## Goal
+
 opam / dune / utop / エディタ拡張をそろえ、`dune exec` で "Hello World" が走る最小プロジェクトを用意する。
 
 ## Prerequisites
+
 - macOS / Linux / WSL2 のいずれかの環境
 - Homebrew（macOS の場合）または apt / brew 相当のパッケージマネージャ
 
@@ -12,11 +14,13 @@ opam / dune / utop / エディタ拡張をそろえ、`dune exec` で "Hello Wor
 ### 1. opam のインストール
 
 macOS:
+
 ```bash
 brew install opam
 ```
 
 Linux / WSL2:
+
 ```bash
 bash -c "sh <(curl -fsSL https://raw.githubusercontent.com/ocaml/opam/master/shell/install.sh)"
 ```
@@ -41,6 +45,7 @@ opam install -y dune utop ocaml-lsp-server merlin ocamlformat
 ### 4. エディタ拡張
 
 VS Code:
+
 - 拡張機能 `OCaml Platform` をインストール
 - ワークスペースで `ocaml-lsp-server` が見つかることを確認する
 
@@ -73,20 +78,23 @@ dune exec ./bin/main.exe
 
 ## Verification
 
-- [ ] `dune exec ./bin/main.exe` が `Hello, Ariadne!` を出力する
-- [ ] `utop` を起動して `1 + 1;;` が評価できる
-- [ ] エディタで `main.ml` を開いたとき、型情報がホバーで出る
-- [ ] `which dune` / `which utop` がパスを返す
+- [x] `dune exec ./bin/main.exe` が `Hello, Ariadne!` を出力する
+- [x] `utop` を起動して `1 + 1;;` が評価できる
+- [x] エディタで `main.ml` を開いたとき、型情報がホバーで出る
+- [x] `which dune` / `which utop` がパスを返す
 
 ## Pitfalls / Tips
+
 - `eval $(opam env)` を忘れると `dune: command not found` が出る。新しいシェルを開くたびに必要なら rc ファイルに登録する
 - WSL2 では Windows 側のパスでなく Linux ホームディレクトリ内に置く（I/O 速度のため）
 - OCaml バージョンは `5.x` を選ぶ（roadmap 後半の Domain / Eio は 5 系前提）
 
 ## Outputs
+
 - 動作確認済みの opam switch
 - `ariadne/playground/hello/` の最小プロジェクト
 - エディタの OCaml 補完が効く状態
 
 ## Next
+
 - [02 Language Fundamentals](02-language-fundamentals.md)
