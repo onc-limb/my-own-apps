@@ -33,6 +33,8 @@
 - [x] ビジネス説明用の一枚資料（Brief）を作成し、PDF 出力できる
 - [x] 自分の価値を言語化したバリューステートメント（Positioning）を作成・PDF 出力できる
 - [x] 振り返りから継続提案（Retrospective）を生成し、クライアント向け一枚を PDF 出力できる
+- [x] 見積（Estimate・工数/金額レンジ）、提案書（Proposal）、議事録（Decisions）、変更管理（Changes）を作成・PDF 出力できる
+- [x] 全10ツールが案件ライフサイクル（入口→進行→報告→継続）に沿って並ぶ
 - [x] 全データを JSON でインポート / エクスポートできる
 - [x] LLM 連携（任意）を `claude -p` / API の両形態で有効化でき、Goals・Brief の AI 支援が動く
 - [x] すべてのデータがリロード後も保持される（localStorage）

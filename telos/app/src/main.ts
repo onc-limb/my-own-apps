@@ -6,6 +6,10 @@ import { renderGoalsDetail, renderGoalsList } from "./views/goals";
 import { renderBriefEdit, renderBriefList } from "./views/brief";
 import { renderPositioningEdit, renderPositioningList } from "./views/positioning";
 import { renderRetroEdit, renderRetroList } from "./views/retro";
+import { renderEstimateEdit, renderEstimateList } from "./views/estimate";
+import { renderProposalEdit, renderProposalList } from "./views/proposal";
+import { renderDecisionsEdit, renderDecisionsList } from "./views/decisions";
+import { renderChangesEdit, renderChangesList } from "./views/changes";
 import { renderSettings } from "./views/settings";
 
 const app = document.querySelector<HTMLElement>("#app")!;
@@ -41,6 +45,22 @@ function route(): void {
     case "retro":
       if (id) renderRetroEdit(app, id);
       else renderRetroList(app);
+      break;
+    case "estimate":
+      if (id) renderEstimateEdit(app, id);
+      else renderEstimateList(app);
+      break;
+    case "proposal":
+      if (id) renderProposalEdit(app, id);
+      else renderProposalList(app);
+      break;
+    case "decisions":
+      if (id) renderDecisionsEdit(app, id);
+      else renderDecisionsList(app);
+      break;
+    case "changes":
+      if (id) renderChangesEdit(app, id);
+      else renderChangesList(app);
       break;
     case "settings":
       renderSettings(app);
