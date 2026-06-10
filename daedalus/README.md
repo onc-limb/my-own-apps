@@ -57,6 +57,9 @@ uv sync          # .venv 作成 + 依存インストール（uv.lock 準拠）
 uv run daedalus serve
 ```
 
+> 📘 **AWS / Google Cloud / Cloudflare** を対象にした、Terraform 導入から各プロバイダの認証・実行まで
+> の手順書は [`docs/setup-guide.md`](docs/setup-guide.md) にある。初めて使うときはこちらを参照。
+
 ### 環境変数（アカウント情報はすべてここ）
 
 | 変数 | 必須 | 用途 |
