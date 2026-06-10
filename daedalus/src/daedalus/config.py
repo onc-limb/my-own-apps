@@ -108,6 +108,9 @@ class RunConfig:
     workspace: Path
     mode: Mode = Mode.PLAN
     allow_destroy: bool = False
+    # Require a clean tfsec scan (zero CRITICAL/HIGH) before terraform apply.
+    # Auto-disabled with a warning when the tfsec binary is missing.
+    security_scan: bool = True
     max_turns: int = 40
     model: str | None = None
 

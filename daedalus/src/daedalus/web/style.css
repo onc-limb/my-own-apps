@@ -59,6 +59,10 @@ button.reject { background: #5b1a1a; border-color: var(--err); }
 .ev.github { color: var(--accent); }
 .ev.end { color: var(--ok); font-weight: bold; }
 .ev.error { color: var(--err); font-weight: bold; }
+.ev.warn { color: var(--warn); }
+.ev.plan { color: #9ee6ff; background: #0e1822; border-left: 3px solid var(--accent);
+  padding: 6px 8px; border-radius: 4px; }
+.ev.plan.danger { border-left-color: var(--err); }
 
 #run-status { font-size: .8rem; margin-left: 8px; }
 #run-status.running { color: var(--warn); }
@@ -73,6 +77,11 @@ button.reject { background: #5b1a1a; border-color: var(--err); }
   font-size: .75rem; white-space: pre-wrap; }
 .approval-card .cmd { color: var(--warn); font-family: ui-monospace, monospace; }
 .approval-card .actions { display: flex; gap: 10px; margin-top: 10px; }
+.approval-card .plan-summary { border-left: 3px solid var(--ok); white-space: pre-wrap;
+  font-size: .8rem; }
+.approval-card .plan-summary.danger { border-left-color: var(--err); }
+.approval-card details { margin-top: 6px; }
+.approval-card summary { color: var(--muted); cursor: pointer; font-size: .78rem; }
 
 #history .item { border-bottom: 1px solid var(--border); padding: 7px 2px;
   display: flex; gap: 10px; align-items: baseline; font-size: .85rem; }

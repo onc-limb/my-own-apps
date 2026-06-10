@@ -61,6 +61,7 @@ async function startRun() {
     model: $("#model").value || null,
     max_turns: parseInt($("#max-turns").value, 10) || 40,
     allow_destroy: $("#opt-destroy").checked,
+    security_scan: $("#opt-scan").checked,
     pull: $("#opt-pull").checked,
     push: $("#opt-push").checked,
   };
@@ -126,6 +127,21 @@ function handleEvent(ev) {
       addLog(ev.approved ? "end" : "denied",
         ev.approved ? `✅ 承認されました: ${ev.command}` : `❌ 却下されました: ${ev.command}`);
       break;
+    case "plan_summary": {
+      const danger = ev.counts && (ev.counts.destroy > 0 || ev.counts.replace > 0);
+      addLog(danger ? "plan danger" : "plan", `📋 plan サマリ\n${ev.text}`);
+      break;
+    }
+    case "security_scan":
+      addLog(ev.passed ? "end" : "denied",
+        ev.passed ? "🛡 tfsec: 問題なし（apply 解禁）" : `🛡 tfsec: CRITICAL/HIGH の検出あり（${ev.detail || ""}）— 修正が必要`);
+      break;
+    case "scan_invalidated":
+      addLog("tool", "🛡 .tf が編集されたため、再スキャンが必要になりました");
+      break;
+    case "warning":
+      addLog("warn", `⚠ ${ev.message}`);
+      break;
     case "github_pull_start": addLog("github", `⬇ GitHub pull: ${ev.repo}@${ev.branch}`); break;
     case "github_pull_done": addLog("github", `⬇ pull 完了 (${ev.files} files)`); break;
     case "github_push_start": addLog("github", `⬆ GitHub push: ${ev.repo}@${ev.branch}`); break;
@@ -158,14 +174,23 @@ function showApproval(ev) {
     <h3>⏸ 承認が必要です</h3>
     <div>コマンド: <span class="cmd"></span></div>
     <div class="hint"></div>
-    <pre></pre>
+    <pre class="plan-summary" hidden></pre>
+    <details><summary>terraform の生出力（tail）</summary><pre class="raw"></pre></details>
     <div class="actions">
       <button class="approve">✅ 承認して実行</button>
       <button class="reject">❌ 却下</button>
     </div>`;
   card.querySelector(".cmd").textContent = ev.command;
   card.querySelector(".hint").textContent = ev.reason || "";
-  card.querySelector("pre").textContent = ev.context_tail || "(直前の terraform 出力なし)";
+  if (ev.plan_summary) {
+    const summary = card.querySelector(".plan-summary");
+    summary.hidden = false;
+    summary.textContent = ev.plan_summary;
+    if (ev.plan_counts && (ev.plan_counts.destroy > 0 || ev.plan_counts.replace > 0)) {
+      summary.classList.add("danger");
+    }
+  }
+  card.querySelector(".raw").textContent = ev.context_tail || "(直前の terraform 出力なし)";
   const resolve = async (approved) => {
     await fetch(`/api/approvals/${ev.approval_id}`, {
       method: "POST",

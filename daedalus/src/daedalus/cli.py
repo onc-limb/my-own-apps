@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import asyncio
 import os
+import shutil
 import sys
 from pathlib import Path
 
@@ -26,6 +27,10 @@ def build_parser() -> argparse.ArgumentParser:
         help="plan: dry-run only / approval: human approves each apply / auto: full autopilot (default: plan).",
     )
     run.add_argument("--allow-destroy", action="store_true", help="Allow `terraform destroy`.")
+    run.add_argument(
+        "--no-security-scan", dest="security_scan", action="store_false",
+        help="Disable the mandatory tfsec scan gate before apply (enabled by default).",
+    )
     run.add_argument("--max-turns", type=int, default=40, help="Max agent iterations (default: 40).")
     run.add_argument("--model", default=None, help="Model: opus | sonnet | haiku (default: SDK default).")
 
@@ -59,6 +64,9 @@ async def _terminal_approver(request) -> bool:
     print("⏸  承認が必要です (approval mode)")
     print(f"   コマンド: {request.command}")
     print(f"   理由:     {request.reason}")
+    if request.plan_summary:
+        print("   --- plan サマリ ---")
+        print("   " + "\n   ".join(request.plan_summary.splitlines()))
     if request.context_tail:
         print("   --- 直前の terraform 出力 (tail) ---")
         print("   " + "\n   ".join(request.context_tail.splitlines()[-25:]))
@@ -81,9 +89,18 @@ def _run(args: argparse.Namespace) -> int:
         workspace=Path(args.workspace),
         mode=mode,
         allow_destroy=args.allow_destroy,
+        security_scan=args.security_scan,
         max_turns=args.max_turns,
         model=args.model,
     )
+    if config.security_scan and shutil.which("tfsec") is None:
+        print(
+            "⚠️  tfsec not found — security scan requirement disabled for this run.\n"
+            "   Install tfsec to enable it (https://github.com/aquasecurity/tfsec), "
+            "or pass --no-security-scan to silence this warning.",
+            file=sys.stderr,
+        )
+        config.security_scan = False
 
     try:
         from .agent import run_agent

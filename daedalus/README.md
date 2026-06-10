@@ -42,6 +42,15 @@ spec.yaml ──▶ daedalus ──(Agent SDK)──▶ headless Claude Code
 `terraform destroy` はどのモードでも `--allow-destroy` を明示したときのみ
 （approval モードではさらに承認が必要）。危険シェルは常時 deny。
 
+さらに2つのレビュー支援が常時はたらく:
+
+- **plan の人間向けサマリ** — `terraform plan` の出力を決定的にパースし、「追加 / 変更 / 削除 / 置換」
+  の件数と対象リソースを日本語で要約。承認カード・ログ・run サマリに表示され、削除/置換を含む場合は
+  警告が付く（LLM 不使用なので追加コストゼロ）。
+- **セキュリティスキャン必須化（tfsec）** — `.tf` 編集後にクリーンな `tfsec` スキャン
+  （CRITICAL/HIGH ゼロ）が通るまで `terraform apply` をゲートが deny する。
+  `--no-security-scan` で無効化可能。tfsec 未導入の環境では警告して自動無効化される。
+
 ## セットアップ
 
 パッケージ管理は [uv](https://docs.astral.sh/uv/) を使う。
@@ -81,7 +90,8 @@ uv run daedalus serve     # → http://127.0.0.1:8420
 ```
 
 - Spec を貼ってモードを選び **実行**。ログがリアルタイムに流れる
-- approval モードでは **承認カード**が出る（直前の plan 出力つき）→ ✅承認 / ❌却下
+- approval モードでは **plan サマリ（追加/変更/削除/置換＋対象リソース）つきの承認カード**が出る
+  → ✅承認 / ❌却下。生の terraform 出力も折りたたみで確認できる
 - GitHub の pull / push も手動操作できる。実行時に「実行前 pull」「成功後 push」も選択可
 
 ### CLI

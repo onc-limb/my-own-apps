@@ -10,6 +10,7 @@ from __future__ import annotations
 import asyncio
 import json
 import os
+import shutil
 import uuid
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
@@ -35,6 +36,7 @@ class StartRunBody(BaseModel):
     max_turns: int = 40
     model: str | None = None
     allow_destroy: bool = False
+    security_scan: bool = True  # mandatory tfsec gate before apply
     pull: bool = False   # pull project repo into workspace before the run
     push: bool = False   # push workspace to project repo after a successful run
 
@@ -124,6 +126,8 @@ async def _execute(handle: RunHandle, spec: Spec, config: RunConfig, body: Start
             command=request.command,
             reason=request.reason,
             context_tail=request.context_tail,
+            plan_summary=request.plan_summary,
+            plan_counts=request.plan_counts,
         )
         try:
             return await future
@@ -131,6 +135,14 @@ async def _execute(handle: RunHandle, spec: Spec, config: RunConfig, body: Start
             handle.approvals.pop(approval_id, None)
 
     try:
+        if config.security_scan and shutil.which("tfsec") is None:
+            config.security_scan = False
+            handle.emit(
+                "warning",
+                message="tfsec が見つからないため、セキュリティスキャン必須化を無効にして実行します"
+                        "（導入: https://github.com/aquasecurity/tfsec）",
+            )
+
         if body.pull and spec.github:
             cfg = GitHubConfig.from_spec(spec)
             handle.emit("github_pull_start", repo=f"{cfg.owner}/{cfg.repo}", branch=cfg.branch)
@@ -197,6 +209,7 @@ async def start_run(body: StartRunBody) -> dict[str, str]:
         workspace=workspace,
         mode=mode,
         allow_destroy=body.allow_destroy,
+        security_scan=body.security_scan,
         max_turns=body.max_turns,
         model=body.model or None,
     )

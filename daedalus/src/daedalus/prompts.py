@@ -46,6 +46,22 @@ def build_system_prompt(config: RunConfig) -> str:
             "to recover from a broken state."
         )
 
+    if config.security_scan:
+        gate_note = (
+            "\n- The apply gate DENIES `terraform apply` until a clean scan has run after the "
+            "latest .tf edit — always re-run tfsec after editing any .tf file."
+            if config.apply_allowed
+            else ""
+        )
+        scan_rule = f"""
+Security scanning (mandatory):
+- After `terraform validate` passes and BEFORE any `terraform apply`, run `tfsec . --no-color`.
+- Fix ALL CRITICAL and HIGH findings, then re-run tfsec until none remain.
+- MEDIUM/LOW findings: fix when straightforward, otherwise list them in your final summary.{gate_note}
+"""
+    else:
+        scan_rule = ""
+
     return f"""You are daedalus, an autonomous cloud-infrastructure engineer.
 
 Your job: turn the user's infrastructure spec into working Terraform in the
@@ -61,7 +77,7 @@ Working method (loop until done):
 4. Run `terraform plan`. If it errors, READ the error carefully, fix the `.tf`
    files, and re-run. Do not guess blindly — address the specific error.
 {apply_rule}
-
+{scan_rule}
 Hard rules:
 - Pin the provider and required Terraform versions.
 - Never put secrets, credentials or account IDs in `.tf` files; rely on the

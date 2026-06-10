@@ -38,6 +38,9 @@ daedalus 自身の責務:
 - デフォルトは plan のみ。auto モードはサンドボックスアカウント前提。
 - `terraform destroy` は `--allow-destroy` 明示時のみ（approval モードではさらに承認）。
 - 危険シェル（`rm -rf`, `sudo`, パイプして sh 等）はフックで一律 deny。
+- **tfsec スキャン必須化（デフォルトON）**: `.tf` 編集後にクリーンなスキャン（CRITICAL/HIGH ゼロ）が
+  通るまで apply を deny。tfsec 未導入なら警告して自動無効化。`--no-security-scan` で明示OFF。
+- plan/tfsec 出力の解析は `terraform_output.py` の決定的パーサで行う（LLM に要約させない）。
 - GitHub push は追加・更新のみ（削除しない）。state/`.tfvars` 等は push 除外。
 - GUI は localhost 前提・認証なし。公開しない。
 

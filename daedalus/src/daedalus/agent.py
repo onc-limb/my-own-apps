@@ -13,9 +13,10 @@ from dataclasses import dataclass, field
 from typing import Any, Awaitable, Callable
 
 from .config import Mode, RunConfig, Spec
-from .guardrails import classify_bash
+from .guardrails import classify_bash, is_terraform_apply, writes_tf_via_shell
 from .journal import RunJournal
 from .prompts import build_system_prompt, build_task_prompt
+from .terraform_output import format_plan_japanese, parse_plan_output, parse_tfsec_output
 
 
 @dataclass
@@ -25,6 +26,8 @@ class ApprovalRequest:
     command: str
     reason: str
     context_tail: str = ""  # tail of the latest terraform output (usually the plan)
+    plan_summary: str = ""  # human-friendly digest of the latest plan
+    plan_counts: dict | None = None  # {"add": n, "change": n, "destroy": n, "replace": n}
 
 
 # Returns True to approve, False to reject.
@@ -40,7 +43,11 @@ class RunState:
     approvals_rejected: int = 0
     plan_ok: bool = False
     apply_ok: bool = False
+    # True once a clean tfsec scan ran; reset whenever a .tf file is edited.
+    security_scan_ok: bool = False
     last_output_tail: str = ""
+    last_plan_summary: str = ""
+    last_plan_counts: dict | None = None
     errors: list[str] = field(default_factory=list)
 
 
@@ -63,11 +70,32 @@ def _tail(text: str, limit: int = 600) -> str:
     return text if len(text) <= limit else "…" + text[-limit:]
 
 
+_SCAN_GATE_REASON = (
+    "security gate: run `tfsec . --no-color` and fix ALL CRITICAL/HIGH findings before "
+    "`terraform apply`. The scan must be re-run after every .tf edit."
+)
+
+
 def _make_pre_hook(config: RunConfig, state: RunState, journal: RunJournal, approver: Approver | None):
     async def pre_hook(input_data: dict, tool_use_id: Any, context: Any) -> dict:
         command = (input_data.get("tool_input") or {}).get("command", "")
         decision, reason = classify_bash(command, config)
         state.bash_calls += 1
+
+        if writes_tf_via_shell(command) and state.security_scan_ok:
+            state.security_scan_ok = False
+            journal.event("scan_invalidated", via="shell", command=_short(command, 200))
+
+        # Security gate: apply requires a clean scan since the last .tf edit.
+        # Checked before the human approval so reviewers only see scanned plans.
+        if (
+            decision != "deny"
+            and config.security_scan
+            and is_terraform_apply(command)
+            and not state.security_scan_ok
+        ):
+            decision, reason = "deny", _SCAN_GATE_REASON
+
         journal.event("bash_pre", command=_short(command, 400), decision=decision, reason=reason)
 
         if decision == "approve":
@@ -75,7 +103,11 @@ def _make_pre_hook(config: RunConfig, state: RunState, journal: RunJournal, appr
                 decision, reason = "deny", "human approval required but no approver is available"
             else:
                 request = ApprovalRequest(
-                    command=command, reason=reason, context_tail=state.last_output_tail
+                    command=command,
+                    reason=reason,
+                    context_tail=state.last_output_tail,
+                    plan_summary=state.last_plan_summary,
+                    plan_counts=state.last_plan_counts,
                 )
                 journal.event("approval_request", command=_short(command, 400), reason=reason)
                 approved = await approver(request)
@@ -115,10 +147,36 @@ def _make_post_hook(state: RunState, journal: RunJournal):
             state.plan_ok = True
         for match in re.findall(r"^\s*Error:.*$", text, re.MULTILINE):
             state.errors.append(match.strip())
+
+        plan = parse_plan_output(text)
+        if plan is not None:
+            state.last_plan_summary = format_plan_japanese(plan)
+            state.last_plan_counts = plan.counts()
+            journal.event("plan_summary", text=state.last_plan_summary, counts=state.last_plan_counts)
+
+        scan = parse_tfsec_output(text)
+        if scan is not None:
+            passed, detail = scan
+            state.security_scan_ok = passed
+            journal.event("security_scan", passed=passed, detail=detail)
+
         journal.event("bash_post", output_tail=_tail(text))
         return {}
 
     return post_hook
+
+
+def _make_tf_edit_hook(state: RunState, journal: RunJournal):
+    """PreToolUse hook on Write/Edit: editing a .tf file invalidates the scan."""
+
+    async def tf_edit_hook(input_data: dict, tool_use_id: Any, context: Any) -> dict:
+        file_path = (input_data.get("tool_input") or {}).get("file_path", "")
+        if str(file_path).endswith((".tf", ".tf.json")) and state.security_scan_ok:
+            state.security_scan_ok = False
+            journal.event("scan_invalidated", via="edit", file=str(file_path))
+        return {}
+
+    return tf_edit_hook
 
 
 async def run_agent(
@@ -168,7 +226,8 @@ async def run_agent(
         max_turns=config.max_turns,
         hooks={
             "PreToolUse": [
-                HookMatcher(matcher="Bash", hooks=[_make_pre_hook(config, state, journal, approver)])
+                HookMatcher(matcher="Bash", hooks=[_make_pre_hook(config, state, journal, approver)]),
+                HookMatcher(matcher="Write|Edit", hooks=[_make_tf_edit_hook(state, journal)]),
             ],
             "PostToolUse": [HookMatcher(matcher="Bash", hooks=[_make_post_hook(state, journal)])],
         },
@@ -229,11 +288,15 @@ def _summary_lines(spec: Spec, config: RunConfig, result: RunResult) -> list[str
         f"- provider/region: {spec.provider} / {spec.region or '(default)'}",
         f"- succeeded: {result.succeeded}",
         f"- plan ok: {s.plan_ok}  |  apply ok: {s.apply_ok}",
+        f"- security scan: "
+        f"{'passed' if s.security_scan_ok else ('disabled' if not config.security_scan else 'not passed')}",
         f"- bash calls: {s.bash_calls}  |  denied: {s.denied_calls}"
         f"  |  approvals: +{s.approvals_granted}/-{s.approvals_rejected}",
         f"- session: {result.session_id or '(n/a)'}",
         f"- cost: {f'${result.cost_usd:.4f}' if result.cost_usd is not None else '(n/a)'}",
     ]
+    if s.last_plan_summary:
+        lines += ["", "## Last plan", "", "```", s.last_plan_summary, "```"]
     if s.errors:
         lines += ["", "## Errors seen during the run", ""]
         lines += [f"- {e}" for e in s.errors[-20:]]

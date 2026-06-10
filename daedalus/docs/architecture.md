@@ -34,6 +34,7 @@
 | `config.py` | `Spec` / `RunConfig` / `Mode(plan・approval・auto)`。spec の `${VAR}` 環境変数展開。 |
 | `prompts.py` | spec → タスクプロンプト、モード → システムプロンプト（承認ゲートの存在も伝える）。 |
 | `guardrails.py` | `classify_bash()` → `allow / deny / approve` の3値判定。純粋関数。 |
+| `terraform_output.py` | terraform plan / tfsec 出力の決定的パーサ（plan サマリ生成・スキャン結果判定）。LLM 不使用。 |
 | `agent.py` | `run_agent()` — SDK 起動・フック接続・**承認待ち（approver await）**・ストリーム処理。 |
 | `journal.py` | JSONL イベントログ + Markdown サマリ。listener で GUI へも配信。 |
 | `github_sync.py` | プロジェクト repo との pull（tarball）/ push（Git Data API）。git バイナリ不要。 |
@@ -62,6 +63,25 @@ run タスク終了時に未解決の承認 future はすべて reject 解決さ
 | plan | deny | deny（フラグに関わらず apply 不可のため実質起きない） |
 | approval | approve | approve |
 | auto | allow | allow |
+
+### セキュリティスキャンゲート（tfsec）
+
+`classify_bash` の判定とは独立に、PreToolUse フックが **apply に第2のゲート**を掛ける:
+
+- `RunState.security_scan_ok` が False の間、`terraform apply` は deny（理由は Claude に渡り、
+  tfsec 実行へ誘導される）。
+- PostToolUse が tfsec 出力をパースし、**CRITICAL/HIGH がゼロ**なら `security_scan_ok = True`。
+- `.tf` の編集（Write/Edit フック、または Bash の `> / sed -i / tee` 書き込み）でフラグは無効化され、
+  再スキャンが必要になる。
+- 人間承認より先に評価される（レビュアーには「スキャン済みの plan」だけが届く）。
+- tfsec 未導入の環境では run 開始時に警告してゲートを自動無効化。`--no-security-scan` で明示無効化も可。
+
+### plan の人間向けサマリ
+
+PostToolUse が `terraform plan` 出力を `terraform_output.parse_plan_output` で決定的にパースし、
+「追加/変更/削除/置換」の件数と対象リソースの日本語サマリを生成する（`plan_summary` イベント）。
+サマリは承認カード（`ApprovalRequest.plan_summary`）・GUI ログ・run サマリ（Markdown）に表示され、
+削除/置換を含む plan には警告が付く。正規表現ベースで LLM を呼ばないため、追加コスト・遅延ゼロ。
 
 ## GitHub 連携（プロジェクトごと）
 

@@ -35,6 +35,21 @@ _DANGEROUS: list[tuple[re.Pattern[str], str]] = [
 # A terraform invocation up to the next shell separator.
 _TF_SEGMENT = r"\bterraform\b[^&|;]*"
 
+_TF_APPLY_RE = re.compile(_TF_SEGMENT + r"\bapply\b")
+
+# Shell constructs that write to .tf files (redirect, sed -i, tee) — used to
+# invalidate the security-scan state, since most edits go through Write/Edit
+# but the agent could also patch files from Bash.
+_TF_SHELL_WRITE_RE = re.compile(r"(?:>>?|\bsed\s+-i\b|\btee\b)[^;|&]*\.tf\b")
+
+
+def is_terraform_apply(command: str) -> bool:
+    return bool(_TF_APPLY_RE.search(command))
+
+
+def writes_tf_via_shell(command: str) -> bool:
+    return bool(_TF_SHELL_WRITE_RE.search(command))
+
 
 def classify_bash(command: str, config: RunConfig) -> tuple[str, str]:
     """Return ("allow"|"deny"|"approve", reason) for a Bash command string."""
