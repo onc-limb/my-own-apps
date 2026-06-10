@@ -29,6 +29,8 @@ daedalus 自身の責務:
 ## 言語・依存
 
 - Python 3.10+ / `claude-agent-sdk`, `pyyaml`, `httpx`, `fastapi`, `uvicorn`
+- **パッケージ管理は uv**。依存変更は `uv add` / `uv remove`（pyproject.toml の直接編集より優先）、
+  セットアップは `uv sync`、実行は `uv run`。`uv.lock` はコミットする。pip は使わない。
 - 認証・アカウント ID はすべて環境変数: `ANTHROPIC_API_KEY`, `GITHUB_TOKEN`, `GITHUB_OWNER`、クラウド認証はプロバイダのチェーン
 
 ## 安全側のデフォルト（重要）
@@ -41,10 +43,11 @@ daedalus 自身の責務:
 
 ## 開発コマンド
 
-- 構文チェック: `python -m py_compile src/daedalus/*.py`
-- CLI: `daedalus run <spec> --workspace <dir> [--mode plan|approval|auto]`
-- GUI: `daedalus serve` → http://127.0.0.1:8420
-- GitHub: `daedalus pull|push <spec> --workspace <dir>`
+- セットアップ: `uv sync`
+- 構文チェック: `uv run python -m py_compile src/daedalus/*.py`
+- CLI: `uv run daedalus run <spec> --workspace <dir> [--mode plan|approval|auto]`
+- GUI: `uv run daedalus serve` → http://127.0.0.1:8420
+- GitHub: `uv run daedalus pull|push <spec> --workspace <dir>`
 
 ## 実装方針
 

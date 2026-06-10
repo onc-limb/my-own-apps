@@ -29,6 +29,13 @@
   ループ自体は引き続き Claude Code 任せ（v1 の設計原則を維持）。
 - **GitHub push は base_tree 方式**: 追加・更新のみでファイル削除はしない（安全側）。v1 の制限として明記。
 
+## 追加指示: Python のパッケージ管理は uv で
+
+- **ルール**: Python プロジェクトのパッケージ管理は uv を使う（pip / venv 手動管理はしない）。
+  依存変更は `uv add`/`uv remove`、セットアップは `uv sync`、実行は `uv run`。`uv.lock` はコミットする。
+- **どこで効くか**: daedalus に限らず、この repo で今後 Python アプリを作るときは常に uv を前提にする
+  （ルート CLAUDE.md への昇格候補）。
+
 ## 宿題
 
 - 実機検証（sandbox アカウントで auto モード、本番想定で approval モード）
