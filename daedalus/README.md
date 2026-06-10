@@ -125,3 +125,5 @@ github:
 - まだ初期版。本番アカウントで使うなら approval モード＋検証済み spec で。
 
 詳細は [`docs/concept.md`](docs/concept.md) / [`docs/architecture.md`](docs/architecture.md) を参照。
+今後の機能アイデア（ユーザー/作者/管理者/エンジニア/ビジネスの5目線）は
+[`docs/feature-ideas.md`](docs/feature-ideas.md) にまとめてある。
