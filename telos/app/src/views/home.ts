@@ -27,6 +27,16 @@ export function renderHome(root: HTMLElement): void {
           <h2>Brief</h2>
           <p>ビジネス側に説明するための一枚資料。ごちゃごちゃさせず、意思決定者が30秒で読める形に。</p>
         </a>
+        <a class="tool" href="#/positioning">
+          <span class="tool-tag">05 / position</span>
+          <h2>Positioning</h2>
+          <p>「何屋さんですか?」に一文で答える。強みを棚卸しし、誰の・どんな進歩を・どう実現するかを言語化。</p>
+        </a>
+        <a class="tool" href="#/retro">
+          <span class="tool-tag">06 / continue</span>
+          <h2>Retrospective</h2>
+          <p>納品で終わらせない。振り返りを構造化し、そのまま次フェーズの継続提案に変える。</p>
+        </a>
       </div>
       <p class="home-foot muted">
         AI 支援（任意）と端末間のデータ移行は <a href="#/settings">Settings</a> から。

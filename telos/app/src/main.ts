@@ -4,6 +4,8 @@ import { renderChecklistDetail, renderChecklistList } from "./views/checklist";
 import { renderSlidesEdit, renderSlidesList } from "./views/slides";
 import { renderGoalsDetail, renderGoalsList } from "./views/goals";
 import { renderBriefEdit, renderBriefList } from "./views/brief";
+import { renderPositioningEdit, renderPositioningList } from "./views/positioning";
+import { renderRetroEdit, renderRetroList } from "./views/retro";
 import { renderSettings } from "./views/settings";
 
 const app = document.querySelector<HTMLElement>("#app")!;
@@ -31,6 +33,14 @@ function route(): void {
     case "brief":
       if (id) renderBriefEdit(app, id);
       else renderBriefList(app);
+      break;
+    case "positioning":
+      if (id) renderPositioningEdit(app, id);
+      else renderPositioningList(app);
+      break;
+    case "retro":
+      if (id) renderRetroEdit(app, id);
+      else renderRetroList(app);
       break;
     case "settings":
       renderSettings(app);
