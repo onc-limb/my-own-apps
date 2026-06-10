@@ -1,5 +1,6 @@
 import { load, save } from "../storage";
 import { escapeHtml, formatDate, uid } from "../util";
+import { complete, extractJson, llmEnabled } from "../llm";
 
 interface GoalSession {
   id: string;
@@ -180,7 +181,11 @@ export function renderGoalsDetail(root: HTMLElement, id: string): void {
         <h2><span class="step-no">1</span> 会話ログを貼り付ける</h2>
         <form id="analyze-form">
           <textarea name="transcript" rows="8" placeholder="議事録・チャットログ・メールのやり取りなどを貼り付けてください">${escapeHtml(session.transcript)}</textarea>
-          <button type="submit" class="primary">分析する</button>
+          <div class="row">
+            <button type="submit" class="primary">分析する</button>
+            <button type="button" id="ai-extract" class="ai-btn" ${llmEnabled() ? "" : "disabled"}>✨ AIで抽出</button>
+            <span class="ai-status" id="extract-status"></span>
+          </div>
         </form>
         ${
           session.keywords.length > 0
@@ -244,8 +249,12 @@ export function renderGoalsDetail(root: HTMLElement, id: string): void {
           <label>なぜ「${escapeHtml(lastAnswer)}」が重要なのですか？
             <input name="answer" type="text" placeholder="なぜなら..." required />
           </label>
-          <button type="submit" class="primary">答える</button>
-          ${session.whys.length >= 2 ? `<button type="button" id="enough" class="ghost">もう根本に届いた（ここで止める）</button>` : ""}
+          <div class="row">
+            <button type="submit" class="primary">答える</button>
+            <button type="button" id="ai-why" class="ai-btn" ${llmEnabled() ? "" : "disabled"}>✨ なぜを提案</button>
+            ${session.whys.length >= 2 ? `<button type="button" id="enough" class="ghost">もう根本に届いた（ここで止める）</button>` : ""}
+            <span class="ai-status" id="why-status"></span>
+          </div>
         </form>`
         }
       </section>`
@@ -284,6 +293,47 @@ export function renderGoalsDetail(root: HTMLElement, id: string): void {
     session.candidates = extractCandidates(text);
     session.keywords = extractKeywords(text);
     persistAndRerender();
+  });
+
+  root.querySelector("#ai-extract")?.addEventListener("click", async () => {
+    const status = root.querySelector<HTMLElement>("#extract-status")!;
+    const text = root.querySelector<HTMLTextAreaElement>("[name=transcript]")!.value.trim();
+    if (!text) {
+      status.textContent = "ログを貼り付けてください";
+      return;
+    }
+    status.textContent = "抽出中…";
+    try {
+      const out = await complete(
+        `次の会話から、参加者の要望・不満・困りごと・目的を表す発言を最大8件、短く言い換えて抽出してください。発言者の地位や雑談は除く。出力は文字列の JSON 配列のみ。\n\n${text}`,
+        "あなたは会議の議事から本質的な要望を抜き出すファシリテーターです。",
+      );
+      const arr = extractJson<string[]>(out);
+      if (!arr || arr.length === 0) throw new Error("抽出できませんでした");
+      session.transcript = text;
+      session.candidates = arr.map(String);
+      session.keywords = extractKeywords(text);
+      persistAndRerender();
+    } catch (e) {
+      status.textContent = `エラー: ${e instanceof Error ? e.message : String(e)}`;
+    }
+  });
+
+  root.querySelector("#ai-why")?.addEventListener("click", async () => {
+    const status = root.querySelector<HTMLElement>("#why-status")!;
+    const input = root.querySelector<HTMLInputElement>("#why-form [name=answer]")!;
+    status.textContent = "考え中…";
+    try {
+      const chain = [session.selected, ...session.whys].map((w, i) => `${i === 0 ? "出発点" : `why${i}`}: ${w}`).join("\n");
+      const out = await complete(
+        `次は「本当の目的」を探すための why の連鎖です。次の1段深い「なぜそれが重要か」を、相手の立場で1文だけ提案してください。説明や前置きは不要、本文のみ。\n\n${chain}`,
+        "あなたは Jobs to Be Done の考え方で要望の奥にある動機を掘る聞き手です。",
+      );
+      input.value = out.replace(/^なぜなら/, "").trim();
+      status.textContent = "提案を入れました。直して「答える」を押してください";
+    } catch (e) {
+      status.textContent = `エラー: ${e instanceof Error ? e.message : String(e)}`;
+    }
   });
 
   root.querySelectorAll<HTMLButtonElement>("[data-select]").forEach((btn) =>

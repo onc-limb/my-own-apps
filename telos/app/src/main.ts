@@ -3,6 +3,8 @@ import { renderHome } from "./views/home";
 import { renderChecklistDetail, renderChecklistList } from "./views/checklist";
 import { renderSlidesEdit, renderSlidesList } from "./views/slides";
 import { renderGoalsDetail, renderGoalsList } from "./views/goals";
+import { renderBriefEdit, renderBriefList } from "./views/brief";
+import { renderSettings } from "./views/settings";
 
 const app = document.querySelector<HTMLElement>("#app")!;
 
@@ -25,6 +27,13 @@ function route(): void {
     case "goals":
       if (id) renderGoalsDetail(app, id);
       else renderGoalsList(app);
+      break;
+    case "brief":
+      if (id) renderBriefEdit(app, id);
+      else renderBriefList(app);
+      break;
+    case "settings":
+      renderSettings(app);
       break;
     default:
       renderHome(app);

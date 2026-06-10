@@ -17,21 +17,28 @@
 
 > **情報を「記録」で終わらせず、目的（telos）に向かう道具に変える。**
 
-3つのツールは全部この軸から導かれる：
+4つのツールは全部この軸から導かれる：
 
 - **Checklist** — 「やるべきこと」を記憶から外に出し、リリース判断の道具にする
 - **Slides** — 「起きたこと」を結論ファーストに組み替え、報告の道具にする
 - **Goals** — 「言われたこと」を掘り下げ、本当の目的を見つける道具にする
+- **Brief** — 「決めてほしいこと」を一枚に整理し、ビジネス側へ説明する道具にする
 
-## 構成
+## 構成（pnpm ワークスペース）
 
 - `app/` — Vite + TypeScript（フレームワークなし、クライアントサイドのみ、localStorage 永続化）
+- `server/` — **任意** の LLM ブリッジ。`claude -p`（サブスクリプション）または LiteLLM 互換 API（API キー）で AI 支援を有効化する
 
 ```bash
-cd app
-npm install
-npm run dev
+pnpm install
+pnpm dev        # app を起動（http://localhost:5173）
+
+# AI 支援を使う場合（任意）
+pnpm bridge     # LLM ブリッジを起動（http://localhost:8787）
 ```
+
+AI を使わなくても全ツールはヒューリスティックで動作する。AI 連携・データのインポート/エクスポートは
+app の **Settings** 画面から。ブリッジの詳細は [server/README.md](server/README.md)。
 
 ## ドキュメント
 
