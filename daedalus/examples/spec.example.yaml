@@ -1,0 +1,26 @@
+# daedalus インフラ構成スペックの例
+# 自然言語の記述を許容する。daedalus はこれをタスク指示に変換し、
+# ヘッドレス Claude Code が Terraform を生成・plan/apply する。
+
+name: demo-static-site
+provider: aws
+region: ap-northeast-1
+
+# 何を作りたいか（箇条書き・自然言語OK）
+description: |
+  - 静的サイト配信用の S3 バケットを 1 つ（バケット名はランダムサフィックス付き）
+  - そのバケットへのパブリックアクセスはブロックしたまま、CloudFront からのみ参照
+  - CloudFront ディストリビューション 1 つ（デフォルトルートは index.html）
+  - 出力としてサイトの URL を表示する
+
+# 守ってほしい制約（ガードレールではなく、生成方針へのヒント）
+constraints:
+  - できるだけ無料枠／低コストに収める
+  - すべてのリソースに tags { project = "daedalus-demo", managed_by = "daedalus" } を付ける
+  - state はローカルバックエンド（検証用。リモート state は使わない）
+  - プロバイダバージョンはピン留めする
+
+# Terraform / プロバイダ設定のヒント（任意）
+terraform:
+  required_version: ">= 1.5.0"
+  backend: local
