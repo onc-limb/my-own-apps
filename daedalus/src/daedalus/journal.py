@@ -9,7 +9,7 @@ from __future__ import annotations
 import json
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any
+from typing import Any, Callable
 
 
 def _now_iso() -> str:
@@ -17,7 +17,13 @@ def _now_iso() -> str:
 
 
 class RunJournal:
-    def __init__(self, workspace: str | Path, spec_name: str) -> None:
+    def __init__(
+        self,
+        workspace: str | Path,
+        spec_name: str,
+        listener: Callable[[dict[str, Any]], None] | None = None,
+    ) -> None:
+        self._listener = listener
         ts = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
         safe_name = "".join(c if c.isalnum() or c in "-_" else "-" for c in spec_name)
         self.run_id = f"{ts}-{safe_name}"
@@ -31,6 +37,8 @@ class RunJournal:
         record = {"ts": _now_iso(), "kind": kind, **data}
         self._fh.write(json.dumps(record, ensure_ascii=False, default=str) + "\n")
         self._fh.flush()
+        if self._listener is not None:
+            self._listener(record)
 
     def write_summary(self, lines: list[str]) -> None:
         self.summary_path.write_text("\n".join(lines) + "\n", encoding="utf-8")

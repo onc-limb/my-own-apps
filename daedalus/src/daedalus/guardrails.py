@@ -1,16 +1,22 @@
 """Guardrail logic: gate terraform apply/destroy and block dangerous shell.
 
 This is intentionally a *gate*, not an allowlist: terraform and ordinary shell
-run freely; only apply/destroy (per RunConfig) and clearly dangerous commands
-are denied. The actual PreToolUse hook wiring lives in ``agent.py``; this module
-holds the pure decision logic so it is easy to test.
+run freely; only apply/destroy (per RunConfig mode) and clearly dangerous
+commands are stopped. Decisions:
+
+- "allow"   — run as-is
+- "deny"    — blocked outright
+- "approve" — requires human approval before running (approval mode)
+
+The actual PreToolUse hook wiring lives in ``agent.py``; this module holds the
+pure decision logic so it is easy to test.
 """
 
 from __future__ import annotations
 
 import re
 
-from .config import RunConfig
+from .config import Mode, RunConfig
 
 # Clearly dangerous shell patterns — denied regardless of mode.
 _DANGEROUS: list[tuple[re.Pattern[str], str]] = [
@@ -31,7 +37,7 @@ _TF_SEGMENT = r"\bterraform\b[^&|;]*"
 
 
 def classify_bash(command: str, config: RunConfig) -> tuple[str, str]:
-    """Return ("allow", "") or ("deny", reason) for a Bash command string."""
+    """Return ("allow"|"deny"|"approve", reason) for a Bash command string."""
     cmd = command.strip()
 
     for pattern, label in _DANGEROUS:
@@ -39,17 +45,25 @@ def classify_bash(command: str, config: RunConfig) -> tuple[str, str]:
             return "deny", f"blocked dangerous shell pattern: {label}"
 
     if re.search(r"\bterraform\b", cmd):
-        if re.search(_TF_SEGMENT + r"\bdestroy\b", cmd) and not config.allow_destroy:
-            return (
-                "deny",
-                "terraform destroy is disabled. Re-run daedalus with --allow-destroy "
-                "to permit it. Do not attempt to bypass this.",
-            )
-        if re.search(_TF_SEGMENT + r"\bapply\b", cmd) and not config.apply:
-            return (
-                "deny",
-                "Dry-run mode: terraform apply is disabled. Run `terraform plan` only. "
-                "Re-run daedalus with --apply to deploy for real.",
-            )
+        if re.search(_TF_SEGMENT + r"\bdestroy\b", cmd):
+            if not config.allow_destroy:
+                return (
+                    "deny",
+                    "terraform destroy is disabled. Re-run daedalus with --allow-destroy "
+                    "to permit it. Do not attempt to bypass this.",
+                )
+            if config.mode is Mode.APPROVAL:
+                return "approve", "terraform destroy requires human approval (approval mode)"
+            return "allow", ""
+        if re.search(_TF_SEGMENT + r"\bapply\b", cmd):
+            if config.mode is Mode.PLAN:
+                return (
+                    "deny",
+                    "Dry-run mode: terraform apply is disabled. Run `terraform plan` only. "
+                    "Re-run daedalus in approval or auto mode to deploy for real.",
+                )
+            if config.mode is Mode.APPROVAL:
+                return "approve", "terraform apply requires human approval (approval mode)"
+            return "allow", ""
 
     return "allow", ""

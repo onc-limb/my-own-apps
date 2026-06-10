@@ -20,6 +20,14 @@ constraints:
   - state はローカルバックエンド（検証用。リモート state は使わない）
   - プロバイダバージョンはピン留めする
 
+# このプロジェクトのコードを管理する GitHub リポジトリ（任意）
+# owner を省略すると環境変数 GITHUB_OWNER を使う。トークンは GITHUB_TOKEN。
+# spec 内の値は ${VAR} 形式で環境変数を参照できる（アカウントIDをファイルに書かない）。
+# github:
+#   repo: demo-static-site-infra
+#   owner: ${GITHUB_OWNER}
+#   branch: main
+
 # Terraform / プロバイダ設定のヒント（任意）
 terraform:
   required_version: ">= 1.5.0"

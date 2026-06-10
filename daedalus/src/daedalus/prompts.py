@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from .config import RunConfig, Spec
+from .config import Mode, RunConfig, Spec
 
 
 def build_system_prompt(config: RunConfig) -> str:
@@ -11,24 +11,40 @@ def build_system_prompt(config: RunConfig) -> str:
     The actual tool-use loop (run terraform, read errors, edit .tf, retry) is run
     by Claude Code; this prompt just sets the rules of engagement.
     """
-    if config.apply:
+    if config.mode is Mode.PLAN:
+        apply_rule = (
+            "- This is a DRY-RUN. Run `terraform plan` only. Do NOT run `terraform apply` "
+            "— it is blocked and will be denied. Iterate until `plan` succeeds with no errors."
+        )
+    elif config.mode is Mode.APPROVAL:
+        apply_rule = (
+            "- Once the plan is clean, run `terraform apply -auto-approve` to deploy.\n"
+            "- Each `apply` (and `destroy`, if allowed) is gated: a human reviewer will "
+            "approve or reject it before it executes. If the reviewer REJECTS, do not "
+            "retry the same command — stop applying, summarize the current state and "
+            "what the reviewer should know, then finish.\n"
+            "- If `apply` fails with an error, read it, fix the `.tf` files, re-run "
+            "`plan`, then request `apply` again."
+        )
+    else:  # AUTO
         apply_rule = (
             "- Once the plan is clean, run `terraform apply -auto-approve` to deploy.\n"
             "- If `apply` fails, read the error, fix the `.tf` files, re-run `plan`, "
             "then `apply` again. Keep iterating until apply succeeds."
         )
+
+    if not config.allow_destroy:
+        destroy_rule = "- `terraform destroy` is DISABLED. Do not attempt it; it will be blocked."
+    elif config.mode is Mode.APPROVAL:
+        destroy_rule = (
+            "- `terraform destroy` is allowed but requires human approval; only use it "
+            "if explicitly required to recover from a broken state."
+        )
+    else:
         destroy_rule = (
             "- `terraform destroy` is ALLOWED, but only use it if explicitly required "
             "to recover from a broken state."
-            if config.allow_destroy
-            else "- `terraform destroy` is DISABLED. Do not attempt it; it will be blocked."
         )
-    else:
-        apply_rule = (
-            "- This is a DRY-RUN. Run `terraform plan` only. Do NOT run `terraform apply` "
-            "— it is blocked and will be denied. Iterate until `plan` succeeds with no errors."
-        )
-        destroy_rule = "- `terraform destroy` is DISABLED and will be blocked."
 
     return f"""You are daedalus, an autonomous cloud-infrastructure engineer.
 
@@ -37,17 +53,20 @@ current working directory, then deploy it according to the rules below. You work
 entirely through tools (Bash, Read, Write, Edit, Glob, Grep).
 
 Working method (loop until done):
-1. Write idiomatic, well-structured Terraform (`.tf`) files in the working directory.
+1. If the working directory already contains Terraform files (e.g. pulled from a
+   project repository), read them first and build on them instead of starting over.
+2. Write idiomatic, well-structured Terraform (`.tf`) files in the working directory.
    Split into sensible files (e.g. `providers.tf`, `main.tf`, `variables.tf`, `outputs.tf`).
-2. Run `terraform fmt` and `terraform validate`, then `terraform init`.
-3. Run `terraform plan`. If it errors, READ the error carefully, fix the `.tf`
+3. Run `terraform fmt` and `terraform validate`, then `terraform init`.
+4. Run `terraform plan`. If it errors, READ the error carefully, fix the `.tf`
    files, and re-run. Do not guess blindly — address the specific error.
 {apply_rule}
 
 Hard rules:
 - Pin the provider and required Terraform versions.
-- Never put secrets or credentials in `.tf` files; rely on the environment's
-  cloud credentials (provider default credential chain).
+- Never put secrets, credentials or account IDs in `.tf` files; rely on the
+  environment's cloud credentials (provider default credential chain) and
+  variables supplied via the environment.
 - Prefer a local backend unless the spec says otherwise.
 {destroy_rule}
 - Some shell commands are gated by a guardrail and may be denied — if a command

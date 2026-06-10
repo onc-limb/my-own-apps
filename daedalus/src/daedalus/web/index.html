@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>daedalus — 操作パネル</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <header>
+    <h1>🏛 daedalus</h1>
+    <span class="subtitle">クラウドインフラ構築エージェント — 操作・レビュー</span>
+    <div id="env-badges"></div>
+  </header>
+
+  <main>
+    <section class="panel" id="panel-new">
+      <h2>新規 Run</h2>
+
+      <label for="spec">Spec（YAML）</label>
+      <textarea id="spec" rows="16" spellcheck="false"></textarea>
+
+      <fieldset class="modes">
+        <legend>実行モード</legend>
+        <label><input type="radio" name="mode" value="plan" checked>
+          <b>plan</b> — dry-run。`terraform plan` まで（安全）</label>
+        <label><input type="radio" name="mode" value="approval">
+          <b>approval</b> — apply の前に人の承認が必要（本番向け）</label>
+        <label><input type="radio" name="mode" value="auto">
+          <b>auto</b> — 完全自動運転。承認なしで apply（サンドボックス向け）</label>
+      </fieldset>
+
+      <div class="row">
+        <label>workspace
+          <input id="workspace" placeholder="（空なら workspace/&lt;spec名&gt;）">
+        </label>
+        <label>model
+          <select id="model">
+            <option value="">(default)</option>
+            <option value="sonnet">sonnet</option>
+            <option value="opus">opus</option>
+            <option value="haiku">haiku</option>
+          </select>
+        </label>
+        <label>max turns
+          <input id="max-turns" type="number" value="40" min="1">
+        </label>
+      </div>
+
+      <div class="checks">
+        <label><input type="checkbox" id="opt-pull"> 実行前に GitHub からコードを取得（pull）</label>
+        <label><input type="checkbox" id="opt-push"> 成功後 GitHub へプッシュ</label>
+        <label><input type="checkbox" id="opt-destroy"> destroy を許可（注意）</label>
+      </div>
+
+      <button id="start" class="primary">▶ 実行</button>
+      <div id="start-error" class="error"></div>
+
+      <h2>GitHub 操作（手動）</h2>
+      <p class="hint">上の Spec の <code>github:</code> 設定を使います。</p>
+      <div class="row">
+        <label>workspace <input id="gh-workspace" placeholder="workspace/&lt;spec名&gt;"></label>
+      </div>
+      <div class="row">
+        <button id="gh-pull">⬇ Pull（取得）</button>
+        <button id="gh-push">⬆ Push（プッシュ）</button>
+      </div>
+      <div id="gh-result" class="hint"></div>
+    </section>
+
+    <section class="panel" id="panel-log">
+      <div id="approval-area"></div>
+
+      <h2>実行ログ <span id="run-status"></span></h2>
+      <div id="log" class="log"></div>
+
+      <h2>履歴 <button id="refresh-history" class="small">更新</button></h2>
+      <div id="history"></div>
+    </section>
+  </main>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
