@@ -4,6 +4,7 @@ import SwiftUI
 @main
 struct TimeBranchApp: App {
     private let container: ModelContainer
+    @AppStorage(AppLanguage.storageKey) private var languageCode = AppLanguage.japanese.rawValue
 
     init() {
         let schema = Schema([
@@ -24,7 +25,12 @@ struct TimeBranchApp: App {
     var body: some Scene {
         WindowGroup {
             RootView()
+                .environment(\.locale, selectedLanguage.locale)
         }
         .modelContainer(container)
+    }
+
+    private var selectedLanguage: AppLanguage {
+        AppLanguage(rawValue: languageCode) ?? .japanese
     }
 }

@@ -17,7 +17,11 @@ struct RootView: View {
                 ProjectManagementView()
             }
             .tabItem { Label("プロジェクト", systemImage: "folder") }
+
+            NavigationStack {
+                SettingsView()
+            }
+            .tabItem { Label("設定", systemImage: "gearshape") }
         }
     }
 }
-

@@ -9,7 +9,7 @@ struct TimerView: View {
 
     @State private var selectedPageID: UUID?
     @State private var showingPageEditor = false
-    @State private var errorMessage: String?
+    @State private var errorMessage: LocalizedStringKey?
 
     private var activeEntry: TimeEntry? { entries.first { $0.endedAt == nil } }
     private var selectedPage: DisplayPage? { pages.first { $0.id == selectedPageID } }
@@ -102,7 +102,7 @@ struct TimerView: View {
             do {
                 try TimerService.toggle(project: project, in: modelContext)
             } catch {
-                errorMessage = error.localizedDescription
+                errorMessage = LocalizedStringKey(error.localizedDescription)
             }
         } label: {
             HStack(spacing: 12) {

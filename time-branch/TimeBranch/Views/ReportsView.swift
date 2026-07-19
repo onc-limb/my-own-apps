@@ -9,7 +9,7 @@ struct ReportsView: View {
     @State private var period: ReportPeriod = .day
     @State private var referenceDate = Date.now
     @State private var editingEntry: TimeEntry?
-    @State private var errorMessage: String?
+    @State private var errorMessage: LocalizedStringKey?
 
     private var interval: DateInterval { period.interval(containing: referenceDate) }
 
@@ -21,7 +21,7 @@ struct ReportsView: View {
             List {
                 Section {
                     Picker("期間", selection: $period) {
-                        ForEach(ReportPeriod.allCases) { Text($0.rawValue).tag($0) }
+                        ForEach(ReportPeriod.allCases) { Text(LocalizedStringKey($0.rawValue)).tag($0) }
                     }
                     .pickerStyle(.segmented)
 
@@ -108,8 +108,12 @@ struct ReportsView: View {
     private func entryRow(entry: TimeEntry, now: Date) -> some View {
         HStack {
             VStack(alignment: .leading, spacing: 4) {
-                Text(entry.project?.name ?? "削除済みプロジェクト")
-                Text(entry.startedAt.formatted(date: .abbreviated, time: .shortened))
+                if let project = entry.project {
+                    Text(project.name)
+                } else {
+                    Text("削除済みプロジェクト")
+                }
+                Text(entry.startedAt, format: .dateTime.year().month().day().hour().minute())
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
@@ -143,7 +147,7 @@ struct EntryEditorView: View {
     @State private var startedAt: Date
     @State private var endedAt: Date
     @State private var note: String
-    @State private var errorMessage: String?
+    @State private var errorMessage: LocalizedStringKey?
 
     init(entry: TimeEntry, isNew: Bool) {
         self.entry = entry
@@ -166,7 +170,7 @@ struct EntryEditorView: View {
                 DatePicker("終了", selection: $endedAt, in: startedAt...)
                 TextField("メモ（任意）", text: $note, axis: .vertical)
             }
-            .navigationTitle(isNew ? "記録を追加" : "記録を編集")
+            .navigationTitle(isNew ? LocalizedStringKey("記録を追加") : LocalizedStringKey("記録を編集"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) { Button("キャンセル") { dismiss() } }
@@ -195,7 +199,7 @@ struct EntryEditorView: View {
             try modelContext.save()
             dismiss()
         } catch {
-            errorMessage = error.localizedDescription
+            errorMessage = LocalizedStringKey(error.localizedDescription)
         }
     }
 }

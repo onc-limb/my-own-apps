@@ -1,6 +1,7 @@
 name: TimeBranch
 
 options:
+  developmentLanguage: ja
   bundleIdPrefix: com.onclimb
   deploymentTarget:
     iOS: "17.0"

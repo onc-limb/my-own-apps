@@ -97,6 +97,7 @@ struct ProjectManagementView: View {
     }
 }
 
+
 struct ProjectEditorView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
@@ -108,7 +109,7 @@ struct ProjectEditorView: View {
     @State private var name: String
     @State private var colorHex: String
     @State private var parentID: UUID?
-    @State private var errorMessage: String?
+    @State private var errorMessage: LocalizedStringKey?
 
     private let colors = ["#4F7CAC", "#2A9D8F", "#E9C46A", "#F4A261", "#E76F51", "#8E6CBB", "#D65DB1"]
 
@@ -162,7 +163,7 @@ struct ProjectEditorView: View {
                     }
                 }
             }
-            .navigationTitle(project == nil ? "プロジェクトを追加" : "プロジェクトを編集")
+            .navigationTitle(project == nil ? LocalizedStringKey("プロジェクトを追加") : LocalizedStringKey("プロジェクトを編集"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
@@ -203,8 +204,7 @@ struct ProjectEditorView: View {
             try modelContext.save()
             dismiss()
         } catch {
-            errorMessage = error.localizedDescription
+            errorMessage = LocalizedStringKey(error.localizedDescription)
         }
     }
 }
-

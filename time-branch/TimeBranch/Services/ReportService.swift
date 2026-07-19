@@ -55,4 +55,3 @@ enum ReportService {
         .sorted { $0.startedAt > $1.startedAt }
     }
 }
-

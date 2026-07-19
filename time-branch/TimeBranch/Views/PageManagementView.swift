@@ -69,7 +69,7 @@ struct PageEditorView: View {
     let page: DisplayPage?
     @State private var name: String
     @State private var selectedIDs: Set<UUID>
-    @State private var errorMessage: String?
+    @State private var errorMessage: LocalizedStringKey?
 
     init(page: DisplayPage?) {
         self.page = page
@@ -105,7 +105,7 @@ struct PageEditorView: View {
                     }
                 }
             }
-            .navigationTitle(page == nil ? "ページを追加" : "ページを編集")
+            .navigationTitle(page == nil ? LocalizedStringKey("ページを追加") : LocalizedStringKey("ページを編集"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) { Button("キャンセル") { dismiss() } }
@@ -139,7 +139,7 @@ struct PageEditorView: View {
             try modelContext.save()
             dismiss()
         } catch {
-            errorMessage = error.localizedDescription
+            errorMessage = LocalizedStringKey(error.localizedDescription)
         }
     }
 }
