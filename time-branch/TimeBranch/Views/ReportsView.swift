@@ -139,6 +139,7 @@ struct EntryEditorView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \WorkProject.name) private var projects: [WorkProject]
+    @Query(sort: \TimeEntry.startedAt) private var entries: [TimeEntry]
 
     let entry: TimeEntry
     let isNew: Bool
@@ -161,6 +162,13 @@ struct EntryEditorView: View {
     var body: some View {
         NavigationStack {
             Form {
+                if !isNew && entry.endedAt == nil {
+                    Section {
+                        Label("この記録は計測中です。保存すると指定した終了時刻で停止します。", systemImage: "exclamationmark.circle")
+                            .font(.footnote)
+                            .foregroundStyle(.secondary)
+                    }
+                }
                 Picker("プロジェクト", selection: $projectID) {
                     ForEach(projects) { project in
                         Text(project.name).tag(Optional(project.id))
@@ -190,12 +198,18 @@ struct EntryEditorView: View {
 
     private func save() {
         guard let project = projects.first(where: { $0.id == projectID }) else { return }
-        entry.project = project
-        entry.startedAt = startedAt
-        entry.endedAt = endedAt
-        entry.note = note
-        if isNew { modelContext.insert(entry) }
         do {
+            try TimeEntryValidationService.validate(
+                startedAt: startedAt,
+                endedAt: endedAt,
+                excluding: isNew ? nil : entry.id,
+                entries: entries
+            )
+            entry.project = project
+            entry.startedAt = startedAt
+            entry.endedAt = endedAt
+            entry.note = note
+            if isNew { modelContext.insert(entry) }
             try modelContext.save()
             dismiss()
         } catch {

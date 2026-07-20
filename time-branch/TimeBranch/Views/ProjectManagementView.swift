@@ -10,6 +10,7 @@ struct ProjectManagementView: View {
     @State private var parentForNewProject: WorkProject?
     @State private var showingEditor = false
     @State private var deletingProject: WorkProject?
+    @State private var errorMessage: LocalizedStringKey?
 
     private var roots: [WorkProject] { projects.filter { $0.parent == nil } }
 
@@ -83,16 +84,47 @@ struct ProjectManagementView: View {
             titleVisibility: .visible
         ) {
             Button("プロジェクトと記録を削除", role: .destructive) {
-                guard let project = deletingProject else { return }
-                if entries.first(where: { $0.endedAt == nil })?.project?.isDescendant(of: project) == true {
-                    try? TimerService.stop(in: modelContext)
-                }
-                modelContext.delete(project)
-                try? modelContext.save()
-                deletingProject = nil
+                deleteSelectedProject()
             }
         } message: {
-            Text("子プロジェクトと、関連するすべての時間記録も削除されます。この操作は取り消せません。")
+            Text("子プロジェクト \(affectedChildCount)件と時間記録 \(affectedEntryCount)件も削除されます。この操作は取り消せません。")
+        }
+        .alert("削除できませんでした", isPresented: Binding(
+            get: { errorMessage != nil },
+            set: { if !$0 { errorMessage = nil } }
+        )) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text(errorMessage ?? "")
+        }
+    }
+
+    private var affectedChildCount: Int {
+        guard let deletingProject else { return 0 }
+        return projects.filter {
+            $0.id != deletingProject.id && $0.isDescendant(of: deletingProject)
+        }.count
+    }
+
+    private var affectedEntryCount: Int {
+        guard let deletingProject else { return 0 }
+        return entries.filter { $0.project?.isDescendant(of: deletingProject) == true }.count
+    }
+
+    private func deleteSelectedProject() {
+        guard let project = deletingProject else { return }
+        do {
+            if entries.contains(where: {
+                $0.endedAt == nil && $0.project?.isDescendant(of: project) == true
+            }) {
+                try TimerService.stop(in: modelContext)
+            }
+            modelContext.delete(project)
+            try modelContext.save()
+            deletingProject = nil
+        } catch {
+            modelContext.rollback()
+            errorMessage = LocalizedStringKey(error.localizedDescription)
         }
     }
 }

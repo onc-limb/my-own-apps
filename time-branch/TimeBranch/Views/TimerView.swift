@@ -25,17 +25,17 @@ struct TimerView: View {
 
     var body: some View {
         List {
-            if pages.isEmpty {
-                ContentUnavailableView(
-                    "表示ページがありません",
-                    systemImage: "rectangle.stack.badge.plus",
-                    description: Text("ページを作成して、表示するプロジェクトを登録してください。")
-                )
-            } else if visibleRoots.isEmpty {
+            if projects.isEmpty {
                 ContentUnavailableView(
                     "プロジェクトがありません",
                     systemImage: "folder.badge.plus",
-                    description: Text("ページの編集からプロジェクトを追加できます。")
+                    description: Text("「プロジェクト」タブから最初のプロジェクトを作成してください。")
+                )
+            } else if visibleRoots.isEmpty {
+                ContentUnavailableView(
+                    "このページにプロジェクトがありません",
+                    systemImage: "folder.badge.plus",
+                    description: Text("ページの編集から表示するプロジェクトを追加できます。")
                 )
             } else {
                 Section {
@@ -136,6 +136,14 @@ struct TimerView: View {
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(Text(project.name))
+        .accessibilityValue(Text(accessibilityStatus(
+            directActive: directActive,
+            ancestorActive: ancestorActive,
+            duration: activeDuration(for: project, now: now)
+        )))
+        .accessibilityHint(Text(directActive ? "タップして計測を停止" : "タップしてこのプロジェクトの計測を開始"))
     }
 
     private func selectInitialPage() {
@@ -172,5 +180,19 @@ struct TimerView: View {
             }
         }
         return max(0, now.timeIntervalSince(contiguousStart))
+    }
+
+    private func accessibilityStatus(
+        directActive: Bool,
+        ancestorActive: Bool,
+        duration: TimeInterval
+    ) -> LocalizedStringKey {
+        if directActive {
+            return LocalizedStringKey("計測中、\(AppFormatters.duration(duration))")
+        }
+        if ancestorActive {
+            return LocalizedStringKey("子プロジェクトを計測中、\(AppFormatters.duration(duration))")
+        }
+        return "停止中"
     }
 }

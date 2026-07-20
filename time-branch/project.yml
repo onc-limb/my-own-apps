@@ -44,6 +44,19 @@ targets:
         GENERATE_INFOPLIST_FILE: YES
         SWIFT_VERSION: "6.0"
 
+  TimeBranchUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources:
+      - TimeBranchUITests
+    dependencies:
+      - target: TimeBranch
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.onclimb.TimeBranchUITests
+        GENERATE_INFOPLIST_FILE: YES
+        SWIFT_VERSION: "6.0"
+
 schemes:
   TimeBranch:
     build:
@@ -55,3 +68,4 @@ schemes:
       config: Debug
       targets:
         - TimeBranchTests
+        - TimeBranchUITests

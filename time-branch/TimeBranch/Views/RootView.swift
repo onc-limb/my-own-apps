@@ -1,6 +1,8 @@
 import SwiftUI
 
 struct RootView: View {
+    @Binding var languageCode: String
+
     var body: some View {
         TabView {
             NavigationStack {
@@ -19,7 +21,7 @@ struct RootView: View {
             .tabItem { Label("プロジェクト", systemImage: "folder") }
 
             NavigationStack {
-                SettingsView()
+                SettingsView(languageCode: $languageCode)
             }
             .tabItem { Label("設定", systemImage: "gearshape") }
         }

@@ -3,27 +3,30 @@ import SwiftData
 
 @MainActor
 enum TimerService {
-    static func activeEntry(in context: ModelContext) throws -> TimeEntry? {
-        var descriptor = FetchDescriptor<TimeEntry>(
+    static func activeEntries(in context: ModelContext) throws -> [TimeEntry] {
+        let descriptor = FetchDescriptor<TimeEntry>(
             predicate: #Predicate { $0.endedAt == nil },
             sortBy: [SortDescriptor(\.startedAt, order: .reverse)]
         )
-        descriptor.fetchLimit = 1
-        return try context.fetch(descriptor).first
+        return try context.fetch(descriptor)
+    }
+
+    static func activeEntry(in context: ModelContext) throws -> TimeEntry? {
+        try activeEntries(in: context).first
     }
 
     @discardableResult
     static func toggle(project: WorkProject, at date: Date = .now, in context: ModelContext) throws -> TimeEntry? {
-        let current = try activeEntry(in: context)
+        let activeEntries = try activeEntries(in: context)
+        let isStoppingSelectedProject = activeEntries.contains { $0.project?.id == project.id }
 
-        if current?.project?.id == project.id {
-            current?.endedAt = max(date, current?.startedAt ?? date)
-            try context.save()
-            return nil
+        for entry in activeEntries {
+            entry.endedAt = max(date, entry.startedAt)
         }
 
-        if let current {
-            current.endedAt = max(date, current.startedAt)
+        if isStoppingSelectedProject {
+            try context.save()
+            return nil
         }
 
         let next = TimeEntry(project: project, startedAt: date)
@@ -33,9 +36,11 @@ enum TimerService {
     }
 
     static func stop(at date: Date = .now, in context: ModelContext) throws {
-        guard let current = try activeEntry(in: context) else { return }
-        current.endedAt = max(date, current.startedAt)
+        let activeEntries = try activeEntries(in: context)
+        guard !activeEntries.isEmpty else { return }
+        for entry in activeEntries {
+            entry.endedAt = max(date, entry.startedAt)
+        }
         try context.save()
     }
 }
-

@@ -77,4 +77,197 @@ final class TimeBranchTests: XCTestCase {
         XCTAssertEqual(totals.first(where: { $0.project.id == childA.id })?.seconds, 100)
         XCTAssertEqual(totals.first(where: { $0.project.id == childB.id })?.seconds, 200)
     }
+
+    @MainActor
+    func testToggleRepairsMultipleActiveEntries() throws {
+        let container = try makeContainer()
+        let context = container.mainContext
+        let first = WorkProject(name: "First")
+        let second = WorkProject(name: "Second")
+        let next = WorkProject(name: "Next")
+        context.insert(first)
+        context.insert(second)
+        context.insert(next)
+
+        let firstStart = Date(timeIntervalSince1970: 1_000)
+        let secondStart = Date(timeIntervalSince1970: 1_100)
+        let switched = Date(timeIntervalSince1970: 1_200)
+        context.insert(TimeEntry(project: first, startedAt: firstStart))
+        context.insert(TimeEntry(project: second, startedAt: secondStart))
+
+        try TimerService.toggle(project: next, at: switched, in: context)
+
+        let active = try TimerService.activeEntries(in: context)
+        XCTAssertEqual(active.count, 1)
+        XCTAssertEqual(active.first?.project?.id, next.id)
+        XCTAssertEqual(first.entries.first?.endedAt, switched)
+        XCTAssertEqual(second.entries.first?.endedAt, switched)
+    }
+
+    func testTimeEntryValidationRejectsInvalidFutureAndOverlappingRanges() throws {
+        let project = WorkProject(name: "Project")
+        let existing = TimeEntry(
+            project: project,
+            startedAt: Date(timeIntervalSince1970: 100),
+            endedAt: Date(timeIntervalSince1970: 200)
+        )
+        let now = Date(timeIntervalSince1970: 1_000)
+
+        XCTAssertThrowsError(try TimeEntryValidationService.validate(
+            startedAt: Date(timeIntervalSince1970: 300),
+            endedAt: Date(timeIntervalSince1970: 300),
+            entries: [existing],
+            now: now
+        )) { error in
+            XCTAssertEqual(error as? TimeEntryValidationError, .invalidRange)
+        }
+
+        XCTAssertThrowsError(try TimeEntryValidationService.validate(
+            startedAt: Date(timeIntervalSince1970: 900),
+            endedAt: Date(timeIntervalSince1970: 1_001),
+            entries: [existing],
+            now: now
+        )) { error in
+            XCTAssertEqual(error as? TimeEntryValidationError, .futureEndDate)
+        }
+
+        XCTAssertThrowsError(try TimeEntryValidationService.validate(
+            startedAt: Date(timeIntervalSince1970: 150),
+            endedAt: Date(timeIntervalSince1970: 250),
+            entries: [existing],
+            now: now
+        )) { error in
+            XCTAssertEqual(error as? TimeEntryValidationError, .overlapsExistingEntry)
+        }
+
+        XCTAssertNoThrow(try TimeEntryValidationService.validate(
+            startedAt: Date(timeIntervalSince1970: 200),
+            endedAt: Date(timeIntervalSince1970: 300),
+            entries: [existing],
+            now: now
+        ))
+    }
+
+    func testValidationTreatsRunningEntryAsOpenEnded() throws {
+        let project = WorkProject(name: "Project")
+        let running = TimeEntry(
+            project: project,
+            startedAt: Date(timeIntervalSince1970: 400)
+        )
+
+        XCTAssertThrowsError(try TimeEntryValidationService.validate(
+            startedAt: Date(timeIntervalSince1970: 450),
+            endedAt: Date(timeIntervalSince1970: 500),
+            entries: [running],
+            now: Date(timeIntervalSince1970: 600)
+        )) { error in
+            XCTAssertEqual(error as? TimeEntryValidationError, .overlapsExistingEntry)
+        }
+    }
+
+    func testOverlappingDurationClipsBothEdges() {
+        let project = WorkProject(name: "Project")
+        let entry = TimeEntry(
+            project: project,
+            startedAt: Date(timeIntervalSince1970: 100),
+            endedAt: Date(timeIntervalSince1970: 400)
+        )
+
+        XCTAssertEqual(entry.overlappingDuration(
+            from: Date(timeIntervalSince1970: 200),
+            to: Date(timeIntervalSince1970: 300)
+        ), 100)
+        XCTAssertEqual(entry.overlappingDuration(
+            from: Date(timeIntervalSince1970: 400),
+            to: Date(timeIntervalSince1970: 500)
+        ), 0)
+    }
+
+    func testReportRollsGrandchildIntoEveryAncestor() {
+        let root = WorkProject(name: "Root")
+        let child = WorkProject(name: "Child", parent: root)
+        let grandchild = WorkProject(name: "Grandchild", parent: child)
+        let start = Date(timeIntervalSince1970: 10_000)
+        let end = Date(timeIntervalSince1970: 10_600)
+        let entry = TimeEntry(project: grandchild, startedAt: start, endedAt: end)
+
+        let totals = ReportService.totals(
+            projects: [root, child, grandchild],
+            entries: [entry],
+            interval: DateInterval(start: start, end: end),
+            now: end
+        )
+
+        XCTAssertEqual(totals.first(where: { $0.project.id == root.id })?.seconds, 600)
+        XCTAssertEqual(totals.first(where: { $0.project.id == child.id })?.seconds, 600)
+        XCTAssertEqual(totals.first(where: { $0.project.id == grandchild.id })?.seconds, 600)
+    }
+
+    func testReportClipsRunningEntryToPeriodAndNow() {
+        let project = WorkProject(name: "Project")
+        let entry = TimeEntry(project: project, startedAt: Date(timeIntervalSince1970: 50))
+        let interval = DateInterval(
+            start: Date(timeIntervalSince1970: 100),
+            end: Date(timeIntervalSince1970: 300)
+        )
+
+        let totals = ReportService.totals(
+            projects: [project],
+            entries: [entry],
+            interval: interval,
+            now: Date(timeIntervalSince1970: 250)
+        )
+
+        XCTAssertEqual(totals.first?.seconds, 150)
+    }
+
+    func testReportPeriodsUseCalendarBoundaries() throws {
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = try XCTUnwrap(TimeZone(secondsFromGMT: 0))
+        calendar.firstWeekday = 2
+        let date = try XCTUnwrap(calendar.date(from: DateComponents(
+            year: 2026,
+            month: 7,
+            day: 22,
+            hour: 12
+        )))
+
+        let day = ReportPeriod.day.interval(containing: date, calendar: calendar)
+        let week = ReportPeriod.week.interval(containing: date, calendar: calendar)
+        let month = ReportPeriod.month.interval(containing: date, calendar: calendar)
+
+        XCTAssertEqual(day.duration, 86_400)
+        XCTAssertEqual(calendar.component(.weekday, from: week.start), 2)
+        XCTAssertEqual(calendar.component(.day, from: month.start), 1)
+        XCTAssertEqual(calendar.component(.month, from: month.end), 8)
+    }
+
+    func testJSONExportUsesDurationInsideSelectedPeriod() throws {
+        let project = WorkProject(name: "Project")
+        let entry = TimeEntry(
+            project: project,
+            startedAt: Date(timeIntervalSince1970: 100),
+            endedAt: Date(timeIntervalSince1970: 400)
+        )
+        let interval = DateInterval(
+            start: Date(timeIntervalSince1970: 200),
+            end: Date(timeIntervalSince1970: 300)
+        )
+        let totals = [ProjectTotal(project: project, seconds: 100)]
+
+        let file = try ExportService.makeFile(
+            totals: totals,
+            entries: [entry],
+            interval: interval,
+            now: Date(timeIntervalSince1970: 500)
+        )
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+        let payload = try decoder.decode(ExportPayload.self, from: file.data)
+
+        XCTAssertEqual(payload.entries.count, 1)
+        XCTAssertEqual(payload.entries.first?.seconds, 100)
+        XCTAssertTrue(file.filename.hasPrefix("time-branch-"))
+        XCTAssertTrue(file.filename.hasSuffix(".json"))
+    }
 }

@@ -8,6 +8,8 @@ struct PageManagementView: View {
 
     @State private var editingPage: DisplayPage?
     @State private var showingEditor = false
+    @State private var deletingPage: DisplayPage?
+    @State private var errorMessage: LocalizedStringKey?
 
     var body: some View {
         NavigationStack {
@@ -35,8 +37,7 @@ struct PageManagementView: View {
                     }
                 }
                 .onDelete { offsets in
-                    for index in offsets { modelContext.delete(pages[index]) }
-                    try? modelContext.save()
+                    deletingPage = offsets.first.map { pages[$0] }
                 }
             }
             .navigationTitle("表示ページ")
@@ -56,6 +57,38 @@ struct PageManagementView: View {
             .sheet(isPresented: $showingEditor) {
                 PageEditorView(page: editingPage)
             }
+            .confirmationDialog(
+                "「\(deletingPage?.name ?? "")」を削除しますか？",
+                isPresented: Binding(
+                    get: { deletingPage != nil },
+                    set: { if !$0 { deletingPage = nil } }
+                ),
+                titleVisibility: .visible
+            ) {
+                Button("ページを削除", role: .destructive) { deleteSelectedPage() }
+            } message: {
+                Text("ページだけが削除されます。プロジェクトと時間記録は残ります。")
+            }
+            .alert("削除できませんでした", isPresented: Binding(
+                get: { errorMessage != nil },
+                set: { if !$0 { errorMessage = nil } }
+            )) {
+                Button("OK", role: .cancel) {}
+            } message: {
+                Text(errorMessage ?? "")
+            }
+        }
+    }
+
+    private func deleteSelectedPage() {
+        guard let deletingPage else { return }
+        modelContext.delete(deletingPage)
+        do {
+            try modelContext.save()
+            self.deletingPage = nil
+        } catch {
+            modelContext.rollback()
+            errorMessage = LocalizedStringKey(error.localizedDescription)
         }
     }
 }

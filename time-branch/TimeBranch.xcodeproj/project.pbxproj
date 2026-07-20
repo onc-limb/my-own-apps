@@ -11,10 +11,12 @@
 		0E19A302AF0CC4BE7F4610CA /* AppLanguage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21D807A04003AC7CA3276D48 /* AppLanguage.swift */; };
 		0E27968057E8C04E5893F4DF /* TimeBranchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 007A7478162A654EB6CEEFDD /* TimeBranchTests.swift */; };
 		236ABF66259590CBA672B159 /* ReportsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6A76352D464F3D2AFF612A /* ReportsView.swift */; };
+		303BDEA714D78F4B14527A6B /* TimeEntryValidationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CE3929F1E0CD604C390D964 /* TimeEntryValidationService.swift */; };
 		4860EF2D71DA90D46345BD14 /* WorkProject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26E5C6B4C5FF3099B63256EB /* WorkProject.swift */; };
 		5627493999C940071ADDFB80 /* ProjectManagementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A48509155486DA1F1B895F0D /* ProjectManagementView.swift */; };
 		655C27A4CC2F0BC4EDD80EB4 /* ProjectTreeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 569B44579E8623863F7F37F9 /* ProjectTreeView.swift */; };
 		6B7D4606581DB004620A88BF /* DisplayPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26F01E25152D3F0635402BFB /* DisplayPage.swift */; };
+		6BAF031DC7B4458321AB5EDE /* TimeBranchUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28419BE24E6324B63CCE610A /* TimeBranchUITests.swift */; };
 		7230F97E6DC4A8C74B27FFEB /* TimerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6038D15C64AC2701B71626B9 /* TimerService.swift */; };
 		82C05CE162D0167D721B4A54 /* TimeEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ACA069EA96367B2489F928E /* TimeEntry.swift */; };
 		9071503F1D934EB9EC721012 /* Formatters.swift in Sources */ = {isa = PBXBuildFile; fileRef = E865ED50573866AECC3A35C7 /* Formatters.swift */; };
@@ -36,19 +38,29 @@
 			remoteGlobalIDString = DDCA57777098682101ED8532;
 			remoteInfo = TimeBranch;
 		};
+		481728EDCEF0521E2BE95FB8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C3970BB208956B55394E9113 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DDCA57777098682101ED8532;
+			remoteInfo = TimeBranch;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		007A7478162A654EB6CEEFDD /* TimeBranchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeBranchTests.swift; sourceTree = "<group>"; };
 		1ACA069EA96367B2489F928E /* TimeEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeEntry.swift; sourceTree = "<group>"; };
+		1CE3929F1E0CD604C390D964 /* TimeEntryValidationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeEntryValidationService.swift; sourceTree = "<group>"; };
 		21D807A04003AC7CA3276D48 /* AppLanguage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLanguage.swift; sourceTree = "<group>"; };
 		26E5C6B4C5FF3099B63256EB /* WorkProject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkProject.swift; sourceTree = "<group>"; };
 		26F01E25152D3F0635402BFB /* DisplayPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayPage.swift; sourceTree = "<group>"; };
+		28419BE24E6324B63CCE610A /* TimeBranchUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeBranchUITests.swift; sourceTree = "<group>"; };
 		34F5AF0F43F98AC6BE96E1CE /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		3D8B3D412DE6180D3B8F11C9 /* TimeBranchTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = TimeBranchTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C611A0C6FC15315143AA833 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
 		569B44579E8623863F7F37F9 /* ProjectTreeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectTreeView.swift; sourceTree = "<group>"; };
 		5D6A76352D464F3D2AFF612A /* ReportsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportsView.swift; sourceTree = "<group>"; };
+		5F0B37E38E585E117A6165B9 /* TimeBranchUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = TimeBranchUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6038D15C64AC2701B71626B9 /* TimerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerService.swift; sourceTree = "<group>"; };
 		714E575DD01B1AB5A544EECA /* TimeBranch.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = TimeBranch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7D2A304BDAFE7601A8558D20 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
@@ -102,6 +114,7 @@
 			children = (
 				C47589DDE3734A30B4825960 /* TimeBranch */,
 				793471EACA0196DAB52B1134 /* TimeBranchTests */,
+				821529F1F4EE0CDCD468BE2A /* TimeBranchUITests */,
 				FE09FB5675EBAFE2E2DDC518 /* Frameworks */,
 				704D6CF5285C5AC39124C3EE /* Products */,
 			);
@@ -112,6 +125,7 @@
 			children = (
 				714E575DD01B1AB5A544EECA /* TimeBranch.app */,
 				3D8B3D412DE6180D3B8F11C9 /* TimeBranchTests.xctest */,
+				5F0B37E38E585E117A6165B9 /* TimeBranchUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -124,11 +138,20 @@
 			path = TimeBranchTests;
 			sourceTree = "<group>";
 		};
+		821529F1F4EE0CDCD468BE2A /* TimeBranchUITests */ = {
+			isa = PBXGroup;
+			children = (
+				28419BE24E6324B63CCE610A /* TimeBranchUITests.swift */,
+			);
+			path = TimeBranchUITests;
+			sourceTree = "<group>";
+		};
 		A3A84DCEC49EABE55D9B08F1 /* Services */ = {
 			isa = PBXGroup;
 			children = (
 				E85DD421B3EA7DCA5832A41A /* ExportService.swift */,
 				B26897A1571F4BD4F7B287B8 /* ReportService.swift */,
+				1CE3929F1E0CD604C390D964 /* TimeEntryValidationService.swift */,
 				6038D15C64AC2701B71626B9 /* TimerService.swift */,
 			);
 			path = Services;
@@ -187,6 +210,24 @@
 			productReference = 3D8B3D412DE6180D3B8F11C9 /* TimeBranchTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		35A825DFDCBCE773C09AC6C7 /* TimeBranchUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BDD6C9E7F890F999947FA781 /* Build configuration list for PBXNativeTarget "TimeBranchUITests" */;
+			buildPhases = (
+				4B528BB78DD2D8C70C526970 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E397C93A25846313C5B3FE57 /* PBXTargetDependency */,
+			);
+			name = TimeBranchUITests;
+			packageProductDependencies = (
+			);
+			productName = TimeBranchUITests;
+			productReference = 5F0B37E38E585E117A6165B9 /* TimeBranchUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		DDCA57777098682101ED8532 /* TimeBranch */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7D50276A51EC533C4967588A /* Build configuration list for PBXNativeTarget "TimeBranch" */;
@@ -214,6 +255,11 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+					35A825DFDCBCE773C09AC6C7 = {
+						TestTargetID = DDCA57777098682101ED8532;
+					};
+				};
 			};
 			buildConfigurationList = F86AC1AFEC5D64455409BEB6 /* Build configuration list for PBXProject "TimeBranch" */;
 			compatibilityVersion = "Xcode 14.0";
@@ -232,6 +278,7 @@
 			targets = (
 				DDCA57777098682101ED8532 /* TimeBranch */,
 				029ABCEE8F29BE82A1CD8259 /* TimeBranchTests */,
+				35A825DFDCBCE773C09AC6C7 /* TimeBranchUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -248,6 +295,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		4B528BB78DD2D8C70C526970 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6BAF031DC7B4458321AB5EDE /* TimeBranchUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		64C8DE4F73275522E5FDFF2A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -273,6 +328,7 @@
 				CCD541BA1F6AA86E778847DB /* SettingsView.swift in Sources */,
 				0CC966A3E6C86213517CA4C4 /* TimeBranchApp.swift in Sources */,
 				82C05CE162D0167D721B4A54 /* TimeEntry.swift in Sources */,
+				303BDEA714D78F4B14527A6B /* TimeEntryValidationService.swift in Sources */,
 				7230F97E6DC4A8C74B27FFEB /* TimerService.swift in Sources */,
 				AFDAFC65C6B21420AA02BD99 /* TimerView.swift in Sources */,
 				4860EF2D71DA90D46345BD14 /* WorkProject.swift in Sources */,
@@ -286,6 +342,11 @@
 			isa = PBXTargetDependency;
 			target = DDCA57777098682101ED8532 /* TimeBranch */;
 			targetProxy = 1BD7E42CF847A6E2BCC747C2 /* PBXContainerItemProxy */;
+		};
+		E397C93A25846313C5B3FE57 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DDCA57777098682101ED8532 /* TimeBranch */;
+			targetProxy = 481728EDCEF0521E2BE95FB8 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -302,6 +363,24 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		222BC10E310BC8923E6EE4EA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.onclimb.TimeBranchUITests;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = TimeBranch;
+			};
+			name = Release;
+		};
 		3994DFCE947C7BF0F86AA324 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -341,6 +420,24 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
+		};
+		85B0C6C5B240994470FBC535 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.onclimb.TimeBranchUITests;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = TimeBranch;
+			};
+			name = Debug;
 		};
 		8D3DCA9C9BE7AE109BF410C1 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -520,6 +617,15 @@
 			buildConfigurations = (
 				EA31E8AEB5E73F2172FC2A2E /* Debug */,
 				5B7EF992E74474FC1FEA01E5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		BDD6C9E7F890F999947FA781 /* Build configuration list for PBXNativeTarget "TimeBranchUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				85B0C6C5B240994470FBC535 /* Debug */,
+				222BC10E310BC8923E6EE4EA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;

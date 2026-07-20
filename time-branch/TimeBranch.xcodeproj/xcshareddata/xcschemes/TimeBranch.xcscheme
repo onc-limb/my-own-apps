@@ -50,6 +50,17 @@
                ReferencedContainer = "container:TimeBranch.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "35A825DFDCBCE773C09AC6C7"
+               BuildableName = "TimeBranchUITests.xctest"
+               BlueprintName = "TimeBranchUITests"
+               ReferencedContainer = "container:TimeBranch.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <CommandLineArguments>
       </CommandLineArguments>

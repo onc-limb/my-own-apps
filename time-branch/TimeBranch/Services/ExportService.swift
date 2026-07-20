@@ -69,7 +69,11 @@ enum ExportService {
                     projectName: project.name,
                     startedAt: entry.startedAt,
                     endedAt: entry.endedAt,
-                    seconds: entry.duration(until: now),
+                    seconds: entry.overlappingDuration(
+                        from: interval.start,
+                        to: interval.end,
+                        now: now
+                    ),
                     note: entry.note
                 )
             }
