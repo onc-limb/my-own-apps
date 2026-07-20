@@ -5,17 +5,17 @@
 ## TODO
 
 ### Environment Setup
-- [ ] opam をインストール・初期化する
-- [ ] dune をインストールする
-- [ ] utop（対話環境）をインストールする
-- [ ] エディタの OCaml 拡張を設定する（ocaml-lsp-server, merlin）
-- [ ] dune で「Hello World」プロジェクトをビルド・実行できる状態にする
+- [x] opam をインストール・初期化する
+- [x] dune をインストールする
+- [x] utop（対話環境）をインストールする
+- [x] エディタの OCaml 拡張を設定する（ocaml-lsp-server, merlin）
+- [x] dune で「Hello World」プロジェクトをビルド・実行できる状態にする
 
 ### Language Fundamentals
-- [ ] `let` 束縛と不変性を理解する
-- [ ] 関数定義（名前付き引数、ラベル引数含む）を書ける
-- [ ] 再帰関数を書ける（リスト処理: map, filter, fold）
-- [ ] タプルとレコード型を使える
+- [x] `let` 束縛と不変性を理解する
+- [x] 関数定義（名前付き引数、ラベル引数含む）を書ける
+- [x] 再帰関数を書ける（リスト処理: map, filter, fold）
+- [x] タプルとレコード型を使える
 - [ ] 代数的データ型（ADT）を定義できる
   - [ ] `type expr = Int of int | Add of expr * expr` のような再帰 ADT
   - [ ] `match` で網羅的にパターンマッチできる
