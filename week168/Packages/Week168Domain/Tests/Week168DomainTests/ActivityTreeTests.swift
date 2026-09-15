@@ -165,8 +165,8 @@ struct ActivityTreeTests {
     @Test("21: 予算未設定と予算対象外は異なる")
     func distinguishUnsetAndExcluded() throws {
         #expect(BudgetMode.unset != .excluded)
-        #expect(BudgetMode.unset != .managed(.cap))
-        #expect(BudgetMode.excluded != .managed(.goal))
+        #expect(BudgetMode.unset != .managed)
+        #expect(BudgetMode.excluded != .managed)
         let unset = activity(1, mode: .unset)
         let excluded = activity(2, parent: 1, mode: .excluded)
         let tree = try ActivityTree.build(from: [unset, excluded])
@@ -174,11 +174,18 @@ struct ActivityTreeTests {
         #expect(tree.children(of: id(1)).first?.budgetMode == .excluded)
     }
 
-    @Test("22: managed の cap と goal は異なる")
+    @Test("22: BudgetEntry の cap と goal は異なる")
     func distinguishDirections() {
-        #expect(BudgetMode.managed(.cap) != .managed(.goal))
-        #expect(BudgetMode.managed(.cap) == .managed(.cap))
-        #expect(BudgetMode.managed(.goal) == .managed(.goal))
+        let week = LogicalWeek(startDay: LogicalDay(year: 2026, month: 9, day: 1))
+        let cap = BudgetEntry(activityID: id(1), effectiveFrom: week, direction: .cap,
+                              wishMinutes: 540, committedMinutes: 540)
+        var goal = cap
+        goal.direction = .goal
+        #expect(cap.direction == .cap)
+        #expect(goal.direction == .goal)
+        #expect(cap != goal)
+        goal.direction = .cap
+        #expect(cap == goal)
     }
 
     @Test("23: アーカイブ済みの活動も保持する")
@@ -258,13 +265,13 @@ struct ActivityTreeTests {
         changed.name = "Changed"
         changed.parentID = id(2)
         changed.sortOrder = 7
-        changed.budgetMode = .managed(.goal)
+        changed.budgetMode = .managed
         changed.defaultPlannedMinutes = 30
         changed.colorHex = "#ABCDEF"
         changed.isArchived = true
         #expect(changed == Activity(
             id: original.id, name: "Changed", parentID: id(2), sortOrder: 7,
-            budgetMode: .managed(.goal), defaultPlannedMinutes: 30,
+            budgetMode: .managed, defaultPlannedMinutes: 30,
             colorHex: "#ABCDEF", isArchived: true
         ))
         #expect(original != changed)
