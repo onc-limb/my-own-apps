@@ -1,0 +1,17 @@
+# Generated Xcode project and build output
+*.xcodeproj/
+build/
+DerivedData/
+.build/
+.swiftpm/
+
+# Xcode user data and archives
+xcuserdata/
+*.xcuserstate
+*.xcuserdatad
+*.dSYM/
+*.dSYM.zip
+*.ipa
+*.xcarchive/
+*.xcresult/
+.DS_Store
