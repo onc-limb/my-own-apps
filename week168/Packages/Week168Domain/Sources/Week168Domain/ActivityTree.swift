@@ -48,6 +48,19 @@ public struct ActivityTree: Sendable {
                 return $0.id.rawValue.uuidString < $1.id.rawValue.uuidString
             }
         }
+        // 循環検証後、対象外の祖先を引き継いで全階層を一度ずつ検証する。
+        var pending = (childrenByParent[nil] ?? []).reversed().map {
+            (activity: $0, excludedAncestor: Optional<ActivityID>.none)
+        }
+        while let item = pending.popLast() {
+            if case .managed = item.activity.budgetMode, let ancestor = item.excludedAncestor {
+                throw BuildError.budgetUnderExcluded(item.activity.id, ancestor: ancestor)
+            }
+            let ancestor = item.activity.budgetMode == .excluded ? item.activity.id : item.excludedAncestor
+            pending.append(contentsOf: (childrenByParent[item.activity.id] ?? []).reversed().map {
+                (activity: $0, excludedAncestor: ancestor)
+            })
+        }
         return ActivityTree(nodes: nodes, childrenByParent: childrenByParent)
     }
 
