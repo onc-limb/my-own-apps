@@ -1,4 +1,12 @@
-# TimeBranch
+# TimeBranch（開発終了・参照用）
+
+> **このアプリの開発は終了しました。後継は同じリポジトリ内の [`week168/`](../week168/) です。**
+> このディレクトリは実装の参照用に残してあります。**変更しないでください。**
+>
+> 階層集計・期間按分（`overlappingDuration`）・計測ルール・`RELEASE_TODO.md` は
+> Week168 でも参照する価値があるため残しています。
+> 統合の経緯は [`habiterm/README.md`](../habiterm/README.md) も参照。
+
 
 階層化したプロジェクトごとの作業時間を、iPhone上で記録・集計するSwiftUIアプリです。
 
