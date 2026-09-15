@@ -1,0 +1,72 @@
+name: Week168
+
+options:
+  deploymentTarget:
+    iOS: "18.0"
+  developmentLanguage: ja
+
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    GENERATE_INFOPLIST_FILE: YES
+    MARKETING_VERSION: "1.0"
+    CURRENT_PROJECT_VERSION: "1"
+
+packages:
+  Week168Domain:
+    path: Packages/Week168Domain
+
+targets:
+  Week168:
+    type: application
+    platform: iOS
+    sources:
+      - Week168
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.onclimb.Week168
+        INFOPLIST_KEY_CFBundleDisplayName: Week168
+        INFOPLIST_KEY_UIApplicationSceneManifest_Generation: YES
+        INFOPLIST_KEY_UILaunchScreen_Generation: YES
+        TARGETED_DEVICE_FAMILY: "1"
+    dependencies:
+      - package: Week168Domain
+      - sdk: SwiftData.framework
+
+  Week168Tests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - Week168Tests
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.onclimb.Week168Tests
+    dependencies:
+      - target: Week168
+      - package: Week168Domain
+
+  Week168UITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources:
+      - Week168UITests
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.onclimb.Week168UITests
+    dependencies:
+      - target: Week168
+
+schemes:
+  Week168:
+    build:
+      targets:
+        Week168: all
+    run:
+      config: Debug
+    test:
+      config: Debug
+      targets:
+        - Week168Tests
+        - Week168UITests
+    archive:
+      config: Release

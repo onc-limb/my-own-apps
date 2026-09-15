@@ -1,0 +1,18 @@
+{
+  "sourceLanguage" : "ja",
+  "strings" : {
+    "app.title" : {
+      "comment" : "Title of the project skeleton placeholder screen.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Week168"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}
