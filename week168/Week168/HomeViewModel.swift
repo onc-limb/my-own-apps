@@ -10,6 +10,7 @@ struct HomeSnapshot {
     let budgets: [BudgetEntry]
     let capacities: [CapacityEntry]
     let settings: CalendarSettings
+    var committedWeek: LogicalWeek? = nil
 
     var running: TimeEntry? { entries.first { $0.endedAt == nil } }
 
@@ -17,7 +18,8 @@ struct HomeSnapshot {
         let week = TimeAxis.logicalWeek(of: TimeAxis.logicalDay(of: now, settings: settings), settings: settings)
         let resolved = BudgetResolver.resolve(week: week, entries: budgets, capacities: capacities)
         let allocationReport = AllocationValidator.report(tree: tree, budgets: resolved, week: week)
-        let committed = allocationReport.canCommit
+        let commitmentState = allocationReport.commitmentState(hasCommitmentRecord: committedWeek == week)
+        let committed = commitmentState == .committed
         let summaries = Aggregator.summarize(entries: entries, tree: tree, budgets: resolved,
                                             interval: TimeAxis.interval(of: week, settings: settings), now: now)
         let recent = entries.reduce(into: [ActivityID: Date]()) { result, entry in
@@ -29,7 +31,7 @@ struct HomeSnapshot {
         // ASSUMPTION: S-3 includes archived activities even when this week's actual is zero.
         let weekly = tree.topLevel().flatMap { [$0.id] + tree.descendants(of: $0.id) }
         return HomePresentation(sections: sections, summaries: summaries, isCommitted: committed,
-                                capacityOverflowMinutes: allocationReport.capacityOverflowMinutes, weekly: weekly)
+                                capacityOverflowMinutes: allocationReport.capacityOverflowMinutes, weekly: weekly, commitmentState: commitmentState)
     }
 }
 
@@ -39,6 +41,7 @@ struct HomePresentation {
     let isCommitted: Bool
     let capacityOverflowMinutes: Int
     let weekly: [ActivityID]
+    let commitmentState: CommitmentState
 }
 
 struct HomeIssue: Identifiable {
@@ -72,7 +75,9 @@ final class HomeViewModel {
         let validSettings = try CalendarSettings.validated(timeZoneIdentifier: settings.timeZoneIdentifier,
             dayStartHour: settings.dayStartHour, weekStartWeekday: settings.weekStartWeekday)
         let tree = try ActivityTree.build(from: activities)
-        snapshot = HomeSnapshot(tree: tree, entries: entries, budgets: budgets, capacities: capacities, settings: validSettings)
+        let week = TimeAxis.logicalWeek(of: TimeAxis.logicalDay(of: .now, settings: validSettings), settings: validSettings)
+        let record = try await store.loadCommitment(for: week)
+        snapshot = HomeSnapshot(tree: tree, entries: entries, budgets: budgets, capacities: capacities, settings: validSettings, committedWeek: record?.week)
         serviceSections = result.sections
     }
 
