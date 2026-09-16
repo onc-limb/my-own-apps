@@ -2839,6 +2839,226 @@
           }
         }
       }
+    },
+    "a11y.outside": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "枠外"
+          }
+        }
+      }
+    },
+    "a11y.pending": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "未確定"
+          }
+        }
+      }
+    },
+    "a11y.remaining": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "残り %@"
+          }
+        }
+      }
+    },
+    "a11y.elapsed": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "今回の経過 %@"
+          }
+        }
+      }
+    },
+    "a11y.running": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ の計測中"
+          }
+        }
+      }
+    },
+    "a11y.start": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ の計測を開始"
+          }
+        }
+      }
+    },
+    "a11y.stop": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ の計測を停止"
+          }
+        }
+      }
+    },
+    "a11y.changePlan": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ の予定時間を変更"
+          }
+        }
+      }
+    },
+    "a11y.editAllocation": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ の配分を編集"
+          }
+        }
+      }
+    },
+    "a11y.editActivity": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ の活動を編集"
+          }
+        }
+      }
+    },
+    "a11y.editEntry": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ の記録を編集"
+          }
+        }
+      }
+    },
+    "a11y.deleteEntry": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ の %2$@ からの記録を削除"
+          }
+        }
+      }
+    },
+    "a11y.saveActivity": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "活動を保存"
+          }
+        }
+      }
+    },
+    "a11y.saveEntry": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "記録を保存"
+          }
+        }
+      }
+    },
+    "a11y.savePlan": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "予定時間を保存"
+          }
+        }
+      }
+    },
+    "a11y.undoSwitch": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "計測の切り替えを取り消す"
+          }
+        }
+      }
+    },
+    "a11y.field": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@：%2$@"
+          }
+        }
+      }
+    },
+    "a11y.path": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "活動の階層：%@"
+          }
+        }
+      }
+    },
+    "a11y.wishNotEntered": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "希望 未入力"
+          }
+        }
+      }
+    },
+    "a11y.notificationSettings": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "通知のOS設定を開く"
+          }
+        }
+      }
     }
   },
   "version": "1.0"

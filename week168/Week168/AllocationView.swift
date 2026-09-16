@@ -17,6 +17,7 @@ struct AllocationView: View {
                     } else if model.isCommitted {
                         Label("allocation.confirmed", systemImage: "checkmark.circle")
                     } else {
+                        Text("a11y.pending")
                         Text("allocation.guidance")
                         if model.hasDraft { Text("allocation.draftNotice").font(.footnote) }
                     }
@@ -28,6 +29,9 @@ struct AllocationView: View {
                             AllocationRow(model: model, node: node)
                         }
                         .buttonStyle(.plain)
+                        .accessibilityLabel(AccessibilityPresentation.text("a11y.editAllocation", model.name(node.activityID)))
+                        .accessibilityValue(allocationRowValue(model: model, node: node))
+                        .accessibilityHint(Text("allocation.adjustHint"))
                         .disabled(model.isBusy)
                     }
                     if model.nodes.isEmpty { Text("allocation.empty") }
@@ -63,10 +67,7 @@ struct AllocationView: View {
                 Text(weekLabel(interval.start, settings: settings))
                     .font(.title2.bold())
             }
-            ViewThatFits(in: .horizontal) {
-                HStack { weekButtons.fixedSize() }
-                VStack(alignment: .leading) { weekButtons }
-            }
+            AccessibleStack { weekButtons }
         }
         .disabled(model.isBusy)
     }
@@ -103,6 +104,7 @@ struct AllocationView: View {
         }
         .font(.headline)
         .allocationCard()
+        .accessibilityElement(children: .combine)
     }
 }
 
@@ -123,7 +125,7 @@ private struct AllocationRow: View {
             } else {
                 Text("allocation.notEntered")
             }
-            if let wish = node.wishMinutes, wish != node.committedMinutes {
+            if let wish = node.wishMinutes {
                 Text(allocationText("allocation.wish", wish))
             }
             if model.invalidIDs.contains(node.activityID) { Text("allocation.invalidMinutes").foregroundStyle(.orange) }
@@ -142,6 +144,7 @@ private struct AllocationRow: View {
                 Text(allocationText("allocation.unallocated", remaining))
             }
         }
+        .fixedSize(horizontal: false, vertical: true)
         .frame(maxWidth: .infinity, alignment: .leading)
         .allocationCard()
         .accessibilityElement(children: .combine)
@@ -292,9 +295,11 @@ private struct AllocationBudgetFields: View {
             if let parent = model.tree?.node(id)?.parentID {
                 Text(String(format: String(localized: "activity.parent"), model.name(parent))).font(.caption)
             }
-            TextField("allocation.wishMinutes", text: $wish).keyboardType(.numberPad)
-                .accessibilityLabel(Text("allocation.wishMinutes"))
-            Picker("allocation.direction", selection: $direction) {
+            AccessibleTextField("allocation.wishMinutes", text: $wish,
+                accessibilityName: AccessibilityPresentation.text("a11y.field", model.name(id), String(localized: "allocation.wishMinutes")))
+                .keyboardType(.numberPad)
+            AccessiblePicker("allocation.direction", selection: $direction,
+                accessibilityName: AccessibilityPresentation.text("a11y.field", model.name(id), String(localized: "allocation.direction"))) {
                 Text("allocation.cap").tag(BudgetDirection.cap)
                 Text("allocation.goal").tag(BudgetDirection.goal)
             }
@@ -307,15 +312,15 @@ private struct AllocationBudgetFields: View {
                     }
                 }
             }
+            .accessibilityLabel(AccessibilityPresentation.text("a11y.field", model.name(id), String(localized: "allocation.saveWish")))
             // S-1: No capacity/parent/draft validation gates wish saving.
             .disabled(model.isBusy || Int(wish.trimmingCharacters(in: .whitespacesAndNewlines)) == nil)
             if saved { Text("allocation.wishSaved").font(.footnote) }
             if model.node(id)?.direction != nil, model.node(id)?.mode == .managed {
-                TextField("allocation.committedMinutes", text: Binding(
+                AccessibleTextField("allocation.committedMinutes", text: Binding(
                     get: { model.input(id) }, set: { model.setDraft($0, for: id) }
-                ))
+                ), accessibilityName: AccessibilityPresentation.text("a11y.field", model.name(id), String(localized: "allocation.committedMinutes")))
                 .keyboardType(.numberPad)
-                .accessibilityLabel(Text("allocation.committedMinutes"))
                 Text("allocation.blankIsZero").font(.footnote)
                 if let value = model.node(id)?.wishMinutes {
                     Text(allocationText("allocation.wish", value))
@@ -356,4 +361,33 @@ private extension View {
         padding(16)
             .background(Color(uiColor: .secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 16))
     }
+}
+
+// Keep the button name separate from the allocation's values, including equal wish/committed values.
+@MainActor
+func allocationRowValue(model: AllocationViewModel, node: AllocationNode) -> String {
+    var parts: [String] = []
+    if let parent = model.tree?.node(node.activityID)?.parentID {
+        parts.append(AccessibilityPresentation.text("activity.parent", model.name(parent)))
+    }
+    parts.append(String(localized: String.LocalizationValue(node.direction.map {
+        $0 == .cap ? "allocation.cap" : "allocation.goal"
+    } ?? "allocation.unset")))
+    parts.append(node.committedMinutes.map { allocationText("allocation.committed", $0) }
+        ?? String(localized: "allocation.notEntered"))
+    parts.append(node.wishMinutes.map { allocationText("allocation.wish", $0) }
+        ?? String(localized: "a11y.wishNotEntered"))
+    if model.state == .pending { parts.append(String(localized: "a11y.pending")) }
+    if model.invalidIDs.contains(node.activityID) { parts.append(String(localized: "allocation.invalidMinutes")) }
+    if node.overflowMinutes > 0 { parts.append(allocationText("allocation.overflow", node.overflowMinutes)) }
+    if node.direction == .goal, let wish = node.wishMinutes, wish > (node.committedMinutes ?? 0) {
+        parts.append(allocationText("allocation.wishUnmet", wish - (node.committedMinutes ?? 0)))
+    }
+    if !model.children(node.activityID).isEmpty {
+        parts.append(allocationText("allocation.childrenTotal", node.childrenCommittedMinutes))
+    }
+    if model.hasSharedChildren(node.activityID), let remaining = node.unallocatedMinutes {
+        parts.append(allocationText("allocation.unallocated", remaining))
+    }
+    return parts.joined(separator: ", ")
 }

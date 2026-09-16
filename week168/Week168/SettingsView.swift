@@ -18,20 +18,20 @@ struct SettingsView: View {
                 }
             }
             Section("settings.capacity") {
-                TextField("settings.capacityMinutes", text: $model.capacity).keyboardType(.numberPad)
+                AccessibleTextField("settings.capacityMinutes", text: $model.capacity).keyboardType(.numberPad)
                 Text("settings.capacityHint").font(.footnote)
                 Button("settings.saveCapacity") { Task { await model.saveCapacity() } }
             }
             Section("settings.calendar") {
-                Picker("settings.dayStart", selection: $model.dayStartHour) {
+                AccessiblePicker("settings.dayStart", selection: $model.dayStartHour) {
                     ForEach(0...6, id: \.self) { hour in Text(reviewText("settings.hour", hour)).tag(hour) }
                 }
-                Picker("settings.weekStart", selection: $model.weekStartWeekday) {
+                AccessiblePicker("settings.weekStart", selection: $model.weekStartWeekday) {
                     ForEach(1...7, id: \.self) { day in
                         Text(LocalizedStringKey("settings.weekday.\(day)")).tag(day)
                     }
                 }
-                Picker("settings.timeZone", selection: $model.timeZoneIdentifier) {
+                AccessiblePicker("settings.timeZone", selection: $model.timeZoneIdentifier) {
                     ForEach(Array(Set(TimeZone.knownTimeZoneIdentifiers + [model.timeZoneIdentifier])).sorted(), id: \.self) { zone in
                         Text(zone).tag(zone)
                     }
@@ -42,8 +42,8 @@ struct SettingsView: View {
             Section("settings.backup") {
                 Toggle("settings.allTime", isOn: $model.allTime)
                 if !model.allTime {
-                    DatePicker("settings.from", selection: $model.from, displayedComponents: .date)
-                    DatePicker("settings.to", selection: $model.to, displayedComponents: .date)
+                    AccessibleDatePicker("settings.from", selection: $model.from, displayedComponents: .date)
+                    AccessibleDatePicker("settings.to", selection: $model.to, displayedComponents: .date)
                 }
                 Text("settings.exportHint").font(.footnote)
                 Button("settings.export", systemImage: "square.and.arrow.up") { Task { await model.export() } }
