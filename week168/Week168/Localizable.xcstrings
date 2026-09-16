@@ -1200,6 +1200,820 @@
           }
         }
       }
+    },
+    "action.edit": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "編集"
+          }
+        }
+      }
+    },
+    "action.delete": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "削除"
+          }
+        }
+      }
+    },
+    "activities.empty": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "活動がありません"
+          }
+        }
+      }
+    },
+    "activities.emptyHint": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "活動を追加して、時間を記録しましょう。"
+          }
+        }
+      }
+    },
+    "activities.archived": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "アーカイブ済み"
+          }
+        }
+      }
+    },
+    "activities.archive": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "アーカイブ"
+          }
+        }
+      }
+    },
+    "activities.unarchive": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "アーカイブを解除"
+          }
+        }
+      }
+    },
+    "activities.moveUp": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "同じ親の中で上へ移動"
+          }
+        }
+      }
+    },
+    "activities.moveDown": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "同じ親の中で下へ移動"
+          }
+        }
+      }
+    },
+    "activities.actions": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "活動の操作"
+          }
+        }
+      }
+    },
+    "activities.add": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "活動を追加"
+          }
+        }
+      }
+    },
+    "activities.edit": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "活動を編集"
+          }
+        }
+      }
+    },
+    "activities.deleteTitle": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "活動と関連データを削除しますか？"
+          }
+        }
+      }
+    },
+    "activities.deleteImpact": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "「%@」と子活動 %ld 件（すべての子孫）、関連する記録 %ld 件を削除します。この操作は取り消せません。"
+          }
+        }
+      }
+    },
+    "activities.details": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "活動の詳細"
+          }
+        }
+      }
+    },
+    "activities.name": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "名前"
+          }
+        }
+      }
+    },
+    "activities.parent": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "親活動"
+          }
+        }
+      }
+    },
+    "activities.noParent": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "親なし"
+          }
+        }
+      }
+    },
+    "activities.parentFixed": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "親活動は作成時のみ選択できます。"
+          }
+        }
+      }
+    },
+    "activities.budgetMode": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "予算モード"
+          }
+        }
+      }
+    },
+    "activities.mode.managed": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "予算あり"
+          }
+        }
+      }
+    },
+    "activities.mode.unset": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "未設定"
+          }
+        }
+      }
+    },
+    "activities.mode.excluded": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "対象外"
+          }
+        }
+      }
+    },
+    "activities.mode.managed.hint": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "自分の予算枠を持つ活動です。週ごとの時間の配分は、配分画面で設定します。"
+          }
+        }
+      }
+    },
+    "activities.mode.unset.hint": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "予算をまだ決めていません。親の残り枠を共有して消費します。"
+          }
+        }
+      }
+    },
+    "activities.mode.excluded.hint": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "意図的に予算から除外します。どの枠も消費せず、子孫にも予算を付けられません。"
+          }
+        }
+      }
+    },
+    "activities.defaultPlan": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "既定の予定時間"
+          }
+        }
+      }
+    },
+    "activities.defaultMinutes": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "予定時間（分）"
+          }
+        }
+      }
+    },
+    "activities.defaultPlanHint": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "すべての活動で設定できます。空欄なら予定なしで開始します。活動一覧には表示しません。"
+          }
+        }
+      }
+    },
+    "activities.color": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "色"
+          }
+        }
+      }
+    },
+    "activities.color.default": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "既定の色"
+          }
+        }
+      }
+    },
+    "activities.color.blue": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "青"
+          }
+        }
+      }
+    },
+    "activities.color.green": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "緑"
+          }
+        }
+      }
+    },
+    "activities.color.orange": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "オレンジ"
+          }
+        }
+      }
+    },
+    "activities.color.purple": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "紫"
+          }
+        }
+      }
+    },
+    "activities.color.red": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "赤"
+          }
+        }
+      }
+    },
+    "activities.color.existing": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "現在の色"
+          }
+        }
+      }
+    },
+    "activities.error.name": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "活動の名前を入力してください。"
+          }
+        }
+      }
+    },
+    "activities.error.minutes": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "予定時間は正の整数（分）で入力してください。大きすぎる値は使えません。"
+          }
+        }
+      }
+    },
+    "activities.error.parentMissing": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "選択した親活動が削除されています。親活動を選び直してください。"
+          }
+        }
+      }
+    },
+    "activities.error.excludedAncestor": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "予算対象外の活動の下には、予算ありの活動を保存できません。親または予算モードを確認してください。"
+          }
+        }
+      }
+    },
+    "activities.error.managedDescendant": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "子孫に予算ありの活動があるため、対象外に変更できません。先に子孫の予算モードを変更してください。"
+          }
+        }
+      }
+    },
+    "activities.error.impactChanged": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "削除対象が変わりました。更新された子活動と記録の件数を確認して、もう一度削除してください。"
+          }
+        }
+      }
+    },
+    "activities.error.hierarchy": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "活動の階層に循環・親の欠落・IDの重複があります。再読み込みして確認してください。"
+          }
+        }
+      }
+    },
+    "activities.error.order": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "同じ親の活動が変わったため並べ替えできません。再読み込みしてやり直してください。"
+          }
+        }
+      }
+    },
+    "activities.missing": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "活動が見つかりません。削除されていないか確認してください。"
+          }
+        }
+      }
+    },
+    "entries.empty": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "記録がありません"
+          }
+        }
+      }
+    },
+    "entries.emptyHint": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "活動を選んで、過去の時間を手動で追加できます。"
+          }
+        }
+      }
+    },
+    "entries.running": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "計測中"
+          }
+        }
+      }
+    },
+    "entries.add": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "記録を追加"
+          }
+        }
+      }
+    },
+    "entries.edit": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "記録を編集"
+          }
+        }
+      }
+    },
+    "entries.details": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "記録の詳細"
+          }
+        }
+      }
+    },
+    "entries.endDisplay": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "終了：%@"
+          }
+        }
+      }
+    },
+    "entries.deleteTitle": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "記録を削除しますか？"
+          }
+        }
+      }
+    },
+    "entries.deleteMessage": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "「%@」の %@ からの記録を削除します。この操作は取り消せません。"
+          }
+        }
+      }
+    },
+    "entries.noActivities": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "先に活動タブで活動を追加してください。"
+          }
+        }
+      }
+    },
+    "entries.activity": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "活動"
+          }
+        }
+      }
+    },
+    "entries.selectActivity": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "活動を選択"
+          }
+        }
+      }
+    },
+    "entries.archivedActivity": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@（アーカイブ済み）"
+          }
+        }
+      }
+    },
+    "entries.start": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "開始"
+          }
+        }
+      }
+    },
+    "entries.end": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "終了"
+          }
+        }
+      }
+    },
+    "entries.setEnd": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "終了時刻を入力して計測を終了"
+          }
+        }
+      }
+    },
+    "entries.note": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "メモ"
+          }
+        }
+      }
+    },
+    "entries.error.activity": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "記録する活動を選択してください。"
+          }
+        }
+      }
+    },
+    "entries.error.missing": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "この記録は削除されています。一覧を再読み込みしてください。"
+          }
+        }
+      }
+    },
+    "entries.error.endRequired": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "手動追加する記録には終了時刻が必要です。"
+          }
+        }
+      }
+    },
+    "entries.error.future": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "未来の記録は保存できません。開始・終了を現在以前にしてください。"
+          }
+        }
+      }
+    },
+    "entries.error.order": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "終了時刻が開始時刻より前です。開始より後の終了時刻を入力してください。"
+          }
+        }
+      }
+    },
+    "entries.error.zero": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "開始と終了が同じ時刻です。開始より後の終了時刻を入力してください。"
+          }
+        }
+      }
+    },
+    "entries.error.conflictMissing": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "別の記録（ID：%@）と競合しています。一覧を再読み込みしてください。"
+          }
+        }
+      }
+    },
+    "entries.error.overlap": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@〜%@ の「%@」の記録と重なっています。"
+          }
+        }
+      }
+    },
+    "management.error.settings": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "一日の始まりなどの設定を読み込めません。再読み込みしてください。"
+          }
+        }
+      }
+    },
+    "management.error.reload": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "最新データの読み込みに失敗しました：%@"
+          }
+        }
+      }
+    },
+    "management.error.storage": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "データの読み書きに失敗しました：%@"
+          }
+        }
+      }
     }
   },
   "version": "1.0"
