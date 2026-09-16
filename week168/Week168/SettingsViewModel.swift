@@ -67,6 +67,7 @@ final class SettingsViewModel {
             notice = String(localized: "settings.saved")
         } catch { issue = String(localized: "settings.error.calendar") }
         isBusy = false
+        if issue == nil { await refresh() }
     }
 
     func saveCapacity(now: Date = .now) async {
@@ -93,7 +94,9 @@ final class SettingsViewModel {
             // DatePicker displays civil date labels in the app timezone, independent of day-start hour.
             let first = allTime ? nil : dateLabel(from, settings: backup.settings)
             let last = allTime ? nil : dateLabel(to, settings: backup.settings)
-            let bytes = try ReviewExport.encode(backup: backup, from: first, to: last, now: now)
+            let bytes = try await Task.detached {
+                try ReviewExport.encode(backup: backup, from: first, to: last, now: now)
+            }.value
             clearSharedFile()
             let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString, isDirectory: true)
             try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
@@ -116,8 +119,9 @@ final class SettingsViewModel {
         let accessing = url.startAccessingSecurityScopedResource()
         defer { if accessing { url.stopAccessingSecurityScopedResource() } }
         do {
-            let bytes = try Data(contentsOf: url)
-            let replacement = try BackupJSON.decode(bytes, now: now)
+            let replacement = try await Task.detached {
+                try BackupJSON.decode(Data(contentsOf: url), now: now)
+            }.value
             let previous = try await store.backup()
             restorePreview = RestorePreview(replacement: replacement, previous: previous)
         } catch { issue = String(localized: "settings.error.import") }
