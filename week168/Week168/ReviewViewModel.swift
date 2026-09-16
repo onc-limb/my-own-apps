@@ -48,7 +48,7 @@ final class ReviewViewModel {
             weeks = reports
         } catch {
             weeks = []; activities = []
-            issue = String(localized: "review.error.load")
+            issue = AppErrorMessage.localized(for: error, fallback: String(localized: "review.error.load"))
         }
     }
 

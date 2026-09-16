@@ -120,7 +120,7 @@ final class AllocationViewModel {
             isPreviewing = false
         } catch {
             guard token == revision, self.week == week else { return }
-            issueKey = "allocation.error.preview"
+            issueKey = AppErrorMessage.key(for: error, fallback: "allocation.error.preview")
             isPreviewing = false
         }
     }
@@ -140,7 +140,7 @@ final class AllocationViewModel {
             try await load()
         } catch {
             report = nil
-            issueKey = "allocation.error.load"
+            issueKey = AppErrorMessage.key(for: error, fallback: "allocation.error.load")
             isPreviewing = false
         }
     }
@@ -204,7 +204,7 @@ final class AllocationViewModel {
             do { try await load() }
             catch { report = nil }
             state = .pending
-            issueKey = "allocation.error.wish"
+            issueKey = AppErrorMessage.key(for: error, fallback: "allocation.error.wish")
             isPreviewing = false
             return false
         }
@@ -226,7 +226,7 @@ final class AllocationViewModel {
             issueKey = "allocation.error.rejected"
             isPreviewing = false
         } catch {
-            issueKey = "allocation.error.commit"
+            issueKey = AppErrorMessage.key(for: error, fallback: "allocation.error.commit")
             isPreviewing = false
         }
     }

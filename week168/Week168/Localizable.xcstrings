@@ -1,6 +1,28 @@
 {
   "sourceLanguage": "ja",
   "strings": {
+    "error.saveFailed": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "保存できませんでした。端末の空き容量を確認してから、もう一度お試しください。この操作の内容は保存されていません。"
+          }
+        }
+      }
+    },
+    "action.close": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "閉じる"
+          }
+        }
+      }
+    },
     "app.title": {
       "comment": "Title of the project skeleton placeholder screen.",
       "extractionState": "manual",

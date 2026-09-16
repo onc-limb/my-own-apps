@@ -10,7 +10,8 @@ final class Week168Tests: XCTestCase {
 
 import UserNotifications
 import Week168Domain
-import Week168Persistence
+import SwiftData
+@testable import Week168Persistence
 import Week168UseCases
 
 @MainActor
@@ -280,4 +281,160 @@ private actor NotificationRefreshGate {
         if !paused { await withCheckedContinuation { observer = $0 } }
     }
     func resume() { continuation?.resume(); continuation = nil }
+}
+
+@MainActor
+final class SaveFailureViewModelTests: XCTestCase {
+    func testStopReportsSaveFailureAndPreservesRunningEntry() async throws {
+        let f = try SaveFailureFixture()
+        let entry = try await f.runningEntry()
+        let model = HomeViewModel(store: f.store, service: f.service)
+        await model.refresh()
+        await f.store.setSaveFailureForAppTests(true)
+
+        await model.stop()
+
+        XCTAssertEqual(model.issue?.messageKey, "error.saveFailed")
+        XCTAssertEqual(model.snapshot?.running, entry)
+        let persisted = try await f.store.loadRunningEntry()
+        XCTAssertEqual(persisted, entry)
+        XCTAssertFalse(model.isBusy)
+    }
+
+    func testNonSaveFailureKeepsOperationMessage() async throws {
+        let f = try SaveFailureFixture()
+        _ = try await f.runningEntry()
+        let model = HomeViewModel(store: f.store, service: f.service)
+        await model.refresh()
+
+        await model.changePlan(-1)
+
+        XCTAssertEqual(model.issue?.messageKey, "error.plan")
+        XCTAssertNotNil(model.snapshot?.running)
+    }
+
+    func testSuccessfulStopClearsPreviousSaveFailure() async throws {
+        let f = try SaveFailureFixture()
+        _ = try await f.runningEntry()
+        let model = HomeViewModel(store: f.store, service: f.service)
+        await model.refresh()
+        await f.store.setSaveFailureForAppTests(true)
+        await model.stop()
+        XCTAssertEqual(model.issue?.messageKey, "error.saveFailed")
+        await f.store.setSaveFailureForAppTests(false)
+
+        await model.stop()
+
+        XCTAssertNil(model.issue)
+        XCTAssertNil(model.snapshot?.running)
+        let entries = try await f.store.loadEntries(overlapping: DateInterval(start: .distantPast, end: .distantFuture))
+        XCTAssertEqual(entries.count, 1)
+        XCTAssertEqual(entries.first?.endedAt, f.now)
+    }
+
+    func testAllocationSaveFailureKeepsWishUnchanged() async throws {
+        let f = try SaveFailureFixture()
+        let activity = try await f.service.createActivity(name: "Activity", budgetMode: .managed)
+        let model = AllocationViewModel(store: f.store, service: f.service)
+        await model.refresh(at: f.now)
+        await f.store.setSaveFailureForAppTests(true)
+
+        let saved = await model.saveWish(60, direction: .goal, for: activity.id)
+
+        XCTAssertFalse(saved)
+        XCTAssertEqual(model.issueKey, "error.saveFailed")
+        let budgets = try await f.store.loadBudgets()
+        XCTAssertTrue(budgets.isEmpty)
+    }
+
+    func testActivitySaveFailureUsesDedicatedMessage() async throws {
+        let f = try SaveFailureFixture()
+        _ = try await f.service.homeSections(recentLimit: 8)
+        let model = ActivitiesEntriesViewModel(store: f.store, service: f.service)
+        await model.refresh()
+        await f.store.setSaveFailureForAppTests(true)
+
+        let saved = await model.saveActivity(original: nil, name: "Activity", parent: nil,
+                                            mode: .unset, minutes: "", color: "")
+
+        XCTAssertFalse(saved)
+        XCTAssertEqual(model.issue, String(localized: "error.saveFailed"))
+        XCTAssertTrue(model.activities.isEmpty)
+    }
+
+    func testReviewInitializationSaveFailureUsesDedicatedMessage() async throws {
+        let f = try SaveFailureFixture()
+        await f.store.setSaveFailureForAppTests(true)
+        let model = ReviewViewModel(store: f.store, service: f.service)
+
+        await model.refresh(now: f.now)
+
+        XCTAssertEqual(model.issue, String(localized: "error.saveFailed"))
+        XCTAssertTrue(model.weeks.isEmpty)
+    }
+
+    func testSettingsCalendarAndCapacitySaveFailuresUseDedicatedMessage() async throws {
+        let f = try SaveFailureFixture()
+        let model = SettingsViewModel(store: f.store, service: f.service)
+        await model.refresh(now: f.now)
+        await f.store.setSaveFailureForAppTests(true)
+        model.dayStartHour = 2
+
+        await model.saveCalendar()
+
+        XCTAssertEqual(model.issue, String(localized: "error.saveFailed"))
+        XCTAssertNil(model.notice)
+        model.capacity = "600"
+        await model.saveCapacity(now: f.now)
+        XCTAssertEqual(model.issue, String(localized: "error.saveFailed"))
+        XCTAssertNil(model.notice)
+    }
+
+    func testOtherPersistenceErrorsKeepFallbackMessage() {
+        XCTAssertEqual(AppErrorMessage.key(for: PersistenceError.staleSwitch, fallback: "error.undo"), "error.undo")
+        XCTAssertEqual(AppErrorMessage.localized(for: PersistenceError.invalidStoredValue("test"), fallback: "Original"), "Original")
+    }
+}
+
+@MainActor
+private final class SaveFailureFixture {
+    let now = Date(timeIntervalSince1970: 1_800_000_000)
+    let store: Week168Store
+    let service: Week168Service
+
+    init() throws {
+        // Match the existing fixtures: CoreData can outlive the test, so retain its temporary directory.
+        let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+        store = Week168Store(container: try Week168Store.makeContainer(at: directory.appendingPathComponent("test.store")))
+        service = Week168Service(store: store, clock: SaveFailureClock(date: now), alarms: SaveFailureAlarms())
+    }
+
+    func runningEntry() async throws -> TimeEntry {
+        let activity = try await service.createActivity(name: "Activity")
+        let entry = TimeEntry(id: EntryID(rawValue: UUID()), activityID: activity.id,
+                              startedAt: now.addingTimeInterval(-60), endedAt: nil, plannedMinutes: nil, note: "")
+        try await store.saveEntry(entry, now: now)
+        return entry
+    }
+}
+
+private struct SaveFailureClock: Clock {
+    let date: Date
+    func now() -> Date { date }
+}
+
+private struct SaveFailureAlarms: AlarmScheduling {
+    func schedulePlannedTimeAlarm(entryID: EntryID, activityName: String, fireAt: Date) async {}
+    func scheduleBudgetExhaustionNotice(activityID: ActivityID, activityName: String, fireAt: Date) async {}
+    func cancelAll(for entryID: EntryID) async {}
+}
+
+extension Week168Store {
+    fileprivate func setSaveFailureForAppTests(_ failing: Bool) {
+        saveOperation = { context in
+            if failing { throw CocoaError(.fileWriteOutOfSpace) }
+            try context.save()
+        }
+    }
 }
