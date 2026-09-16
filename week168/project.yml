@@ -15,6 +15,10 @@ settings:
 packages:
   Week168Domain:
     path: Packages/Week168Domain
+  Week168Persistence:
+    path: Packages/Week168Persistence
+  Week168UseCases:
+    path: Packages/Week168UseCases
 
 targets:
   Week168:
@@ -31,6 +35,8 @@ targets:
         TARGETED_DEVICE_FAMILY: "1"
     dependencies:
       - package: Week168Domain
+      - package: Week168Persistence
+      - package: Week168UseCases
       - sdk: SwiftData.framework
 
   Week168Tests:
@@ -44,6 +50,8 @@ targets:
     dependencies:
       - target: Week168
       - package: Week168Domain
+      - package: Week168Persistence
+      - package: Week168UseCases
 
   Week168UITests:
     type: bundle.ui-testing
