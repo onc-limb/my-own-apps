@@ -1,11 +1,13 @@
 import SwiftUI
 
-enum AppTab: Hashable { case home, allocation, activities, records, settings }
+enum AppTab: Hashable { case home, allocation, activities, records, review, settings }
 
 struct ContentView: View {
     let model: HomeViewModel
     let allocationModel: AllocationViewModel
     let managementModel: ActivitiesEntriesViewModel
+    let reviewModel: ReviewViewModel
+    let settingsModel: SettingsViewModel
     @State private var selection: AppTab = .home
 
     var body: some View {
@@ -20,26 +22,19 @@ struct ContentView: View {
                 .tabItem { Label("tab.activities", systemImage: "square.grid.2x2") }.tag(AppTab.activities)
             NavigationStack { EntriesView(model: managementModel) }
                 .tabItem { Label("tab.records", systemImage: "list.bullet.rectangle") }.tag(AppTab.records)
-            placeholder("tab.settings", symbol: "gearshape", tab: .settings)
+            NavigationStack { ReviewView(model: reviewModel) }
+                .tabItem { Label("tab.review", systemImage: "chart.bar") }.tag(AppTab.review)
+            NavigationStack { SettingsView(model: settingsModel) }
+                .tabItem { Label("tab.settings", systemImage: "gearshape") }.tag(AppTab.settings)
         }
         .onChange(of: selection) { _, tab in
             model.dismissUndo()
+            if tab == .review { Task { await reviewModel.refresh() } }
+            if tab == .settings { Task { await settingsModel.refresh() } }
             if tab == .home { Task { await model.refresh() } }
             if tab == .allocation { Task { await allocationModel.refresh() } }
             if tab == .activities || tab == .records { Task { await managementModel.refresh() } }
         }
     }
 
-    private func placeholder(_ title: LocalizedStringKey, symbol: String, tab: AppTab) -> some View {
-        NavigationStack {
-            ContentUnavailableView {
-                Label(title, systemImage: symbol)
-            } description: {
-                Text("placeholder.description")
-            }
-            .navigationTitle(title)
-        }
-        .tabItem { Label(title, systemImage: symbol) }
-        .tag(tab)
-    }
 }

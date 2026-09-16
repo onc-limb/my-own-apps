@@ -395,6 +395,17 @@ public actor Week168Service {
         return (sections, summaries, committed, state)
     }
 
+    /// Serialize restore with recording/allocation changes and refresh notification reservations.
+    public func restore(_ replacement: StoreBackup, replacing expected: StoreBackup) async throws {
+        await enter(); defer { leave() }
+        let old = try await store.loadRunningEntry()
+        try await store.replaceAll(with: replacement, expected: expected, now: clock.now())
+        // The replacement is already committed. A later notification refresh error must not
+        // be reported as a failed restore or cause a second destructive replacement.
+        if let old { await alarms.cancelAll(for: old.id) }
+        try? await refreshCurrent()
+    }
+
     public func weeklyReport(for week: LogicalWeek) async throws -> [ActivityID: ActivitySummary] {
         await enter(); defer { leave() }
         return try await summary(week, now: clock.now())

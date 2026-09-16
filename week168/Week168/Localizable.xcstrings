@@ -2014,6 +2014,688 @@
           }
         }
       }
+    },
+    "tab.review": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "振り返り"
+          }
+        }
+      }
+    },
+    "review.period": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "集計期間"
+          }
+        }
+      }
+    },
+    "review.week": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "週"
+          }
+        }
+      }
+    },
+    "review.month": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "月"
+          }
+        }
+      }
+    },
+    "review.monthTitle": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%ld年%ld月"
+          }
+        }
+      }
+    },
+    "review.weekCount": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "対象の週：%ld週"
+          }
+        }
+      }
+    },
+    "review.monthExplanation": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "開始日がこの月にある週を合算します。予算が一定なら「確定週予算 × 週数」、変更があれば各週の当時の予算を合算します。"
+          }
+        }
+      }
+    },
+    "review.pending": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "未確定の週を含むため、期間全体の超過・未達は判定しません。週別の結果も確認できます。"
+          }
+        }
+      }
+    },
+    "review.budgeted": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "予算のある活動"
+          }
+        }
+      }
+    },
+    "review.outside": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "枠外の活動"
+          }
+        }
+      }
+    },
+    "review.weekDetails": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "週ごとの結果"
+          }
+        }
+      }
+    },
+    "review.previous": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "前の期間"
+          }
+        }
+      }
+    },
+    "review.current": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "現在の期間"
+          }
+        }
+      }
+    },
+    "review.next": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "次の期間"
+          }
+        }
+      }
+    },
+    "review.empty": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "該当する活動はありません"
+          }
+        }
+      }
+    },
+    "review.actual": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "実績（子孫を含む）：%ld分"
+          }
+        }
+      }
+    },
+    "review.own": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "この活動への直接の記録：%ld分"
+          }
+        }
+      }
+    },
+    "review.budget": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "確定予算の合計：%ld分"
+          }
+        }
+      }
+    },
+    "review.over": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "上限を%ld分超過"
+          }
+        }
+      }
+    },
+    "review.unmet": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "目標まで%ld分未達"
+          }
+        }
+      }
+    },
+    "review.within": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "予算を達成・上限以内"
+          }
+        }
+      }
+    },
+    "review.notJudged": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "未確定または条件が異なるため判定なし"
+          }
+        }
+      }
+    },
+    "review.shared": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "個別の確定予算なし"
+          }
+        }
+      }
+    },
+    "review.error.load": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "振り返りを読み込めませんでした。再読み込みしてください。"
+          }
+        }
+      }
+    },
+    "settings.capacity": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "週の総枠"
+          }
+        }
+      }
+    },
+    "settings.capacityMinutes": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "総枠（分・空欄で未設定）"
+          }
+        }
+      }
+    },
+    "settings.capacityHint": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "今週から適用します。空欄にすると総枠の制限を外します。過去の週の総枠は変わりません。"
+          }
+        }
+      }
+    },
+    "settings.saveCapacity": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "総枠を保存"
+          }
+        }
+      }
+    },
+    "settings.calendar": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "集計の区切り"
+          }
+        }
+      }
+    },
+    "settings.dayStart": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "一日の始まり"
+          }
+        }
+      }
+    },
+    "settings.hour": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%ld時"
+          }
+        }
+      }
+    },
+    "settings.weekStart": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "週の開始曜日"
+          }
+        }
+      }
+    },
+    "settings.timeZone": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "集計のタイムゾーン"
+          }
+        }
+      }
+    },
+    "settings.calendarHint": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "端末と独立した設定です。区切りの変更は過去の記録の集計にも適用されます。"
+          }
+        }
+      }
+    },
+    "settings.saveCalendar": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "集計設定を保存"
+          }
+        }
+      }
+    },
+    "settings.backup": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "書き出しと復元"
+          }
+        }
+      }
+    },
+    "settings.allTime": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "全期間"
+          }
+        }
+      }
+    },
+    "settings.from": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "開始日"
+          }
+        }
+      }
+    },
+    "settings.to": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "終了日"
+          }
+        }
+      }
+    },
+    "settings.exportHint": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "指定期間の集計と、復元用の全生データを1つのJSONに保存します。復元は既存データの全置換です。"
+          }
+        }
+      }
+    },
+    "settings.export": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "JSONで書き出す"
+          }
+        }
+      }
+    },
+    "settings.import": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "JSONから復元する"
+          }
+        }
+      }
+    },
+    "settings.restoreTitle": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "すべてのデータを置き換えますか？"
+          }
+        }
+      }
+    },
+    "settings.restoreConfirm": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "全置換して復元"
+          }
+        }
+      }
+    },
+    "settings.restoreImpact": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "現在の記録%ld件・活動%ld件が消えます。設定・予算・総枠・確定記録もファイルの内容に置き換わります。"
+          }
+        }
+      }
+    },
+    "settings.saved": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "保存しました"
+          }
+        }
+      }
+    },
+    "settings.restored": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "復元しました"
+          }
+        }
+      }
+    },
+    "settings.error.load": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "設定を読み込めませんでした。再読み込みしてください。"
+          }
+        }
+      }
+    },
+    "settings.error.calendar": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "集計設定を保存できませんでした。時刻・曜日・タイムゾーンを確認して再読み込みしてください。"
+          }
+        }
+      }
+    },
+    "settings.error.capacity": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "総枠には0以上の有効な整数を入力してください。"
+          }
+        }
+      }
+    },
+    "settings.error.save": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "保存できませんでした。再読み込みして保存状態を確認してください。"
+          }
+        }
+      }
+    },
+    "settings.error.export": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "書き出せませんでした。開始日と終了日、保存データを確認してください。"
+          }
+        }
+      }
+    },
+    "settings.error.import": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "JSONを読み込めませんでした。形式・バージョン・設定・参照・記録の重なりを確認してください。既存データは変更していません。"
+          }
+        }
+      }
+    },
+    "settings.error.restore": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "復元できませんでした。既存データは変更していません。"
+          }
+        }
+      }
+    },
+    "settings.error.stale": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "確認後にデータが変更されました。ファイルを再選択して、消える件数を確認してください。"
+          }
+        }
+      }
+    },
+    "settings.weekday.1": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "日曜日"
+          }
+        }
+      }
+    },
+    "settings.weekday.2": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "月曜日"
+          }
+        }
+      }
+    },
+    "settings.weekday.3": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "火曜日"
+          }
+        }
+      }
+    },
+    "settings.weekday.4": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "水曜日"
+          }
+        }
+      }
+    },
+    "settings.weekday.5": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "木曜日"
+          }
+        }
+      }
+    },
+    "settings.weekday.6": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "金曜日"
+          }
+        }
+      }
+    },
+    "settings.weekday.7": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "土曜日"
+          }
+        }
+      }
     }
   },
   "version": "1.0"
