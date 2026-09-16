@@ -89,7 +89,7 @@ final class HomeViewModel {
         do { try await load() }
         catch {
             snapshot = nil
-            issue = HomeIssue(messageKey: "error.load")
+            issue = HomeIssue(messageKey: AppErrorMessage.key(for: error, fallback: "error.load"))
         }
     }
 
@@ -137,14 +137,17 @@ final class HomeViewModel {
             try await operation()
         } catch {
             dismissUndo()
-            issue = HomeIssue(messageKey: errorKey)
+            issue = HomeIssue(messageKey: AppErrorMessage.key(for: error, fallback: errorKey))
         }
         // Reload even after a failure: a service operation may have saved before alarm refresh failed.
         do { try await load() }
         catch {
             snapshot = nil
             dismissUndo()
-            issue = HomeIssue(messageKey: "error.reconcile")
+            // A reload failure must not hide the fact that the mutation was not saved.
+            if issue?.messageKey != "error.saveFailed" {
+                issue = HomeIssue(messageKey: AppErrorMessage.key(for: error, fallback: "error.reconcile"))
+            }
         }
     }
 
@@ -161,5 +164,22 @@ enum HomeTime {
     static func elapsed(since start: Date, at now: Date) -> String {
         let seconds = Int(max(0, now.timeIntervalSince(start)))
         return String(format: "%02lld:%02lld:%02lld", Int64(seconds / 3600), Int64((seconds % 3600) / 60), Int64(seconds % 60))
+    }
+}
+
+// Shared by the app's view models; persistence and use-case errors keep their original types.
+enum AppErrorMessage {
+    static func key(for error: Error, fallback: String) -> String {
+        if let error = error as? PersistenceError, case .saveFailed = error {
+            return "error.saveFailed"
+        }
+        return fallback
+    }
+
+    static func localized(for error: Error, fallback: String) -> String {
+        if let error = error as? PersistenceError, case .saveFailed = error {
+            return String(localized: "error.saveFailed")
+        }
+        return fallback
     }
 }

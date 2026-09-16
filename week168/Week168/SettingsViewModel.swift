@@ -53,7 +53,7 @@ final class SettingsViewModel {
             capacity = BudgetResolver.resolve(week: week, entries: backup.budgets, capacities: backup.capacities)
                 .capacityMinutes.map(String.init) ?? ""
             issue = nil
-        } catch { issue = String(localized: "settings.error.load") }
+        } catch { issue = AppErrorMessage.localized(for: error, fallback: String(localized: "settings.error.load")) }
     }
 
     func saveCalendar() async {
@@ -65,7 +65,7 @@ final class SettingsViewModel {
             try await service.updateCalendarSettings(value)
             settings = value
             notice = String(localized: "settings.saved")
-        } catch { issue = String(localized: "settings.error.calendar") }
+        } catch { issue = AppErrorMessage.localized(for: error, fallback: String(localized: "settings.error.calendar")) }
         isBusy = false
         if issue == nil { await refresh() }
     }
@@ -82,7 +82,7 @@ final class SettingsViewModel {
             let week = TimeAxis.logicalWeek(of: TimeAxis.logicalDay(of: now, settings: settings), settings: settings)
             try await service.setCapacity(minutes: Int(text), from: week)
             notice = String(localized: "settings.saved")
-        } catch { issue = String(localized: "settings.error.save") }
+        } catch { issue = AppErrorMessage.localized(for: error, fallback: String(localized: "settings.error.save")) }
     }
 
     func export(now: Date = .now) async {
@@ -109,7 +109,7 @@ final class SettingsViewModel {
             let url = directory.appendingPathComponent("Week168-\(formatter.string(from: now)).json")
             try bytes.write(to: url, options: .atomic)
             sharedBackup = SharedBackup(url: url)
-        } catch { issue = String(localized: "settings.error.export") }
+        } catch { issue = AppErrorMessage.localized(for: error, fallback: String(localized: "settings.error.export")) }
     }
 
     func prepareImport(_ url: URL, now: Date = .now) async {
@@ -124,7 +124,7 @@ final class SettingsViewModel {
             }.value
             let previous = try await store.backup()
             restorePreview = RestorePreview(replacement: replacement, previous: previous)
-        } catch { issue = String(localized: "settings.error.import") }
+        } catch { issue = AppErrorMessage.localized(for: error, fallback: String(localized: "settings.error.import")) }
     }
 
     func restore(_ preview: RestorePreview) async {
@@ -139,7 +139,7 @@ final class SettingsViewModel {
             issue = String(localized: "settings.error.stale")
         } catch {
             restorePreview = nil
-            issue = String(localized: "settings.error.restore")
+            issue = AppErrorMessage.localized(for: error, fallback: String(localized: "settings.error.restore"))
         }
         isBusy = false
         if issue == nil { await refresh() }

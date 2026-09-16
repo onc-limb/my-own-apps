@@ -255,6 +255,9 @@ final class ActivitiesEntriesViewModel {
     }
 
     func errorMessage(_ error: Error) -> String {
+        if let error = error as? PersistenceError, case .saveFailed = error {
+            return String(localized: "error.saveFailed")
+        }
         if let error = error as? EntryValidationError {
             switch error {
             case .inFuture: return String(localized: "entries.error.future")
