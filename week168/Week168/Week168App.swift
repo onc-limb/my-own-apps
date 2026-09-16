@@ -20,6 +20,9 @@ private final class AppDependencies {
     private(set) var allocation: AllocationViewModel?
     private(set) var management: ActivitiesEntriesViewModel?
 
+    private(set) var review: ReviewViewModel?
+    private(set) var settings: SettingsViewModel?
+
     init() { open() }
 
     func open() {
@@ -34,11 +37,15 @@ private final class AppDependencies {
             home = HomeViewModel(store: store, service: service)
             allocation = AllocationViewModel(store: store, service: service)
             management = ActivitiesEntriesViewModel(store: store, service: service)
+            review = ReviewViewModel(store: store, service: service)
+            settings = SettingsViewModel(store: store, service: service)
         } catch {
             // Keep the localized recovery screen visible; never replace persisted data with an empty store.
             home = nil
             allocation = nil
             management = nil
+            review = nil
+            settings = nil
         }
     }
 }
@@ -51,8 +58,10 @@ struct Week168App: App {
     var body: some Scene {
         WindowGroup {
             if let home = dependencies.home, let allocation = dependencies.allocation,
-               let management = dependencies.management {
-                ContentView(model: home, allocationModel: allocation, managementModel: management)
+               let management = dependencies.management, let review = dependencies.review,
+               let settings = dependencies.settings {
+                ContentView(model: home, allocationModel: allocation, managementModel: management,
+                            reviewModel: review, settingsModel: settings)
             } else {
                 ContentUnavailableView {
                     Label("error.title", systemImage: "exclamationmark.triangle")

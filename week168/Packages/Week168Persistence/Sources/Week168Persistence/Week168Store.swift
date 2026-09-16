@@ -294,6 +294,42 @@ public actor Week168Store {
         else { context.insert(StoredTimeEntry(entry)) }
     }
 
+    /// A consistent raw snapshot, including explicit weekly commitment records.
+    public func backup() throws -> StoreBackup {
+        guard let settings = try loadSettings() else { throw BackupError.invalidData }
+        return try StoreBackup(settings: settings, activities: loadActivities(),
+            budgets: loadBudgets().sorted {
+                ($0.effectiveFrom, $0.activityID.rawValue.uuidString) < ($1.effectiveFrom, $1.activityID.rawValue.uuidString)
+            }, capacities: loadCapacities().sorted { $0.effectiveFrom < $1.effectiveFrom },
+            entries: allEntries(), commitments: context.fetch(FetchDescriptor<StoredCommitmentRecord>())
+                .map { $0.domainValue() }.sorted { $0.week < $1.week })
+    }
+
+    /// No suspension or intermediate save: every deletion/insertion is one SQLite save.
+    /// The expected snapshot binds user confirmation to the exact data being deleted.
+    public func replaceAll(with replacement: StoreBackup, expected: StoreBackup, now: Date) throws {
+        try replacement.validate(now: now)
+        guard try backup() == expected else { throw BackupError.staleConfirmation }
+        do {
+            for row in try context.fetch(FetchDescriptor<StoredTimeEntry>()) { context.delete(row) }
+            for row in try context.fetch(FetchDescriptor<StoredBudgetEntry>()) { context.delete(row) }
+            for row in try context.fetch(FetchDescriptor<StoredCapacityEntry>()) { context.delete(row) }
+            for row in try context.fetch(FetchDescriptor<StoredCommitmentRecord>()) { context.delete(row) }
+            for row in try context.fetch(FetchDescriptor<StoredActivity>()) { context.delete(row) }
+            for row in try context.fetch(FetchDescriptor<StoredCalendarSettings>()) { context.delete(row) }
+            context.insert(StoredCalendarSettings(replacement.settings))
+            for value in replacement.activities { context.insert(StoredActivity(value)) }
+            for value in replacement.budgets { context.insert(StoredBudgetEntry(value)) }
+            for value in replacement.capacities { context.insert(StoredCapacityEntry(value)) }
+            for value in replacement.entries { context.insert(StoredTimeEntry(value)) }
+            for value in replacement.commitments { context.insert(StoredCommitmentRecord(value)) }
+            try saveChanges()
+        } catch {
+            context.rollback()
+            throw error
+        }
+    }
+
     private func saveChanges() throws {
         // ASSUMPTION: Three immediate attempts avoid actor reentrancy during a transition.
         for attempt in 1...3 {
