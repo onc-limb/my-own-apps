@@ -54,6 +54,11 @@ public actor Week168Service {
         try await AllocationValidator.report(tree: tree(), budgets: resolved(week), week: week)
     }
 
+    private func commitmentState(_ week: LogicalWeek) async throws -> CommitmentState {
+        let allocation = try await report(week)
+        return try await allocation.commitmentState(hasCommitmentRecord: store.loadCommitment(for: week) != nil)
+    }
+
     private func currentWeek(at now: Date) async throws -> LogicalWeek {
         let settings = try await settings()
         return TimeAxis.logicalWeek(of: TimeAxis.logicalDay(of: now, settings: settings), settings: settings)
@@ -65,22 +70,66 @@ public actor Week168Service {
                                              tree: tree(), budgets: resolved(week), interval: interval, now: now)
     }
 
-    private func refreshAlarms(cancel old: TimeEntry?, now: Date) async throws {
-        if let old { await alarms.cancelAll(for: old.id) }
-        guard let running = try await store.loadRunningEntry() else { return }
-        if old?.id != running.id { await alarms.cancelAll(for: running.id) }
-        let tree = try await tree()
-        guard let activity = tree.node(running.activityID) else { return }
-        if let fireAt = AlarmTiming.plannedTimeFireDate(entry: running) {
-            await alarms.schedulePlannedTimeAlarm(entryID: running.id, activityName: activity.name, fireAt: fireAt)
+    private func prepareAlarmRefresh(
+        cancel old: TimeEntry?, now: Date,
+        allocation: (tree: ActivityTree, budgets: ResolvedBudgets, state: CommitmentState, history: [BudgetEntry])? = nil
+    ) async throws -> @Sendable () async -> Void {
+        let alarms = self.alarms
+        guard let running = try await store.loadRunningEntry() else {
+            return { if let old { await alarms.cancelAll(for: old.id) } }
+        }
+        let tree: ActivityTree
+        if let allocation { tree = allocation.tree } else { tree = try await self.tree() }
+        guard let activity = tree.node(running.activityID) else {
+            return {
+                if let old { await alarms.cancelAll(for: old.id) }
+                if old?.id != running.id { await alarms.cancelAll(for: running.id) }
+            }
         }
         let week = try await currentWeek(at: now)
-        if let notice = try await AlarmTiming.budgetExhaustionFireDate(
-            running: running, tree: tree, summaries: summary(week, now: now),
-            isCommitted: report(week).canCommit, now: now
-        ), let owner = tree.node(notice.activityID) {
-            await alarms.scheduleBudgetExhaustionNotice(activityID: owner.id, activityName: owner.name, fireAt: notice.fireAt)
+        let state: CommitmentState
+        let summaries: [ActivityID: ActivitySummary]
+        if let allocation {
+            let budgets: ResolvedBudgets
+            if allocation.budgets.week == week {
+                budgets = allocation.budgets
+                state = allocation.state
+            } else {
+                // Historical changes may also alter the current week's inherited budget.
+                budgets = try await BudgetResolver.resolve(week: week, entries: allocation.history,
+                                                             capacities: store.loadCapacities())
+                state = try await AllocationValidator.report(tree: tree, budgets: budgets, week: week)
+                    .commitmentState(hasCommitmentRecord: store.loadCommitment(for: week) != nil)
+            }
+            let interval = try await TimeAxis.interval(of: week, settings: settings())
+            summaries = try await Aggregator.summarize(
+                entries: store.loadEntries(overlapping: interval), tree: tree,
+                budgets: budgets, interval: interval, now: now)
+        } else {
+            state = try await commitmentState(week)
+            summaries = try await summary(week, now: now)
         }
+        let plannedFireAt = AlarmTiming.plannedTimeFireDate(entry: running)
+        let notice = AlarmTiming.budgetExhaustionFireDate(
+            running: running, tree: tree, summaries: summaries,
+            isCommitted: state == .committed, now: now)
+        let owner = notice.flatMap { tree.node($0.activityID) }
+        // All fallible reads and calculations finish before mutating notification reservations.
+        return {
+            if let old { await alarms.cancelAll(for: old.id) }
+            if old?.id != running.id { await alarms.cancelAll(for: running.id) }
+            if let fireAt = plannedFireAt {
+                await alarms.schedulePlannedTimeAlarm(entryID: running.id, activityName: activity.name, fireAt: fireAt)
+            }
+            if let notice, let owner {
+                await alarms.scheduleBudgetExhaustionNotice(activityID: owner.id, activityName: owner.name, fireAt: notice.fireAt)
+            }
+        }
+    }
+
+    private func refreshAlarms(cancel old: TimeEntry?, now: Date) async throws {
+        let refresh = try await prepareAlarmRefresh(cancel: old, now: now)
+        await refresh()
     }
 
     private func refreshCurrent() async throws {
@@ -122,21 +171,23 @@ public actor Week168Service {
         return activity
     }
 
-    private func saveActivity(_ activity: Activity) async throws {
+    private func saveActivity(_ activity: Activity, invalidatingCommitmentFor week: LogicalWeek? = nil) async throws {
         guard activity.defaultPlannedMinutes.map({ $0 > 0 }) ?? true else {
             throw Week168ServiceError.invalidMinutes
         }
         var activities = try await store.loadActivities().filter { $0.id != activity.id }
         activities.append(activity)
         _ = try ActivityTree.build(from: activities)
-        try await store.upsertActivity(activity)
+        try await store.upsertActivity(activity, invalidatingCommitmentFor: week)
         try await refreshCurrent()
     }
 
     public func updateActivity(_ activity: Activity) async throws {
         await enter(); defer { leave() }
-        _ = try await self.activity(activity.id)
-        try await saveActivity(activity)
+        let previous = try await self.activity(activity.id)
+        // ASSUMPTION: Activity edits have no week parameter, so invalidate the clock's current week.
+        let week = previous.budgetMode == activity.budgetMode ? nil : try await currentWeek(at: clock.now())
+        try await saveActivity(activity, invalidatingCommitmentFor: week)
     }
 
     public func archiveActivity(_ id: ActivityID, archived: Bool) async throws {
@@ -171,9 +222,11 @@ public actor Week168Service {
         }
     }
 
-    public func allocationReport(for week: LogicalWeek) async throws -> AllocationReport {
+    public func allocationReport(for week: LogicalWeek) async throws -> (report: AllocationReport, state: CommitmentState) {
         await enter(); defer { leave() }
-        return try await report(week)
+        let allocation = try await report(week)
+        let state = try await allocation.commitmentState(hasCommitmentRecord: store.loadCommitment(for: week) != nil)
+        return (allocation, state)
     }
 
     public func setWish(activityID: ActivityID, minutes: Int, direction: BudgetDirection, week: LogicalWeek) async throws {
@@ -187,25 +240,44 @@ public actor Week168Service {
         try await refreshCurrent()
     }
 
-    public func setCommitted(activityID: ActivityID, minutes: Int?, week: LogicalWeek) async throws {
+    public func commitAllocation(week: LogicalWeek, committed: [ActivityID: Int?]) async throws {
         await enter(); defer { leave() }
-        _ = try await activity(activityID)
-        guard minutes.map({ $0 >= 0 }) ?? true else { throw Week168ServiceError.invalidMinutes }
         let budgets = try await resolved(week)
-        guard let old = budgets.budget(for: activityID) else {
-            throw Week168ServiceError.budgetNotSet
+        let tree = try await tree()
+        for (id, minutes) in committed {
+            guard tree.node(id) != nil else { throw Week168ServiceError.activityNotFound(id) }
+            guard minutes.map({ $0 >= 0 }) ?? true else { throw Week168ServiceError.invalidMinutes }
+            guard budgets.budget(for: id) != nil else { throw Week168ServiceError.budgetNotSet }
         }
-        let candidate = BudgetEntry(activityID: activityID, effectiveFrom: week, direction: old.direction,
-                                    wishMinutes: old.wishMinutes, committedMinutes: minutes)
-        var entries = try await store.loadBudgets().filter {
-            !($0.activityID == activityID && $0.effectiveFrom == week)
+        let allocation = AllocationValidator.reportApplying(
+            tree: tree, budgets: budgets, week: week, proposedCommitted: committed)
+        guard allocation.canCommit else { throw Week168ServiceError.allocationRejected(allocation) }
+        var proposedEntries = try await store.loadBudgets()
+        for (id, minutes) in committed {
+            guard let entry = budgets.budget(for: id), entry.committedMinutes != minutes else { continue }
+            proposedEntries.removeAll { $0.activityID == id && $0.effectiveFrom == week }
+            proposedEntries.append(BudgetEntry(activityID: id, effectiveFrom: week, direction: entry.direction,
+                                              wishMinutes: entry.wishMinutes, committedMinutes: minutes))
         }
-        entries.append(candidate)
-        let proposed = try await BudgetResolver.resolve(week: week, entries: entries, capacities: store.loadCapacities())
-        let report = try await AllocationValidator.report(tree: tree(), budgets: proposed, week: week)
-        guard report.canCommit else { throw Week168ServiceError.allocationRejected(report) }
-        if old.committedMinutes != minutes { try await store.upsertBudget(candidate) }
+        let proposedBudgets = BudgetResolver.resolve(week: week, entries: proposedEntries,
+            capacities: [CapacityEntry(effectiveFrom: week, totalMinutes: budgets.capacityMinutes)])
+        let now = clock.now()
+        let refresh = try await prepareAlarmRefresh(cancel: store.loadRunningEntry(), now: now,
+            allocation: (tree, proposedBudgets, allocation.commitmentState(hasCommitmentRecord: true), proposedEntries))
+        try await store.commitAllocation(week: week, committed: committed, at: now)
+        await refresh()
+    }
+
+    public func uncommitAllocation(week: LogicalWeek) async throws {
+        await enter(); defer { leave() }
+        try await store.deleteCommitment(for: week)
         try await refreshCurrent()
+    }
+
+    public func previewAllocation(week: LogicalWeek, committed: [ActivityID: Int?]) async throws -> AllocationReport {
+        await enter(); defer { leave() }
+        return try await AllocationValidator.reportApplying(
+            tree: tree(), budgets: resolved(week), week: week, proposedCommitted: committed)
     }
 
     public func requiredReductionForParent(_ id: ActivityID, newCommitted: Int, week: LogicalWeek) async throws -> (excess: Int, children: [ActivityID]) {
@@ -305,12 +377,13 @@ public actor Week168Service {
         try await refreshAlarms(cancel: old, now: clock.now())
     }
 
-    public func homeSections(recentLimit: Int) async throws -> (sections: HomeSections, summaries: [ActivityID: ActivitySummary], isCommitted: Bool) {
+    public func homeSections(recentLimit: Int) async throws -> (sections: HomeSections, summaries: [ActivityID: ActivitySummary], isCommitted: Bool, state: CommitmentState) {
         await enter(); defer { leave() }
         let now = clock.now()
         let week = try await currentWeek(at: now)
         let summaries = try await summary(week, now: now)
-        let committed = try await report(week).canCommit
+        let state = try await commitmentState(week)
+        let committed = state == .committed
         let entries = try await store.loadEntries(overlapping: DateInterval(start: .distantPast, end: .distantFuture))
         // ASSUMPTION: Last use means entry start, across all history, including the running entry.
         let recent = entries.reduce(into: [ActivityID: Date]()) { result, entry in
@@ -318,7 +391,8 @@ public actor Week168Service {
         }
         let sections = try await HomeComposer.compose(tree: tree(), summaries: summaries, lastUsedAt: recent,
                                                        recentLimit: recentLimit, isCommitted: committed)
-        return (sections, summaries, committed)
+        // Consumers show the uncommitted banner only when state == .pending.
+        return (sections, summaries, committed, state)
     }
 
     public func weeklyReport(for week: LogicalWeek) async throws -> [ActivityID: ActivitySummary] {

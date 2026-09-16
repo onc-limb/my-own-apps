@@ -26,7 +26,7 @@ public actor Week168Store {
     public static func makeContainer(at url: URL) throws -> ModelContainer {
         let schema = Schema([
             StoredActivity.self, StoredBudgetEntry.self, StoredCapacityEntry.self,
-            StoredTimeEntry.self, StoredCalendarSettings.self
+            StoredTimeEntry.self, StoredCalendarSettings.self, StoredCommitmentRecord.self
         ])
         let configuration = ModelConfiguration(schema: schema, url: url, cloudKitDatabase: .none)
         return try ModelContainer(for: schema, configurations: [configuration])
@@ -80,7 +80,7 @@ public actor Week168Store {
         try saveChanges()
     }
 
-    public func upsertActivity(_ activity: Activity) throws {
+    public func upsertActivity(_ activity: Activity, invalidatingCommitmentFor week: LogicalWeek? = nil) throws {
         do {
             var proposed = try loadActivities().filter { $0.id != activity.id }
             proposed.append(activity)
@@ -90,6 +90,7 @@ public actor Week168Store {
             descriptor.fetchLimit = 1
             if let row = try context.fetch(descriptor).first { row.update(activity) }
             else { context.insert(StoredActivity(activity)) }
+            if let week { try removeCommitments { $0 == week } }
             try saveChanges()
         } catch {
             context.rollback()
@@ -129,6 +130,17 @@ public actor Week168Store {
     }
 
     public func upsertBudget(_ entry: BudgetEntry) throws {
+        do {
+            try putBudget(entry)
+            try removeCommitments { $0 == entry.effectiveFrom }
+            try saveChanges()
+        } catch {
+            context.rollback()
+            throw error
+        }
+    }
+
+    private func putBudget(_ entry: BudgetEntry) throws {
         // ASSUMPTION: The natural key is (activity ID, effective week); no gap rows are created.
         let id = entry.activityID.rawValue
         let year = entry.effectiveFrom.startDay.year
@@ -140,21 +152,84 @@ public actor Week168Store {
         descriptor.fetchLimit = 1
         let match = try context.fetch(descriptor).first
         if let match { match.update(entry) } else { context.insert(StoredBudgetEntry(entry)) }
-        try saveChanges()
     }
 
     public func upsertCapacity(_ entry: CapacityEntry) throws {
-        // ASSUMPTION: The natural key is the effective week.
-        let year = entry.effectiveFrom.startDay.year
-        let month = entry.effectiveFrom.startDay.month
-        let day = entry.effectiveFrom.startDay.day
-        var descriptor = FetchDescriptor<StoredCapacityEntry>(predicate: #Predicate {
-            $0.year == year && $0.month == month && $0.day == day
-        })
-        descriptor.fetchLimit = 1
-        let match = try context.fetch(descriptor).first
-        if let match { match.update(entry) } else { context.insert(StoredCapacityEntry(entry)) }
-        try saveChanges()
+        do {
+            // ASSUMPTION: The natural key is the effective week.
+            let year = entry.effectiveFrom.startDay.year
+            let month = entry.effectiveFrom.startDay.month
+            let day = entry.effectiveFrom.startDay.day
+            var descriptor = FetchDescriptor<StoredCapacityEntry>(predicate: #Predicate {
+                $0.year == year && $0.month == month && $0.day == day
+            })
+            descriptor.fetchLimit = 1
+            let match = try context.fetch(descriptor).first
+            if let match { match.update(entry) } else { context.insert(StoredCapacityEntry(entry)) }
+            try removeCommitments { $0 >= entry.effectiveFrom }
+            try saveChanges()
+        } catch {
+            context.rollback()
+            throw error
+        }
+    }
+
+    public func loadCommitment(for week: LogicalWeek) throws -> CommitmentRecord? {
+        try context.fetch(FetchDescriptor<StoredCommitmentRecord>())
+            .map { $0.domainValue() }.first { $0.week == week }
+    }
+
+    public func saveCommitment(_ record: CommitmentRecord) throws {
+        do {
+            try putCommitment(record)
+            try saveChanges()
+        } catch {
+            context.rollback()
+            throw error
+        }
+    }
+
+    public func deleteCommitment(for week: LogicalWeek) throws {
+        do {
+            try removeCommitments { $0 == week }
+            try saveChanges()
+        } catch {
+            context.rollback()
+            throw error
+        }
+    }
+
+    public func commitAllocation(
+        week: LogicalWeek, committed: [ActivityID: Int?], at instant: Date
+    ) throws {
+        do {
+            let budgets = BudgetResolver.resolve(week: week, entries: try loadBudgets(), capacities: [])
+            for (id, minutes) in committed {
+                guard let old = budgets.budget(for: id) else { throw PersistenceError.budgetNotSet(id) }
+                // Preserve sparse history when the resolved value is unchanged.
+                guard old.committedMinutes != minutes else { continue }
+                // ASSUMPTION: A changed inherited budget is materialized in the target week, preserving history.
+                try putBudget(BudgetEntry(activityID: id, effectiveFrom: week, direction: old.direction,
+                                          wishMinutes: old.wishMinutes, committedMinutes: minutes))
+            }
+            try putCommitment(CommitmentRecord(week: week, committedAt: instant))
+            try saveChanges()
+        } catch {
+            context.rollback()
+            throw error
+        }
+    }
+
+    private func removeCommitments(where matches: (LogicalWeek) -> Bool) throws {
+        for row in try context.fetch(FetchDescriptor<StoredCommitmentRecord>())
+            where matches(row.domainValue().week) {
+            context.delete(row)
+        }
+    }
+
+    private func putCommitment(_ record: CommitmentRecord) throws {
+        try removeCommitments { $0 == record.week }
+        context.insert(StoredCommitmentRecord(record))
     }
 
     public func saveEntry(_ entry: TimeEntry, now: Date) throws {

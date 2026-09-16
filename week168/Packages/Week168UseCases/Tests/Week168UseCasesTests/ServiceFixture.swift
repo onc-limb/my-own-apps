@@ -47,7 +47,7 @@ final class ServiceFixture: Sendable {
             // Model the screen flow: choose a wish and direction before allocating.
             try await service.setWish(activityID: id, minutes: minutes, direction: .cap, week: targetWeek)
         }
-        try await service.setCommitted(activityID: id, minutes: minutes, week: targetWeek)
+        try await service.commitAllocation(week: targetWeek, committed: [id: minutes])
     }
 
     func overCapacity(planned: Int? = nil) async throws -> Activity {

@@ -10,7 +10,7 @@ struct AllocationTests {
         try await f.service.setCapacity(minutes: 1200, from: f.week)
         try await f.service.setWish(activityID: a.id, minutes: 540, direction: .goal, week: f.week)
         try await f.service.setWish(activityID: b.id, minutes: 780, direction: .goal, week: f.week)
-        let report = try await f.service.allocationReport(for: f.week)
+        let report = try await f.service.allocationReport(for: f.week).report
         #expect(report.totalWishMinutes == 1320)
         #expect(report.wishOverflowMinutes == 120)
         #expect(try await f.store.loadBudgets().count == 2)
@@ -39,7 +39,7 @@ struct AllocationTests {
         try await f.commit(a.id, 540)
         await #expect(throws: Week168ServiceError.self) { try await f.commit(b.id, 780) }
         try await f.commit(b.id, 660)
-        let report = try await f.service.allocationReport(for: f.week)
+        let report = try await f.service.allocationReport(for: f.week).report
         #expect(report.canCommit)
         #expect(report.totalCommittedMinutes == 1200)
     }
@@ -81,6 +81,6 @@ struct AllocationTests {
         let before = try await f.store.loadBudgets()
         await #expect(throws: Week168ServiceError.self) { try await f.commit(a.id, 120) }
         #expect(try await f.store.loadBudgets() == before)
-        #expect(try await f.service.allocationReport(for: f.week).totalCommittedMinutes == 60)
+        #expect(try await f.service.allocationReport(for: f.week).report.totalCommittedMinutes == 60)
     }
 }
