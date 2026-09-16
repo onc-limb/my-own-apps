@@ -2696,6 +2696,127 @@
           }
         }
       }
+    },
+    "notifications.planned.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "予定の時間になりました"
+          }
+        }
+      }
+    },
+    "notifications.planned.body": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ の予定時間に達しました。計測は続いています。"
+          }
+        }
+      }
+    },
+    "notifications.budget.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "今週の予算を使い切りました"
+          }
+        }
+      }
+    },
+    "notifications.budget.body": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ の今週の予算に達しました。"
+          }
+        }
+      }
+    },
+    "notifications.warning": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "通知が許可されていないため、アラームは鳴りません"
+          }
+        }
+      }
+    },
+    "notifications.openSettings": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "設定を開く"
+          }
+        }
+      }
+    },
+    "notifications.allowed": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "通知: 許可済み"
+          }
+        }
+      }
+    },
+    "notifications.notAllowed": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "通知: 許可されていません"
+          }
+        }
+      }
+    },
+    "notifications.error.refresh": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "通知を更新できませんでした。計測は続いています。"
+          }
+        }
+      }
+    },
+    "notifications.error.authorization": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "通知の許可を確認できませんでした。計測は続いています。"
+          }
+        }
+      }
+    },
+    "notifications.error.schedule": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "通知を予約できませんでした。計測は続いています。"
+          }
+        }
+      }
     }
   },
   "version": "1.0"

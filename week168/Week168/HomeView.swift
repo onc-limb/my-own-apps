@@ -6,6 +6,7 @@ struct HomeView: View {
     @Bindable var model: HomeViewModel
     let openAllocation: () -> Void
     @Environment(\.scenePhase) private var scenePhase
+    @Environment(\.notifications) private var notifications
     @State private var showingPlan = false
 
     var body: some View {
@@ -135,6 +136,17 @@ struct HomeView: View {
                     HomeTime.minutes(minutes), HomeTime.minutes(abs(remaining))))
             } else {
                 Text("timer.noPlan")
+            }
+            if let notifications {
+                if notifications.showsWarning(for: running) {
+                    VStack(alignment: .leading, spacing: 8) {
+                        Label("notifications.warning", systemImage: "bell.slash")
+                        OpenNotificationSettingsButton()
+                    }
+                }
+                if let issue = notifications.issueKey {
+                    Label(LocalizedStringKey(issue), systemImage: "exclamationmark.triangle")
+                }
             }
             ViewThatFits(in: .horizontal) {
                 HStack { timerActions.fixedSize() }

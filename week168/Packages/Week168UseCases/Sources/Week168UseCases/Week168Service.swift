@@ -132,6 +132,12 @@ public actor Week168Service {
         await refresh()
     }
 
+    /// Refresh the running entry's notifications using the current premises.
+    public func refreshAlarms() async throws {
+        await enter(); defer { leave() }
+        try await refreshCurrent()
+    }
+
     private func refreshCurrent() async throws {
         try await refreshAlarms(cancel: store.loadRunningEntry(), now: clock.now())
     }
