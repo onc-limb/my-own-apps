@@ -44,31 +44,43 @@ enum AccessibilityPresentation {
         return parts.joined(separator: ", ")
     }
 
-    static func reviewDetails(_ row: ReviewActivity, pending: Bool) -> [String] {
-        if row.isOutside { return [String(localized: "a11y.outside")] }
-        var parts: [String] = []
+    enum ReviewDetailKind { case plain, deviation }
+
+    struct ReviewDetail {
+        let kind: ReviewDetailKind
+        let text: String
+
+        init(_ text: String, kind: ReviewDetailKind = .plain) {
+            self.kind = kind
+            self.text = text
+        }
+    }
+
+    static func reviewDetails(_ row: ReviewActivity, pending: Bool) -> [ReviewDetail] {
+        if row.isOutside { return [ReviewDetail(String(localized: "a11y.outside"))] }
+        var parts: [ReviewDetail] = []
         if let budget = row.committedMinutes {
-            parts.append(reviewText("review.budget", budget))
+            parts.append(ReviewDetail(reviewText("review.budget", budget)))
             if let direction = row.direction {
-                parts.append(String(localized: String.LocalizationValue(direction == .cap ? "allocation.cap" : "allocation.goal")))
+                parts.append(ReviewDetail(String(localized: String.LocalizationValue(direction == .cap ? "allocation.cap" : "allocation.goal"))))
             }
             if row.status == "over" || row.status == "unmet" {
-                parts.append(reviewText(row.status == "over" ? "review.over" : "review.unmet", row.deviationMinutes))
+                parts.append(ReviewDetail(reviewText(row.status == "over" ? "review.over" : "review.unmet", row.deviationMinutes), kind: .deviation))
             } else {
-                parts.append(String(localized: String.LocalizationValue(row.status == "within" ? "review.within" : "review.notJudged")))
+                parts.append(ReviewDetail(String(localized: String.LocalizationValue(row.status == "within" ? "review.within" : "review.notJudged"))))
                 if row.status == "within" {
-                    parts.append(text("a11y.remaining", HomeTime.minutes(max(0, budget - row.totalMinutes))))
+                    parts.append(ReviewDetail(text("a11y.remaining", HomeTime.minutes(max(0, budget - row.totalMinutes)))))
                 }
             }
-        } else { parts.append(String(localized: "review.shared")) }
-        if pending { parts.append(String(localized: "a11y.pending")) }
+        } else { parts.append(ReviewDetail(String(localized: "review.shared"))) }
+        if pending { parts.append(ReviewDetail(String(localized: "a11y.pending"))) }
         return parts
     }
 
     static func reviewValue(_ row: ReviewActivity, pending: Bool) -> String {
         var parts = [reviewText("review.actual", row.totalMinutes), reviewText("review.own", row.ownMinutes)]
         if row.path.count > 1 { parts.insert(text("a11y.path", row.path.joined(separator: ", ")), at: 0) }
-        return (parts + reviewDetails(row, pending: pending)).joined(separator: ", ")
+        return (parts + reviewDetails(row, pending: pending).map(\.text)).joined(separator: ", ")
     }
 
     static func runningValue(_ running: TimeEntry, snapshot: HomeSnapshot, at now: Date) -> String {

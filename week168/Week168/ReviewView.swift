@@ -19,7 +19,7 @@ struct ReviewView: View {
                     Text("review.monthExplanation").font(.footnote)
                 }
                 if model.weeks.contains(where: { !$0.isCommitted }) {
-                    Text("review.pending").font(.footnote)
+                    Text(model.period == .week ? "review.pendingWeek" : "review.pending").font(.footnote)
                 }
             }.disabled(model.isBusy)
             Section("review.budgeted") {
@@ -32,13 +32,13 @@ struct ReviewView: View {
                 Section("review.weekDetails") {
                     ForEach(model.weeks, id: \.week) { week in
                         DisclosureGroup(reviewDay(week.week.startDay)) {
-                            if !week.isCommitted { Text("review.pending") }
+                            if !week.isCommitted { Text("review.pendingWeek") }
                             rows(week.activities, pending: !week.isCommitted)
                         }
                     }
                 }
             }
-            if model.isBusy { ProgressView("home.loading") }
+            if model.isBusy { ProgressView("common.loading") }
             if let issue = model.issue {
                 Section {
                     Text(issue)
@@ -71,8 +71,15 @@ struct ReviewView: View {
                 Text(reviewText("review.actual", row.totalMinutes))
                 Text(reviewText("review.own", row.ownMinutes)).font(.footnote)
                 ForEach(Array(AccessibilityPresentation.reviewDetails(row, pending: pending).enumerated()), id: \.offset) { _, detail in
-                    Text(detail)
-                        .foregroundStyle(row.status == "over" || row.status == "unmet" ? Color.red : Color.primary)
+                    if detail.kind == .deviation {
+                        Label {
+                            Text(detail.text)
+                        } icon: { Image(systemName: "exclamationmark.circle") }
+                        .font(.subheadline.bold())
+                        .foregroundStyle(.red)
+                    } else {
+                        Text(detail.text).foregroundStyle(.primary)
+                    }
                 }
             }
             .fixedSize(horizontal: false, vertical: true)

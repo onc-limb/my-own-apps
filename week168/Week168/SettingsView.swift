@@ -49,7 +49,7 @@ struct SettingsView: View {
                 Button("settings.export", systemImage: "square.and.arrow.up") { Task { await model.export() } }
                 Button("settings.import", systemImage: "square.and.arrow.down") { importing = true }
             }
-            if model.isBusy { ProgressView("home.loading") }
+            if model.isBusy { ProgressView("common.loading") }
             if let notice = model.notice { Text(notice).accessibilityAddTraits(.updatesFrequently) }
             if let issue = model.issue {
                 Section {

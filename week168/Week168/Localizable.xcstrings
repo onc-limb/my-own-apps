@@ -195,7 +195,18 @@
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "活動はまだありません。活動の作成機能は今後の実装で利用できます。"
+            "value": "活動はまだありません。活動タブで作成できます。"
+          }
+        }
+      }
+    },
+    "common.loading": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "読み込んでいます"
           }
         }
       }
@@ -690,7 +701,7 @@
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "今週の配分は確定済みです"
+            "value": "配分は確定済みです"
           }
         }
       }
@@ -701,7 +712,7 @@
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "確定値の編集は下書きです。週を移動してもこの起動中は保持されます。「今週の配分を確定する」でまとめて保存します。"
+            "value": "確定値の編集は下書きです。週を移動してもこの起動中は保持されます。「配分を確定する」でまとめて保存します。"
           }
         }
       }
@@ -723,7 +734,7 @@
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "今週の配分を確定する"
+            "value": "配分を確定する"
           }
         }
       }
@@ -1207,7 +1218,7 @@
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "今週の配分は未確定です"
+            "value": "配分は未確定です"
           }
         }
       }
@@ -2121,6 +2132,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "未確定の週を含むため、期間全体の超過・未達は判定しません。週別の結果も確認できます。"
+          }
+        }
+      }
+    },
+    "review.pendingWeek": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "この週の配分は未確定のため、超過・未達は判定しません。"
           }
         }
       }
