@@ -226,3 +226,26 @@ private struct SilentAlarms: AlarmScheduling {
     func scheduleBudgetExhaustionNotice(activityID: ActivityID, activityName: String, fireAt: Date) async {}
     func cancelAll(for entryID: EntryID) async {}
 }
+
+
+extension AllocationViewModelTests {
+    func testAccessibilityAllocationIncludesBothValuesOverflowAndParent() async throws {
+        let f = try Fixture()
+        let parent = try await f.activity("Parent")
+        let child = try await f.activity("Child", parent: parent.id)
+        try await f.budget(parent.id, wish: 60, committed: 60)
+        try await f.budget(child.id, wish: 120, committed: 120)
+        await f.model.refresh(at: f.now)
+        let parentNode = try XCTUnwrap(f.model.node(parent.id))
+        let parentValue = allocationRowValue(model: f.model, node: parentNode)
+        XCTAssertTrue(parentValue.contains("希望 1:00"))
+        XCTAssertTrue(parentValue.contains("確定 1:00"))
+        XCTAssertTrue(parentValue.contains("超過 −1:00"))
+        XCTAssertTrue(parentValue.contains("未確定"))
+        let childNode = try XCTUnwrap(f.model.node(child.id))
+        let childValue = allocationRowValue(model: f.model, node: childNode)
+        XCTAssertTrue(childValue.contains("親の活動：Parent"))
+        XCTAssertTrue(childValue.contains("希望 2:00"))
+        XCTAssertTrue(childValue.contains("確定 2:00"))
+    }
+}

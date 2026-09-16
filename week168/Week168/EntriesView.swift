@@ -35,12 +35,20 @@ struct EntriesView: View {
                             .contentShape(Rectangle())
                         }
                         .buttonStyle(.plain)
+                        .accessibilityElement(children: .combine)
+                        .accessibilityLabel(AccessibilityPresentation.text("a11y.editEntry", model.name(entry.activityID)))
+                        .accessibilityValue([model.timestamp(entry.startedAt),
+                            entry.endedAt.map { managementText("entries.endDisplay", model.timestamp($0)) }
+                                ?? String(localized: "entries.running"), entry.note].joined(separator: ", "))
                         .contextMenu {
                             Button("action.edit") { model.issue = nil; editor = EntryEditorRoute(entry: entry) }
+                                .accessibilityLabel(AccessibilityPresentation.text("a11y.editEntry", model.name(entry.activityID)))
                             Button("action.delete", role: .destructive) { deletion = entry }
+                                .accessibilityLabel(AccessibilityPresentation.text("a11y.deleteEntry", model.name(entry.activityID), model.timestamp(entry.startedAt)))
                         }
                         .swipeActions {
                             Button("action.delete", role: .destructive) { deletion = entry }
+                                .accessibilityLabel(AccessibilityPresentation.text("a11y.deleteEntry", model.name(entry.activityID), model.timestamp(entry.startedAt)))
                         }
                     }
                 }
@@ -107,7 +115,7 @@ private struct EntryEditor: View {
         Form {
             if model.activities.isEmpty { Text("entries.noActivities") }
             Section("entries.details") {
-                Picker("entries.activity", selection: $activity) {
+                AccessiblePicker("entries.activity", selection: $activity) {
                     Text("entries.selectActivity").tag(Optional<ActivityID>.none)
                     ForEach(model.activities) { item in
                         // Archived activities remain available for historical manual records.
@@ -115,13 +123,13 @@ private struct EntryEditor: View {
                             .tag(Optional(item.id))
                     }
                 }
-                DatePicker("entries.start", selection: $start, displayedComponents: [.date, .hourAndMinute])
+                AccessibleDatePicker("entries.start", selection: $start, displayedComponents: [.date, .hourAndMinute])
                 if original != nil && original?.endedAt == nil {
                     Label("entries.running", systemImage: "record.circle")
                     Toggle("entries.setEnd", isOn: $hasEnd)
                 }
                 if hasEnd {
-                    DatePicker("entries.end", selection: $end, displayedComponents: [.date, .hourAndMinute])
+                    AccessibleDatePicker("entries.end", selection: $end, displayedComponents: [.date, .hourAndMinute])
                 }
                 TextField("entries.note", text: $note, axis: .vertical)
             }
@@ -145,6 +153,7 @@ private struct EntryEditor: View {
                                                  end: hasEnd ? end : nil, note: note) { dismiss() }
                     }
                 }.disabled(model.isBusy || activity == nil)
+                .accessibilityLabel(Text("a11y.saveEntry"))
             }
         }
         .confirmationDialog("entries.deleteTitle", isPresented: $confirmingDelete, titleVisibility: .visible) {

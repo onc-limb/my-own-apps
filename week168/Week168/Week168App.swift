@@ -157,6 +157,7 @@ struct OpenNotificationSettingsButton: View {
         Button("notifications.openSettings") {
             if let url = URL(string: UIApplication.openSettingsURLString) { openURL(url) }
         }
+        .accessibilityLabel(Text("a11y.notificationSettings"))
     }
 }
 

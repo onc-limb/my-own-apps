@@ -7,15 +7,12 @@ struct ReviewView: View {
     var body: some View {
         List {
             Section {
-                Picker("review.period", selection: $model.period) {
+                AccessiblePicker("review.period", selection: $model.period) {
                     Text("review.week").tag(ReviewViewModel.Period.week)
                     Text("review.month").tag(ReviewViewModel.Period.month)
                 }
                 Text(model.title).font(.title2.bold())
-                ViewThatFits(in: .horizontal) {
-                    HStack { navigationButtons }
-                    VStack(alignment: .leading) { navigationButtons }
-                }
+                AccessibleStack { navigationButtons }
                 .buttonStyle(.borderless)
                 if model.period == .month {
                     Text(reviewText("review.weekCount", model.weeks.count))
@@ -26,17 +23,17 @@ struct ReviewView: View {
                 }
             }.disabled(model.isBusy)
             Section("review.budgeted") {
-                rows(model.activities.filter { !$0.isOutside })
+                rows(model.activities.filter { !$0.isOutside }, pending: model.weeks.contains { !$0.isCommitted })
             }
             Section("review.outside") {
-                rows(model.activities.filter(\.isOutside))
+                rows(model.activities.filter(\.isOutside), pending: model.weeks.contains { !$0.isCommitted })
             }
             if model.period == .month {
                 Section("review.weekDetails") {
                     ForEach(model.weeks, id: \.week) { week in
                         DisclosureGroup(reviewDay(week.week.startDay)) {
                             if !week.isCommitted { Text("review.pending") }
-                            rows(week.activities)
+                            rows(week.activities, pending: !week.isCommitted)
                         }
                     }
                 }
@@ -63,7 +60,7 @@ struct ReviewView: View {
         Button("review.next") { Task { await model.move(1) } }
     }
 
-    @ViewBuilder private func rows(_ values: [ReviewActivity]) -> some View {
+    @ViewBuilder private func rows(_ values: [ReviewActivity], pending: Bool) -> some View {
         if values.isEmpty { Text("review.empty").foregroundStyle(.secondary) }
         ForEach(values) { row in
             VStack(alignment: .leading, spacing: 8) {
@@ -73,24 +70,16 @@ struct ReviewView: View {
                 }
                 Text(reviewText("review.actual", row.totalMinutes))
                 Text(reviewText("review.own", row.ownMinutes)).font(.footnote)
-                if !row.isOutside {
-                    if let budget = row.committedMinutes {
-                        Text(reviewText("review.budget", budget))
-                        if let direction = row.direction {
-                            Text(LocalizedStringKey(direction == .cap ? "allocation.cap" : "allocation.goal"))
-                        }
-                        if row.status == "over" || row.status == "unmet" {
-                            Label(reviewText(row.status == "over" ? "review.over" : "review.unmet", row.deviationMinutes),
-                                  systemImage: "exclamationmark.circle")
-                                .font(.subheadline.bold()).foregroundStyle(.orange)
-                        } else {
-                            Text(LocalizedStringKey(row.status == "within" ? "review.within" : "review.notJudged"))
-                        }
-                    } else { Text("review.shared") }
+                ForEach(Array(AccessibilityPresentation.reviewDetails(row, pending: pending).enumerated()), id: \.offset) { _, detail in
+                    Text(detail)
+                        .foregroundStyle(row.status == "over" || row.status == "unmet" ? Color.red : Color.primary)
                 }
             }
+            .fixedSize(horizontal: false, vertical: true)
             .padding(.vertical, 6)
             .accessibilityElement(children: .combine)
+            .accessibilityLabel(row.activity.name)
+            .accessibilityValue(AccessibilityPresentation.reviewValue(row, pending: pending))
         }
     }
 }

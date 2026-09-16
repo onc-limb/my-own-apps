@@ -4,6 +4,7 @@ import Week168Domain
 struct ActivitiesView: View {
     @Bindable var model: ActivitiesEntriesViewModel
     @Environment(\.scenePhase) private var scenePhase
+    @Environment(\.dynamicTypeSize) private var size
     @State private var editor: ActivityEditorRoute?
 
     var body: some View {
@@ -19,47 +20,17 @@ struct ActivitiesView: View {
                         model.issue = nil
                         editor = ActivityEditorRoute(activity: activity)
                     } label: {
-                        VStack(alignment: .leading, spacing: 6) {
-                            HStack(alignment: .top) {
-                                Image(systemName: "circle.fill")
-                                    .foregroundStyle(ActivityColor.color(activity.colorHex))
-                                    .accessibilityHidden(true)
-                                Text(activity.name).font(.headline).foregroundStyle(.primary)
-                            }
-                            if activity.parentID != nil {
-                                Text(model.path(activity)).font(.caption).foregroundStyle(.secondary)
-                            }
-                            BudgetModeBadge(choice: ActivityBudgetChoice(activity.budgetMode))
-                            if activity.isArchived {
-                                Label("activities.archived", systemImage: "archivebox")
-                                    .font(.caption).foregroundStyle(.secondary)
-                            }
-                        }
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .contentShape(Rectangle())
+                        activityLabel(activity)
                     }
                     .buttonStyle(.plain)
-                    Menu {
-                        Button("action.edit") { model.issue = nil; editor = ActivityEditorRoute(activity: activity) }
-                        Button(LocalizedStringKey(activity.isArchived ? "activities.unarchive" : "activities.archive")) {
-                            Task { await model.archive(activity) }
-                        }
-                        Button("activities.moveUp", systemImage: "arrow.up") {
-                            Task { await model.move(activity, offset: -1) }
-                        }.disabled(!model.canMove(activity, offset: -1))
-                        Button("activities.moveDown", systemImage: "arrow.down") {
-                            Task { await model.move(activity, offset: 1) }
-                        }.disabled(!model.canMove(activity, offset: 1))
-                        Button("action.delete", role: .destructive) {
-                            Task { await model.prepareDeletion(activity) }
-                        }
-                    } label: {
-                        Label("activities.actions", systemImage: "ellipsis.circle")
-                    }
+                    .accessibilityElement(children: .combine)
+                    .accessibilityLabel(AccessibilityPresentation.text("a11y.editActivity", activity.name))
+                    .accessibilityValue(activityValue(activity))
+                    activityActions(activity)
                 }
                 // ASSUMPTION: Cap visual indentation to preserve readable text at arbitrary depth;
                 // the complete ancestor path above still identifies every level.
-                .padding(.leading, CGFloat(min(model.tree?.ancestors(of: activity.id).count ?? 0, 4)) * 12)
+                .padding(.leading, size.isAccessibilitySize ? 0 : CGFloat(min(model.tree?.ancestors(of: activity.id).count ?? 0, 4)) * 12)
             }
             .disabled(model.isBusy)
         }
@@ -86,6 +57,67 @@ struct ActivitiesView: View {
         .onChange(of: scenePhase) { _, phase in
             if phase == .active && editor == nil { Task { await model.refresh() } }
         }
+    }
+
+    private func activityLabel(_ activity: Activity) -> some View {
+        VStack(alignment: .leading, spacing: 6) {
+            HStack(alignment: .top) {
+                Image(systemName: "circle.fill")
+                    .foregroundStyle(ActivityColor.color(activity.colorHex))
+                    .accessibilityHidden(true)
+                Text(activity.name).font(.headline).foregroundStyle(.primary)
+            }
+            if activity.parentID != nil {
+                Text(model.path(activity)).font(.caption).foregroundStyle(.secondary)
+            }
+            BudgetModeBadge(choice: ActivityBudgetChoice(activity.budgetMode))
+            if let tree = model.tree, AccessibilityPresentation.outside(activity, tree: tree) {
+                Text("a11y.outside")
+            }
+            if activity.isArchived {
+                Label("activities.archived", systemImage: "archivebox")
+                    .font(.caption).foregroundStyle(.secondary)
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .contentShape(Rectangle())
+        .fixedSize(horizontal: false, vertical: true)
+    }
+
+    private func activityValue(_ activity: Activity) -> String {
+        let ancestors = model.tree?.ancestors(of: activity.id).reversed().compactMap { model.tree?.node($0)?.name } ?? []
+        let path = AccessibilityPresentation.text("a11y.path", (ancestors + [activity.name]).joined(separator: ", "))
+        let mode = String(localized: String.LocalizationValue(ActivityBudgetChoice(activity.budgetMode).titleKey))
+        let archived = activity.isArchived ? ", " + String(localized: "activity.archived") : ""
+        let outside = model.tree.map { AccessibilityPresentation.outside(activity, tree: $0) } == true
+            ? ", " + String(localized: "a11y.outside") : ""
+        return path + ", " + mode + archived + outside
+    }
+
+    private func activityActions(_ activity: Activity) -> some View {
+        Menu {
+            Button("action.edit") { model.issue = nil; editor = ActivityEditorRoute(activity: activity) }
+                .accessibilityLabel(AccessibilityPresentation.text("a11y.editActivity", activity.name))
+            Button(LocalizedStringKey(activity.isArchived ? "activities.unarchive" : "activities.archive")) {
+                Task { await model.archive(activity) }
+            }
+            .accessibilityLabel(AccessibilityPresentation.text("a11y.field", activity.name, String(localized: String.LocalizationValue(activity.isArchived ? "activities.unarchive" : "activities.archive"))))
+            Button("activities.moveUp", systemImage: "arrow.up") {
+                Task { await model.move(activity, offset: -1) }
+            }.disabled(!model.canMove(activity, offset: -1))
+            .accessibilityLabel(AccessibilityPresentation.text("a11y.field", activity.name, String(localized: "activities.moveUp")))
+            Button("activities.moveDown", systemImage: "arrow.down") {
+                Task { await model.move(activity, offset: 1) }
+            }.disabled(!model.canMove(activity, offset: 1))
+            .accessibilityLabel(AccessibilityPresentation.text("a11y.field", activity.name, String(localized: "activities.moveDown")))
+            Button("action.delete", role: .destructive) {
+                Task { await model.prepareDeletion(activity) }
+            }
+            .accessibilityLabel(AccessibilityPresentation.text("a11y.field", activity.name, String(localized: "action.delete")))
+        } label: {
+            Label("activities.actions", systemImage: "ellipsis.circle")
+        }
+        .accessibilityLabel(AccessibilityPresentation.text("a11y.field", activity.name, String(localized: "activities.actions")))
     }
 }
 
@@ -121,16 +153,17 @@ private struct ActivityEditor: View {
     var body: some View {
         Form {
             Section("activities.details") {
-                TextField("activities.name", text: $name)
+                AccessibleTextField("activities.name", text: $name)
                 if original == nil {
-                    Picker("activities.parent", selection: $parent) {
+                    AccessiblePicker("activities.parent", selection: $parent) {
                         Text("activities.noParent").tag(Optional<ActivityID>.none)
                         ForEach(model.activities) { activity in
                             Text(model.path(activity)).tag(Optional(activity.id))
                         }
                     }
                 } else {
-                    LabeledContent("activities.parent") {
+                    AccessibleStack {
+                        Text("activities.parent")
                         Text(parent.flatMap { model.tree?.node($0) }.map { model.path($0) }
                              ?? String(localized: "activities.noParent"))
                     }
@@ -138,7 +171,7 @@ private struct ActivityEditor: View {
                 }
             }
             Section("activities.budgetMode") {
-                Picker("activities.budgetMode", selection: $budget) {
+                AccessiblePicker("activities.budgetMode", selection: $budget) {
                     ForEach(ActivityBudgetChoice.allCases) { choice in
                         Text(LocalizedStringKey(choice.titleKey)).tag(choice)
                     }
@@ -151,14 +184,14 @@ private struct ActivityEditor: View {
                 }
             }
             Section {
-                TextField("activities.defaultMinutes", text: $minutes).keyboardType(.numberPad)
+                AccessibleTextField("activities.defaultMinutes", text: $minutes).keyboardType(.numberPad)
             } header: {
                 Text("activities.defaultPlan")
             } footer: {
                 Text("activities.defaultPlanHint")
             }
             Section("activities.color") {
-                Picker("activities.color", selection: $color) {
+                AccessiblePicker("activities.color", selection: $color) {
                     ForEach(ActivityColor.options, id: \.hex) { option in
                         Label {
                             Text(LocalizedStringKey(option.key))
@@ -188,6 +221,7 @@ private struct ActivityEditor: View {
                                                     mode: budget.mode, minutes: minutes, color: color) { dismiss() }
                     }
                 }.disabled(validation != nil || model.isBusy)
+                .accessibilityLabel(Text("a11y.saveActivity"))
             }
         }
         .disabled(model.isBusy)
