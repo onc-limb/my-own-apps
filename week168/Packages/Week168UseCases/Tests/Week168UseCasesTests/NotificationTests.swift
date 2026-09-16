@@ -29,7 +29,7 @@ struct NotificationTests {
     @Test func 必須17_未確定は予算通知なしでも予定アラームあり() async throws {
         let f = try ServiceFixture()
         let a = try await f.overCapacity(planned: 60)
-        #expect(try await f.service.allocationReport(for: f.week).canCommit == false)
+        #expect(try await f.service.allocationReport(for: f.week).report.canCommit == false)
         _ = try await f.service.startOrSwitch(to: a.id)
         #expect(await f.alarms.budgets.isEmpty)
         #expect(await f.alarms.planned.last?.fireAt == f.clock.now().addingTimeInterval(3600))

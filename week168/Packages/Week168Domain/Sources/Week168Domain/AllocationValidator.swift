@@ -1,4 +1,24 @@
 public enum AllocationValidator {
+    public static func reportApplying(
+        tree: ActivityTree, budgets: ResolvedBudgets, week: LogicalWeek,
+        proposedCommitted: [ActivityID: Int?]
+    ) -> AllocationReport {
+        var entries: [ActivityID: BudgetEntry] = [:]
+        var pending = tree.topLevel()
+        while let activity = pending.popLast() {
+            if var entry = budgets.budget(for: activity.id) {
+                if let proposed = proposedCommitted[activity.id] {
+                    entry.committedMinutes = proposed
+                }
+                entries[activity.id] = entry
+            }
+            pending.append(contentsOf: tree.children(of: activity.id))
+        }
+        return report(tree: tree, budgets: ResolvedBudgets(
+            week: budgets.week, capacityMinutes: budgets.capacityMinutes,
+            entriesByActivity: entries), week: week)
+    }
+
     public static func report(
         tree: ActivityTree, budgets: ResolvedBudgets, week: LogicalWeek
     ) -> AllocationReport {

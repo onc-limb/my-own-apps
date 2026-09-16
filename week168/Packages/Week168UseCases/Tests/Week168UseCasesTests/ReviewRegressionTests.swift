@@ -40,7 +40,7 @@ struct ReviewRegressionTests {
             let before = try await f.store.loadBudgets()
             for minutes: Int? in [60, nil] {
                 do {
-                    try await f.service.setCommitted(activityID: a.id, minutes: minutes, week: f.week)
+                    try await f.service.commitAllocation(week: f.week, committed: [a.id: minutes])
                     Issue.record("Expected budgetNotSet")
                 } catch Week168ServiceError.budgetNotSet { }
                 #expect(try await f.store.loadBudgets() == before)
@@ -57,7 +57,7 @@ struct ReviewRegressionTests {
         let a = try await f.activity()
         let previous = LogicalWeek(startDay: LogicalDay(year: 2026, month: 9, day: 7))
         try await f.service.setWish(activityID: a.id, minutes: 120, direction: .goal, week: previous)
-        try await f.service.setCommitted(activityID: a.id, minutes: 60, week: f.week)
+        try await f.service.commitAllocation(week: f.week, committed: [a.id: 60])
         let current = try #require(try await f.store.loadBudgets().first { $0.effectiveFrom == f.week })
         #expect(current.direction == .goal)
         #expect(current.wishMinutes == 120)
