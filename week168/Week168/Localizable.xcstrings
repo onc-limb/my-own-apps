@@ -650,6 +650,556 @@
           }
         }
       }
+    },
+    "allocation.unused": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "予算を使う活動がありません。希望と方向を保存すると配分を始められます。"
+          }
+        }
+      }
+    },
+    "allocation.confirmed": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "今週の配分は確定済みです"
+          }
+        }
+      }
+    },
+    "allocation.draftNotice": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "確定値の編集は下書きです。週を移動してもこの起動中は保持されます。「今週の配分を確定する」でまとめて保存します。"
+          }
+        }
+      }
+    },
+    "allocation.empty": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "配分する活動がありません。活動画面から活動を追加してください。"
+          }
+        }
+      }
+    },
+    "allocation.commit": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "今週の配分を確定する"
+          }
+        }
+      }
+    },
+    "allocation.previousWeek": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "前の週"
+          }
+        }
+      }
+    },
+    "allocation.thisWeek": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "今週"
+          }
+        }
+      }
+    },
+    "allocation.nextWeek": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "次の週"
+          }
+        }
+      }
+    },
+    "allocation.totalWish": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "やりたいことの合計（希望） %@"
+          }
+        }
+      }
+    },
+    "allocation.totalCommitted": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "確定する配分 %@"
+          }
+        }
+      }
+    },
+    "allocation.capacity": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "週に配分できる時間 %@"
+          }
+        }
+      }
+    },
+    "allocation.remaining": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "配分の残り枠 %@"
+          }
+        }
+      }
+    },
+    "allocation.overflow": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "超過 −%@"
+          }
+        }
+      }
+    },
+    "allocation.wishOverflow": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "希望の超過 %@（希望は保存できます）"
+          }
+        }
+      }
+    },
+    "allocation.cap": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "上限"
+          }
+        }
+      }
+    },
+    "allocation.goal": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "目標"
+          }
+        }
+      }
+    },
+    "allocation.unset": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "未設定"
+          }
+        }
+      }
+    },
+    "allocation.committed": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "確定 %@"
+          }
+        }
+      }
+    },
+    "allocation.notEntered": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "確定 未入力（0 として計算）"
+          }
+        }
+      }
+    },
+    "allocation.wish": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "希望 %@"
+          }
+        }
+      }
+    },
+    "allocation.invalidMinutes": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "確定値を0以上の整数（分）で入力するか、空欄にしてください。希望はそのまま保存できます。"
+          }
+        }
+      }
+    },
+    "allocation.wishUnmet": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "希望に対する未達 %@"
+          }
+        }
+      }
+    },
+    "allocation.childrenTotal": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "子の合計 %@"
+          }
+        }
+      }
+    },
+    "allocation.unallocated": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "未配分 %@"
+          }
+        }
+      }
+    },
+    "allocation.cannotCommit": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "確定できません"
+          }
+        }
+      }
+    },
+    "allocation.reduceTotal": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "週の総枠を超過しています。以下の活動から合計 %@ 減らしてください。"
+          }
+        }
+      }
+    },
+    "allocation.contributor": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@：確定 %@"
+          }
+        }
+      }
+    },
+    "allocation.namedOverflow": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@：子の合計が枠を %@ 超過しています。"
+          }
+        }
+      }
+    },
+    "allocation.adjustHint": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "活動をタップして確定値を調整してください。希望は削らずに残せます。"
+          }
+        }
+      }
+    },
+    "allocation.reallocate": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "子の再配分"
+          }
+        }
+      }
+    },
+    "allocation.newFrame": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "新しい枠 %@"
+          }
+        }
+      }
+    },
+    "allocation.reduction": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "あと減らす必要がある %@"
+          }
+        }
+      }
+    },
+    "allocation.reallocationHint": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "下の子の確定値を減らしてください。子がさらに子を持つ場合は、その枠も一緒に調整できます。希望の保存はいつでもできます。"
+          }
+        }
+      }
+    },
+    "allocation.keepDraft": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "下書きに反映して戻る"
+          }
+        }
+      }
+    },
+    "allocation.closeDraft": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "閉じる（下書きを保持）"
+          }
+        }
+      }
+    },
+    "allocation.wishMinutes": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "希望（分）"
+          }
+        }
+      }
+    },
+    "allocation.direction": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "予算の方向"
+          }
+        }
+      }
+    },
+    "allocation.enableBudgetHint": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "希望と方向を保存すると、この活動を予算ありにします。この活動の予算モードは全週で共通です。"
+          }
+        }
+      }
+    },
+    "allocation.saveWish": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "希望と方向を保存"
+          }
+        }
+      }
+    },
+    "allocation.wishSaved": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "希望と方向を保存しました"
+          }
+        }
+      }
+    },
+    "allocation.committedMinutes": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "確定（分・下書き）"
+          }
+        }
+      }
+    },
+    "allocation.blankIsZero": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "空欄は未入力のまま、0分として数えます。"
+          }
+        }
+      }
+    },
+    "allocation.wishFirst": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "先に希望と方向を保存してください。その後、確定値を編集できます。"
+          }
+        }
+      }
+    },
+    "allocation.error.preview": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "下書きの検証に失敗しました。入力は保持しています。再試行してから確定してください。"
+          }
+        }
+      }
+    },
+    "allocation.error.load": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "配分を読み込めませんでした。再試行してください。繰り返す場合はアプリを開き直してください。"
+          }
+        }
+      }
+    },
+    "allocation.error.wish": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "希望の保存または保存後の更新に失敗しました。入力は保持しています。再試行で保存状態を確認し、必要ならもう一度希望を保存してください。"
+          }
+        }
+      }
+    },
+    "allocation.error.rejected": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "確定時の検証で超過が見つかりました。表示された活動の確定値を減らして、もう一度確定してください。"
+          }
+        }
+      }
+    },
+    "allocation.error.commit": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "配分の確定または保存後の読込に失敗しました。再試行で保存状態を確認し、必要ならもう一度確定してください。"
+          }
+        }
+      }
+    },
+    "allocation.pending": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "今週の配分は未確定です"
+          }
+        }
+      }
+    },
+    "allocation.error.numericRange": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "入力した分数を現在の数値形式で集計できません。入力は保持しています。0以上の整数で、集計可能な分数に修正してください。週や親の枠を超える希望は保存できます。"
+          }
+        }
+      }
     }
   },
   "version": "1.0"

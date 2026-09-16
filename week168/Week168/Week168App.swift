@@ -17,6 +17,7 @@ private struct PlaceholderAlarmScheduler: AlarmScheduling {
 private final class AppDependencies {
     private(set) var container: ModelContainer?
     private(set) var home: HomeViewModel?
+    private(set) var allocation: AllocationViewModel?
 
     init() { open() }
 
@@ -30,9 +31,11 @@ private final class AppDependencies {
             let service = Week168Service(store: store, clock: SystemClock(), alarms: PlaceholderAlarmScheduler())
             self.container = container
             home = HomeViewModel(store: store, service: service)
+            allocation = AllocationViewModel(store: store, service: service)
         } catch {
             // Keep the localized recovery screen visible; never replace persisted data with an empty store.
             home = nil
+            allocation = nil
         }
     }
 }
@@ -44,8 +47,8 @@ struct Week168App: App {
 
     var body: some Scene {
         WindowGroup {
-            if let home = dependencies.home {
-                ContentView(model: home)
+            if let home = dependencies.home, let allocation = dependencies.allocation {
+                ContentView(model: home, allocationModel: allocation)
             } else {
                 ContentUnavailableView {
                     Label("error.title", systemImage: "exclamationmark.triangle")

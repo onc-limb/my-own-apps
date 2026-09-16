@@ -10,11 +10,14 @@ struct HomeView: View {
 
     var body: some View {
         TimelineView(.periodic(from: .now, by: 1)) { context in
+            let logicalWeek = model.snapshot.map {
+                TimeAxis.logicalWeek(of: TimeAxis.logicalDay(of: context.date, settings: $0.settings), settings: $0.settings)
+            }
             ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
                     if let snapshot = model.snapshot {
                         let state = snapshot.presentation(at: context.date)
-                        if !state.isCommitted { allocationBanner(overflowMinutes: state.capacityOverflowMinutes) }
+                        if state.commitmentState == .pending { allocationBanner(overflowMinutes: state.capacityOverflowMinutes) }
                         if let result = model.lastSwitch, let expiry = model.undoExpiresAt, context.date < expiry {
                             undoBar(result, snapshot: snapshot)
                         }
@@ -46,6 +49,9 @@ struct HomeView: View {
                 .frame(maxWidth: 760)
                 .frame(maxWidth: .infinity)
             }
+            .onChange(of: logicalWeek) { oldWeek, newWeek in
+                if oldWeek != nil, newWeek != nil { Task { await model.refresh() } }
+            }
         }
         .navigationTitle("tab.home")
         .background(Color(uiColor: .systemGroupedBackground))
@@ -69,7 +75,11 @@ struct HomeView: View {
     private func allocationBanner(overflowMinutes: Int) -> some View {
         VStack(alignment: .leading, spacing: 12) {
             Label {
-                Text(String(format: String(localized: "allocation.uncommitted"), HomeTime.minutes(overflowMinutes)))
+                if overflowMinutes > 0 {
+                    Text(String(format: String(localized: "allocation.uncommitted"), HomeTime.minutes(overflowMinutes)))
+                } else {
+                    Text("allocation.pending")
+                }
             } icon: { Image(systemName: "exclamationmark.triangle") }
                 .font(.headline)
             Text("allocation.guidance")
