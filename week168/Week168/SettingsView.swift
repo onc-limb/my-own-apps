@@ -3,10 +3,20 @@ import UniformTypeIdentifiers
 
 struct SettingsView: View {
     @Bindable var model: SettingsViewModel
+    @Environment(\.notifications) private var notifications
     @State private var importing = false
 
     var body: some View {
         Form {
+            if let notifications {
+                Section {
+                    Text(LocalizedStringKey(notifications.isAuthorized ? "notifications.allowed" : "notifications.notAllowed"))
+                    if !notifications.isAuthorized { OpenNotificationSettingsButton() }
+                    if let issue = notifications.issueKey {
+                        Label(LocalizedStringKey(issue), systemImage: "exclamationmark.triangle")
+                    }
+                }
+            }
             Section("settings.capacity") {
                 TextField("settings.capacityMinutes", text: $model.capacity).keyboardType(.numberPad)
                 Text("settings.capacityHint").font(.footnote)

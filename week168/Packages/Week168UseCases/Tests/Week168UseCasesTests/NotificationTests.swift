@@ -56,3 +56,36 @@ struct NotificationTests {
         #expect(await f.alarms.budgets.isEmpty)
     }
 }
+
+extension NotificationTests {
+    @Test func 通知貼り直しは進行中の予約を取り消して同じ前提で再予約する() async throws {
+        let f = try ServiceFixture()
+        let activity = try await f.activity(planned: 60)
+        try await f.commit(activity.id, 120)
+        let result = try await f.service.startOrSwitch(to: activity.id)
+        await f.alarms.reset()
+
+        try await f.service.refreshAlarms()
+
+        #expect(await f.alarms.cancelled == [result.started.id])
+        #expect(await f.alarms.planned.count == 1)
+        #expect(await f.alarms.planned.last?.entryID == result.started.id)
+        #expect(await f.alarms.planned.last?.fireAt == f.clock.now().addingTimeInterval(3600))
+        #expect(await f.alarms.budgets.count == 1)
+        #expect(await f.alarms.budgets.last?.fireAt == f.clock.now().addingTimeInterval(7200))
+        #expect(try await f.store.loadRunningEntry() == result.started)
+    }
+
+    @Test func 週が変わった貼り直しは旧予算を取り消し未確定週の予算通知を出さない() async throws {
+        let f = try ServiceFixture()
+        let activity = try await f.activity(planned: 60)
+        try await f.commit(activity.id, 120)
+        let result = try await f.service.startOrSwitch(to: activity.id)
+        await f.alarms.reset()
+        f.clock.advance(minutes: 7 * 24 * 60)
+        try await f.service.refreshAlarms()
+        #expect(await f.alarms.cancelled == [result.started.id])
+        #expect(await f.alarms.budgets.isEmpty)
+        #expect(try await f.store.loadRunningEntry() == result.started)
+    }
+}
