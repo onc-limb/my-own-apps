@@ -142,3 +142,64 @@ final class AccessibilityPresentationTests: XCTestCase {
             capacities: [], settings: settings, committedWeek: committed ? week : nil)
     }
 }
+
+extension AccessibilityPresentationTests {
+    func testReviewOnlyCapExcessDetailIsEmphasized() throws {
+        try assertReviewEmphasis(direction: .cap, actual: 420, budget: 300, expected: "上限を120分超過")
+    }
+
+    func testReviewOnlyGoalShortfallDetailIsEmphasized() throws {
+        try assertReviewEmphasis(direction: .goal, actual: 180, budget: 600, expected: "目標まで420分未達")
+    }
+
+    private func assertReviewEmphasis(direction: BudgetDirection, actual: Int, budget: Int, expected: String) throws {
+        let activity = try XCTUnwrap(runningSnapshot(committed: true).tree.node(id))
+        let row = ReviewActivity(activity: activity, path: [activity.name], isOutside: false,
+            ownMinutes: actual, totalMinutes: actual, committedMinutes: budget, wishMinutes: budget,
+            direction: direction, isJudged: true)
+        let details = AccessibilityPresentation.reviewDetails(row, pending: false)
+        XCTAssertEqual(details.filter { $0.kind == .deviation }.map(\.text), [expected])
+        XCTAssertEqual(details.filter { $0.kind == .plain }.map(\.text),
+                       [reviewText("review.budget", budget), String(localized: String.LocalizationValue(
+                        direction == .cap ? "allocation.cap" : "allocation.goal"))])
+        XCTAssertEqual(AccessibilityPresentation.reviewValue(row, pending: false),
+                       ([reviewText("review.actual", actual), reviewText("review.own", actual)]
+                        + details.map(\.text)).joined(separator: ", "))
+    }
+
+    func testReviewPendingAndOutsideDetailsHaveNoEmphasis() throws {
+        let activity = try XCTUnwrap(runningSnapshot(committed: false).tree.node(id))
+        for outside in [false, true] {
+            let row = ReviewActivity(activity: activity, path: [activity.name], isOutside: outside,
+                ownMinutes: 420, totalMinutes: 420, committedMinutes: 300, wishMinutes: 300,
+                direction: .cap, isJudged: false)
+            XCTAssertTrue(AccessibilityPresentation.reviewDetails(row, pending: true).allSatisfy { $0.kind == .plain })
+        }
+    }
+
+    func testEmptyHomeCopyPointsToImplementedActivityCreation() {
+        let text = String(localized: "home.noActivities")
+        XCTAssertTrue(text.contains("活動タブ"))
+        XCTAssertFalse(text.contains("今後の実装"))
+    }
+
+    func testAllocationCopyDoesNotClaimSelectedWeekIsCurrentWeek() {
+        for key in ["allocation.confirmed", "allocation.pending", "allocation.commit", "allocation.draftNotice"] {
+            let text = String(localized: String.LocalizationValue(key))
+            XCTAssertNotEqual(text, key)
+            XCTAssertFalse(text.contains("今週"), key)
+        }
+    }
+
+    func testWeeklyPendingCopyDoesNotOfferWeeklyBreakdown() {
+        let text = String(localized: "review.pendingWeek")
+        XCTAssertTrue(text.contains("未確定"))
+        XCTAssertFalse(text.contains("期間全体"))
+        XCTAssertFalse(text.contains("週別"))
+        XCTAssertTrue(String(localized: "review.pending").contains("週別"))
+    }
+
+    func testCommonLoadingCopyDoesNotNameHomeScreen() {
+        XCTAssertEqual(String(localized: "common.loading"), "読み込んでいます")
+    }
+}
