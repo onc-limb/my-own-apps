@@ -90,17 +90,6 @@
         }
       }
     },
-    "placeholder.description": {
-      "extractionState": "manual",
-      "localizations": {
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "この画面は今後の実装で利用できるようになります。"
-          }
-        }
-      }
-    },
     "home.idle": {
       "extractionState": "manual",
       "localizations": {
@@ -2164,7 +2153,7 @@
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "枠外の活動"
+            "value": "対象外の活動"
           }
         }
       }
@@ -2230,7 +2219,7 @@
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "実績（子孫を含む）：%ld分"
+            "value": "実績（子孫を含む）：%@"
           }
         }
       }
@@ -2241,7 +2230,7 @@
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "この活動への直接の記録：%ld分"
+            "value": "この活動への直接の記録：%@"
           }
         }
       }
@@ -2252,7 +2241,7 @@
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "確定予算の合計：%ld分"
+            "value": "確定予算の合計：%@"
           }
         }
       }
@@ -2263,7 +2252,7 @@
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "上限を%ld分超過"
+            "value": "上限を%@超過"
           }
         }
       }
@@ -2274,7 +2263,7 @@
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "目標まで%ld分未達"
+            "value": "目標まで%@未達"
           }
         }
       }
@@ -2868,7 +2857,7 @@
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "枠外"
+            "value": "対象外"
           }
         }
       }
@@ -3078,6 +3067,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "通知のOS設定を開く"
+          }
+        }
+      }
+    },
+    "home.createActivity": {
+      "extractionState": "manual",
+      "localizations": {
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "活動を作る"
           }
         }
       }

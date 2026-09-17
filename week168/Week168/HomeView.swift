@@ -5,6 +5,7 @@ import Week168Domain
 struct HomeView: View {
     @Bindable var model: HomeViewModel
     let openAllocation: () -> Void
+    let openActivityCreation: () -> Void
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.notifications) private var notifications
     @State private var showingPlan = false
@@ -214,7 +215,14 @@ struct HomeView: View {
                                  snapshot: HomeSnapshot, state: HomePresentation, hierarchical: Bool) -> some View {
         VStack(alignment: .leading, spacing: 12) {
             Text(title).font(.title2.bold()).accessibilityAddTraits(.isHeader)
-            if ids.isEmpty { Text(empty).foregroundStyle(.secondary) }
+            if ids.isEmpty {
+                Text(empty).foregroundStyle(.secondary)
+                if hierarchical {
+                    Button("home.createActivity", action: openActivityCreation)
+                        .buttonStyle(.borderedProminent)
+                        .accessibilityIdentifier("home.createActivity")
+                }
+            }
             ForEach(ids, id: \.self) { id in
                 if let activity = snapshot.tree.node(id) {
                     if activity.isArchived {

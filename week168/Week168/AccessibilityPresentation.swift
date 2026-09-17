@@ -177,14 +177,16 @@ struct AccessiblePicker<Selection: Hashable, Content: View>: View {
     let title: LocalizedStringKey
     @Binding var selection: Selection
     let accessibilityName: String?
+    let accessibilityIdentifier: String?
     @ViewBuilder let content: () -> Content
     @Environment(\.dynamicTypeSize) private var size
 
-    init(_ title: LocalizedStringKey, selection: Binding<Selection>, accessibilityName: String? = nil,
+    init(_ title: LocalizedStringKey, selection: Binding<Selection>, accessibilityName: String? = nil, accessibilityIdentifier: String? = nil,
          @ViewBuilder content: @escaping () -> Content) {
         self.title = title
         _selection = selection
         self.accessibilityName = accessibilityName
+        self.accessibilityIdentifier = accessibilityIdentifier
         self.content = content
     }
 
@@ -192,15 +194,23 @@ struct AccessiblePicker<Selection: Hashable, Content: View>: View {
         if size.isAccessibilitySize {
             VStack(alignment: .leading, spacing: 8) {
                 Text(title).fixedSize(horizontal: false, vertical: true).accessibilityHidden(true)
-                Picker(title, selection: $selection, content: content)
-                    .labelsHidden()
-                    .accessibilityLabel(accessibilityName.map { Text(verbatim: $0) } ?? Text(title))
+                identifiedPicker.labelsHidden()
             }
         } else {
-            Picker(title, selection: $selection, content: content)
-                .accessibilityLabel(accessibilityName.map { Text(verbatim: $0) } ?? Text(title))
+            identifiedPicker
         }
     }
+
+    @ViewBuilder private var identifiedPicker: some View {
+        let picker = Picker(title, selection: $selection, content: content)
+            .accessibilityLabel(accessibilityName.map { Text(verbatim: $0) } ?? Text(title))
+        if let accessibilityIdentifier {
+            picker.accessibilityIdentifier(accessibilityIdentifier)
+        } else {
+            picker
+        }
+    }
+
 }
 
 struct AccessibleTextField: View {

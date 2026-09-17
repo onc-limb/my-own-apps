@@ -10,16 +10,22 @@ struct ContentView: View {
     let settingsModel: SettingsViewModel
     @State private var selection: AppTab = .home
     @State private var showingSettings = false
+    @State private var activityEditor: ActivityEditorRoute?
 
     var body: some View {
         TabView(selection: $selection) {
             tabNavigation {
-                HomeView(model: model) { selection = .allocation }
+                HomeView(model: model, openAllocation: { selection = .allocation }, openActivityCreation: {
+                    // ASSUMPTION: Reuse the activity tab's existing editor for first-run creation.
+                    managementModel.issue = nil
+                    selection = .activities
+                    activityEditor = ActivityEditorRoute(activity: nil)
+                })
             }
             .tabItem { Label("tab.home", systemImage: "house") }.tag(AppTab.home)
             tabNavigation { AllocationView(model: allocationModel) }
                 .tabItem { Label("tab.allocation", systemImage: "chart.pie") }.tag(AppTab.allocation)
-            tabNavigation { ActivitiesView(model: managementModel) }
+            tabNavigation { ActivitiesView(model: managementModel, editor: $activityEditor) }
                 .tabItem { Label("tab.activities", systemImage: "square.grid.2x2") }.tag(AppTab.activities)
             tabNavigation { EntriesView(model: managementModel) }
                 .tabItem { Label("tab.records", systemImage: "list.bullet.rectangle") }.tag(AppTab.records)
