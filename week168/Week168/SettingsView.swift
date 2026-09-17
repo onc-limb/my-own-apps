@@ -26,9 +26,11 @@ struct SettingsView: View {
                 AccessiblePicker("settings.dayStart", selection: $model.dayStartHour) {
                     ForEach(0...6, id: \.self) { hour in Text(reviewText("settings.hour", hour)).tag(hour) }
                 }
-                AccessiblePicker("settings.weekStart", selection: $model.weekStartWeekday) {
+                AccessiblePicker("settings.weekStart", selection: $model.weekStartWeekday,
+                                 accessibilityIdentifier: "settings.weekStart") {
                     ForEach(1...7, id: \.self) { day in
-                        Text(LocalizedStringKey("settings.weekday.\(day)")).tag(day)
+                        let key = "settings.weekday.\(day)"
+                        Text(LocalizedStringKey(key)).tag(day)
                     }
                 }
                 AccessiblePicker("settings.timeZone", selection: $model.timeZoneIdentifier) {

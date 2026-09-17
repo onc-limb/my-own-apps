@@ -30,7 +30,7 @@ final class AccessibilityPresentationTests: XCTestCase {
         for pending in [false, true] {
             for direction in [BudgetDirection.cap, .goal] {
                 let value = AccessibilityPresentation.status(summary(direction, actual: 180, budget: 60), outside: true, pending: pending)
-                XCTAssertEqual(value, "枠外")
+                XCTAssertEqual(value, "対象外")
                 XCTAssertFalse(value.contains("超過"))
                 XCTAssertFalse(value.contains("未達"))
             }
@@ -74,7 +74,7 @@ final class AccessibilityPresentationTests: XCTestCase {
 
     func testReviewLabelsDistinguishOppositeJudgmentsAndOutside() throws {
         let activity = try XCTUnwrap(runningSnapshot(committed: true).tree.node(id))
-        for (direction, actual, budget, expected) in [(BudgetDirection.cap, 420, 300, "上限を120分超過"), (.goal, 180, 600, "目標まで420分未達")] {
+        for (direction, actual, budget, expected) in [(BudgetDirection.cap, 420, 300, "上限を2:00超過"), (.goal, 180, 600, "目標まで7:00未達")] {
             let row = ReviewActivity(activity: activity, path: ["Study", activity.name], isOutside: false,
                 ownMinutes: actual, totalMinutes: actual, committedMinutes: budget, wishMinutes: budget,
                 direction: direction, isJudged: true)
@@ -87,7 +87,7 @@ final class AccessibilityPresentationTests: XCTestCase {
         let outside = ReviewActivity(activity: activity, path: [activity.name], isOutside: true,
             ownMinutes: 420, totalMinutes: 420, committedMinutes: nil, wishMinutes: nil, direction: nil, isJudged: false)
         let value = AccessibilityPresentation.reviewValue(outside, pending: true)
-        XCTAssertTrue(value.contains("枠外"))
+        XCTAssertTrue(value.contains("対象外"))
         XCTAssertFalse(value.contains("超過"))
         XCTAssertFalse(value.contains("未達"))
     }
@@ -124,7 +124,7 @@ final class AccessibilityPresentationTests: XCTestCase {
         let snapshot = try HomeSnapshot(tree: ActivityTree.build(from: [parent, outside]), entries: [parentEntry, running],
             budgets: base.budgets, capacities: [], settings: base.settings, committedWeek: base.committedWeek)
         let value = AccessibilityPresentation.runningValue(running, snapshot: snapshot, at: now)
-        XCTAssertTrue(value.contains("枠外"))
+        XCTAssertTrue(value.contains("対象外"))
         XCTAssertFalse(value.contains("超過"))
         XCTAssertFalse(value.contains("未達"))
         XCTAssertFalse(value.contains("残り"))
@@ -145,11 +145,11 @@ final class AccessibilityPresentationTests: XCTestCase {
 
 extension AccessibilityPresentationTests {
     func testReviewOnlyCapExcessDetailIsEmphasized() throws {
-        try assertReviewEmphasis(direction: .cap, actual: 420, budget: 300, expected: "上限を120分超過")
+        try assertReviewEmphasis(direction: .cap, actual: 420, budget: 300, expected: "上限を2:00超過")
     }
 
     func testReviewOnlyGoalShortfallDetailIsEmphasized() throws {
-        try assertReviewEmphasis(direction: .goal, actual: 180, budget: 600, expected: "目標まで420分未達")
+        try assertReviewEmphasis(direction: .goal, actual: 180, budget: 600, expected: "目標まで7:00未達")
     }
 
     private func assertReviewEmphasis(direction: BudgetDirection, actual: Int, budget: Int, expected: String) throws {
@@ -201,5 +201,34 @@ extension AccessibilityPresentationTests {
 
     func testCommonLoadingCopyDoesNotNameHomeScreen() {
         XCTAssertEqual(String(localized: "common.loading"), "読み込んでいます")
+    }
+}
+
+extension AccessibilityPresentationTests {
+    func testReviewDurationsMatchHomeFormatInVisibleAndSpokenDetails() throws {
+        let activity = try XCTUnwrap(runningSnapshot(committed: true).tree.node(id))
+        let row = ReviewActivity(activity: activity, path: [activity.name], isOutside: false,
+            ownMinutes: 0, totalMinutes: 317, committedMinutes: 540, wishMinutes: 540,
+            direction: .cap, isJudged: true)
+        XCTAssertEqual(reviewText("review.actual", 317), "実績（子孫を含む）：5:17")
+        XCTAssertEqual(reviewText("review.own", 0), "この活動への直接の記録：0:00")
+        XCTAssertEqual(AccessibilityPresentation.reviewDetails(row, pending: false).map(\.text),
+                       ["確定予算の合計：9:00", "上限", "予算を達成・上限以内", "残り 3:43"])
+        XCTAssertEqual(AccessibilityPresentation.reviewValue(row, pending: false),
+                       "実績（子孫を含む）：5:17, この活動への直接の記録：0:00, 確定予算の合計：9:00, 上限, 予算を達成・上限以内, 残り 3:43")
+        XCTAssertEqual(reviewText("review.over", 120), "上限を2:00超過")
+        XCTAssertEqual(reviewText("review.unmet", 420), "目標まで7:00未達")
+    }
+
+    func testExcludedTerminologyMatchesBadgeAndReviewHeading() {
+        XCTAssertEqual(String(localized: "activities.mode.excluded"), "対象外")
+        XCTAssertEqual(String(localized: "a11y.outside"), "対象外")
+        XCTAssertEqual(String(localized: "review.outside"), "対象外の活動")
+        XCTAssertEqual(AccessibilityPresentation.status(nil, outside: true, pending: true), "対象外")
+    }
+
+    func testReviewCountAndSettingsHourAreNotFormattedAsDurations() {
+        XCTAssertEqual(reviewText("review.weekCount", 5), "対象の週：5週")
+        XCTAssertEqual(reviewText("settings.hour", 4), "4時")
     }
 }

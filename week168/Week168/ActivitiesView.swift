@@ -5,7 +5,7 @@ struct ActivitiesView: View {
     @Bindable var model: ActivitiesEntriesViewModel
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.dynamicTypeSize) private var size
-    @State private var editor: ActivityEditorRoute?
+    @Binding var editor: ActivityEditorRoute?
 
     var body: some View {
         List {
@@ -71,7 +71,8 @@ struct ActivitiesView: View {
                 Text(model.path(activity)).font(.caption).foregroundStyle(.secondary)
             }
             BudgetModeBadge(choice: ActivityBudgetChoice(activity.budgetMode))
-            if let tree = model.tree, AccessibilityPresentation.outside(activity, tree: tree) {
+            if activity.budgetMode != .excluded, let tree = model.tree,
+               AccessibilityPresentation.outside(activity, tree: tree) {
                 Text("a11y.outside")
             }
             if activity.isArchived {
@@ -89,7 +90,8 @@ struct ActivitiesView: View {
         let path = AccessibilityPresentation.text("a11y.path", (ancestors + [activity.name]).joined(separator: ", "))
         let mode = String(localized: String.LocalizationValue(ActivityBudgetChoice(activity.budgetMode).titleKey))
         let archived = activity.isArchived ? ", " + String(localized: "activity.archived") : ""
-        let outside = model.tree.map { AccessibilityPresentation.outside(activity, tree: $0) } == true
+        let outside = activity.budgetMode != .excluded
+            && model.tree.map { AccessibilityPresentation.outside(activity, tree: $0) } == true
             ? ", " + String(localized: "a11y.outside") : ""
         return path + ", " + mode + archived + outside
     }
@@ -121,7 +123,7 @@ struct ActivitiesView: View {
     }
 }
 
-private struct ActivityEditorRoute: Identifiable {
+struct ActivityEditorRoute: Identifiable {
     let id = UUID()
     let activity: Activity?
 }

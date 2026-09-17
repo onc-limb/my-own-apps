@@ -108,7 +108,18 @@ func reviewSum(_ values: [Int]) throws -> Int {
 }
 
 func reviewText(_ key: String, _ arguments: CVarArg...) -> String {
-    String(format: String(localized: String.LocalizationValue(key)), arguments: arguments)
+    let values: [CVarArg]
+    switch key {
+    case "review.actual", "review.own", "review.budget", "review.over", "review.unmet":
+        // Keep visible durations and accessibility values in the same h:mm format.
+        values = arguments.map { value in
+            if let minutes = value as? Int { return HomeTime.minutes(minutes) }
+            return value
+        }
+    default:
+        values = arguments
+    }
+    return String(format: String(localized: String.LocalizationValue(key)), arguments: values)
 }
 
 func reviewDay(_ day: LogicalDay) -> String {

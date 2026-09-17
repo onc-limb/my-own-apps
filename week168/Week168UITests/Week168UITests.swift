@@ -122,3 +122,71 @@ extension Week168UITests {
         stop.tap()
     }
 }
+
+extension Week168UITests {
+    @MainActor
+    func testWeekStartDisplaysLocalizedMondayAndAllWeekdayChoices() {
+        let app = XCUIApplication()
+        app.launchArguments += ["-AppleLanguages", "(ja)", "-AppleLocale", "ja_JP"]
+        app.launch()
+        let gear = app.buttons["settings.open"]
+        XCTAssertTrue(gear.waitForExistence(timeout: 5))
+        gear.tap()
+        XCTAssertTrue(app.navigationBars["設定"].waitForExistence(timeout: 5))
+        let picker = app.descendants(matching: .any).matching(identifier: "settings.weekStart").firstMatch
+        for _ in 0..<6 {
+            if picker.isHittable { break }
+            app.swipeUp()
+        }
+        XCTAssertTrue(picker.waitForExistence(timeout: 5))
+        picker.tap()
+        for weekday in ["日曜日", "月曜日", "火曜日", "水曜日", "木曜日", "金曜日", "土曜日"] {
+            XCTAssertTrue(app.buttons[weekday].waitForExistence(timeout: 5), weekday)
+        }
+        // The menu's own labels are the reliable read here: the Form row wrapping the picker
+        // reports an empty value through XCUITest, so asserting on it tests the harness, not
+        // the app. testMajorScreenLabelsDoNotExposeLocalizationKeys covers the rendered value,
+        // and fails on the interpolated-key bug this guards against.
+        assertNoUnresolvedLocalizationKeys(in: app)
+        app.buttons["月曜日"].tap()
+        // Close without saving so the test does not change persisted calendar settings.
+        XCTAssertTrue(app.buttons["settings.close"].waitForExistence(timeout: 5))
+        app.buttons["settings.close"].tap()
+    }
+
+    @MainActor
+    func testMajorScreenLabelsDoNotExposeLocalizationKeys() {
+        let app = XCUIApplication()
+        app.launchArguments += ["-AppleLanguages", "(ja)", "-AppleLocale", "ja_JP"]
+        app.launch()
+        XCTAssertTrue(app.tabBars.firstMatch.waitForExistence(timeout: 5))
+        for title in ["ホーム", "配分", "活動", "記録", "振り返り"] {
+            app.tabBars.buttons[title].tap()
+            XCTAssertTrue(app.navigationBars[title].waitForExistence(timeout: 5))
+            assertNoUnresolvedLocalizationKeys(in: app)
+            app.swipeUp()
+            assertNoUnresolvedLocalizationKeys(in: app)
+        }
+        app.buttons["settings.open"].tap()
+        XCTAssertTrue(app.navigationBars["設定"].waitForExistence(timeout: 5))
+        for _ in 0..<4 {
+            assertNoUnresolvedLocalizationKeys(in: app)
+            app.swipeUp()
+        }
+    }
+
+    @MainActor
+    private func assertNoUnresolvedLocalizationKeys(in app: XCUIApplication,
+                                                   file: StaticString = #filePath, line: UInt = #line) {
+        let labels = app.staticTexts.allElementsBoundByIndex + app.buttons.allElementsBoundByIndex
+        for element in labels where element.isHittable {
+            for text in [element.label, element.value as? String ?? ""] {
+                // Match ASCII dotted keys, including keys embedded in a combined label.
+                // Plain numeric values and h:mm durations are valid display content.
+                XCTAssertNil(text.range(of: #"\b[A-Za-z_][A-Za-z0-9_]*(?:\.[A-Za-z0-9_]+)+\b"#,
+                                        options: .regularExpression),
+                             "Unresolved localization key: \(text)", file: file, line: line)
+            }
+        }
+    }
+}
