@@ -37,4 +37,5 @@ Phase 0〜2 は Workers のみで完結する。Containers の課金が始まる
 
 ## 詳細
 
-- [phase0-top-page.md](phase0-top-page.md) — **いま取り組むもの**
+- [phase0-top-page.md](phase0-top-page.md) — **いま取り組むもの**。スコープ、不可逆の判断、作業順序、完了基準
+- [phase0-learning-plan.md](phase0-learning-plan.md) — Phase 0 の学習項目と、それを担うページ要素の対応表
