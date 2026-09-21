@@ -242,6 +242,69 @@ final class TimeBranchTests: XCTestCase {
         XCTAssertEqual(calendar.component(.month, from: month.end), 8)
     }
 
+    func testDayPeriodFollowsDaylightSavingCalendarBoundary() throws {
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = try XCTUnwrap(TimeZone(identifier: "America/Los_Angeles"))
+        let springForward = try XCTUnwrap(calendar.date(from: DateComponents(
+            year: 2026,
+            month: 3,
+            day: 8,
+            hour: 12
+        )))
+        let fallBack = try XCTUnwrap(calendar.date(from: DateComponents(
+            year: 2026,
+            month: 11,
+            day: 1,
+            hour: 12
+        )))
+
+        XCTAssertEqual(ReportPeriod.day.interval(containing: springForward, calendar: calendar).duration, 23 * 60 * 60)
+        XCTAssertEqual(ReportPeriod.day.interval(containing: fallBack, calendar: calendar).duration, 25 * 60 * 60)
+    }
+
+    @MainActor
+    func testExistingRunningEntryIsRecoveredAsActive() throws {
+        let container = try makeContainer()
+        let context = container.mainContext
+        let project = WorkProject(name: "Recovered")
+        let running = TimeEntry(project: project, startedAt: Date(timeIntervalSince1970: 1_000))
+        context.insert(project)
+        context.insert(running)
+        try context.save()
+
+        let recovered = try TimerService.activeEntry(in: context)
+
+        XCTAssertEqual(recovered?.id, running.id)
+        XCTAssertEqual(recovered?.project?.id, project.id)
+    }
+
+    func testInvalidAndOrphanedEntriesDoNotProduceReportTotals() {
+        let project = WorkProject(name: "Project")
+        let invalid = TimeEntry(
+            project: project,
+            startedAt: Date(timeIntervalSince1970: 200),
+            endedAt: Date(timeIntervalSince1970: 100)
+        )
+        let orphaned = TimeEntry(
+            project: project,
+            startedAt: Date(timeIntervalSince1970: 100),
+            endedAt: Date(timeIntervalSince1970: 200)
+        )
+        orphaned.project = nil
+
+        let totals = ReportService.totals(
+            projects: [project],
+            entries: [invalid, orphaned],
+            interval: DateInterval(
+                start: Date(timeIntervalSince1970: 0),
+                end: Date(timeIntervalSince1970: 300)
+            ),
+            now: Date(timeIntervalSince1970: 300)
+        )
+
+        XCTAssertTrue(totals.isEmpty)
+    }
+
     func testJSONExportUsesDurationInsideSelectedPeriod() throws {
         let project = WorkProject(name: "Project")
         let entry = TimeEntry(

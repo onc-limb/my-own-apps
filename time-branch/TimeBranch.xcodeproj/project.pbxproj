@@ -20,8 +20,11 @@
 		7230F97E6DC4A8C74B27FFEB /* TimerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6038D15C64AC2701B71626B9 /* TimerService.swift */; };
 		82C05CE162D0167D721B4A54 /* TimeEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ACA069EA96367B2489F928E /* TimeEntry.swift */; };
 		9071503F1D934EB9EC721012 /* Formatters.swift in Sources */ = {isa = PBXBuildFile; fileRef = E865ED50573866AECC3A35C7 /* Formatters.swift */; };
+		956806B3193FB26DC839DE7B /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 550352C28E3C7528EFFD2204 /* PrivacyInfo.xcprivacy */; };
+		98AD94A6CCAAB8BDC091C7F6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 209ECF92A3320ECFEF28EBE8 /* Assets.xcassets */; };
 		AFDAFC65C6B21420AA02BD99 /* TimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D20ED67CB2A75C58D00BD4 /* TimerView.swift */; };
 		B49E8F010AEE8EBD332C0C6B /* SwiftData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C547E162C4804E4AA64D6CD8 /* SwiftData.framework */; };
+		B570DD19377C82A9B5E7F15A /* PrivacyPolicyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD96E0CEC90B7C2411DB4566 /* PrivacyPolicyView.swift */; };
 		C5BBD1E758BF676B4D1A763F /* ExportService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E85DD421B3EA7DCA5832A41A /* ExportService.swift */; };
 		CA9777BCB83EFB63641DB167 /* ReportService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26897A1571F4BD4F7B287B8 /* ReportService.swift */; };
 		CCD541BA1F6AA86E778847DB /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34F5AF0F43F98AC6BE96E1CE /* SettingsView.swift */; };
@@ -51,6 +54,7 @@
 		007A7478162A654EB6CEEFDD /* TimeBranchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeBranchTests.swift; sourceTree = "<group>"; };
 		1ACA069EA96367B2489F928E /* TimeEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeEntry.swift; sourceTree = "<group>"; };
 		1CE3929F1E0CD604C390D964 /* TimeEntryValidationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeEntryValidationService.swift; sourceTree = "<group>"; };
+		209ECF92A3320ECFEF28EBE8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		21D807A04003AC7CA3276D48 /* AppLanguage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLanguage.swift; sourceTree = "<group>"; };
 		26E5C6B4C5FF3099B63256EB /* WorkProject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkProject.swift; sourceTree = "<group>"; };
 		26F01E25152D3F0635402BFB /* DisplayPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayPage.swift; sourceTree = "<group>"; };
@@ -58,6 +62,7 @@
 		34F5AF0F43F98AC6BE96E1CE /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		3D8B3D412DE6180D3B8F11C9 /* TimeBranchTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = TimeBranchTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C611A0C6FC15315143AA833 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
+		550352C28E3C7528EFFD2204 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		569B44579E8623863F7F37F9 /* ProjectTreeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectTreeView.swift; sourceTree = "<group>"; };
 		5D6A76352D464F3D2AFF612A /* ReportsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportsView.swift; sourceTree = "<group>"; };
 		5F0B37E38E585E117A6165B9 /* TimeBranchUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = TimeBranchUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -67,6 +72,7 @@
 		A48509155486DA1F1B895F0D /* ProjectManagementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectManagementView.swift; sourceTree = "<group>"; };
 		B26897A1571F4BD4F7B287B8 /* ReportService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportService.swift; sourceTree = "<group>"; };
 		C547E162C4804E4AA64D6CD8 /* SwiftData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftData.framework; path = System/Library/Frameworks/SwiftData.framework; sourceTree = SDKROOT; };
+		CD96E0CEC90B7C2411DB4566 /* PrivacyPolicyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyPolicyView.swift; sourceTree = "<group>"; };
 		D7484878751A4C549581DFAE /* PageManagementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageManagementView.swift; sourceTree = "<group>"; };
 		E85DD421B3EA7DCA5832A41A /* ExportService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportService.swift; sourceTree = "<group>"; };
 		E865ED50573866AECC3A35C7 /* Formatters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Formatters.swift; sourceTree = "<group>"; };
@@ -91,6 +97,7 @@
 			isa = PBXGroup;
 			children = (
 				D7484878751A4C549581DFAE /* PageManagementView.swift */,
+				CD96E0CEC90B7C2411DB4566 /* PrivacyPolicyView.swift */,
 				A48509155486DA1F1B895F0D /* ProjectManagementView.swift */,
 				569B44579E8623863F7F37F9 /* ProjectTreeView.swift */,
 				5D6A76352D464F3D2AFF612A /* ReportsView.swift */,
@@ -171,7 +178,9 @@
 		C47589DDE3734A30B4825960 /* TimeBranch */ = {
 			isa = PBXGroup;
 			children = (
+				209ECF92A3320ECFEF28EBE8 /* Assets.xcassets */,
 				6FC32B012D672CA16E3A30C9 /* Localizable.strings */,
+				550352C28E3C7528EFFD2204 /* PrivacyInfo.xcprivacy */,
 				F8A0A21ED427136EC4C0D23A /* TimeBranchApp.swift */,
 				C1446B660AD795932DCE93FB /* Models */,
 				A3A84DCEC49EABE55D9B08F1 /* Services */,
@@ -288,7 +297,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				98AD94A6CCAAB8BDC091C7F6 /* Assets.xcassets in Resources */,
 				E1EC9EB8D3F3D7E2CA0E368C /* Localizable.strings in Resources */,
+				956806B3193FB26DC839DE7B /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -320,6 +331,7 @@
 				C5BBD1E758BF676B4D1A763F /* ExportService.swift in Sources */,
 				9071503F1D934EB9EC721012 /* Formatters.swift in Sources */,
 				CFB4131776BB5063E00F7F0D /* PageManagementView.swift in Sources */,
+				B570DD19377C82A9B5E7F15A /* PrivacyPolicyView.swift in Sources */,
 				5627493999C940071ADDFB80 /* ProjectManagementView.swift in Sources */,
 				655C27A4CC2F0BC4EDD80EB4 /* ProjectTreeView.swift in Sources */,
 				CA9777BCB83EFB63641DB167 /* ReportService.swift in Sources */,
@@ -406,6 +418,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				INFOPLIST_KEY_CFBundleDisplayName = TimeBranch;
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -417,7 +430,7 @@
 				PRODUCT_NAME = TimeBranch;
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 6.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -585,6 +598,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				INFOPLIST_KEY_CFBundleDisplayName = TimeBranch;
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -596,7 +610,7 @@
 				PRODUCT_NAME = TimeBranch;
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 6.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};

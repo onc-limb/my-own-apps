@@ -32,6 +32,12 @@ struct SettingsView: View {
                 }
                 .disabled(pages.isEmpty && projects.isEmpty && entries.isEmpty)
             }
+
+            Section("このアプリについて") {
+                NavigationLink("プライバシーポリシー") {
+                    PrivacyPolicyView()
+                }
+            }
         }
         .navigationTitle("設定")
         .confirmationDialog(

@@ -87,3 +87,12 @@
 "この記録は計測中です。保存すると指定した終了時刻で停止します。" = "This entry is currently running. Saving will stop it at the selected end time.";
 "データを読み込めませんでした" = "Data Could Not Be Loaded";
 "端末を再起動してから、もう一度TimeBranchを開いてください。改善しない場合はサポートへ連絡してください。データは自動的に削除されません。" = "Restart your device, then open TimeBranch again. If the problem continues, contact support. Your data will not be deleted automatically.";
+"このアプリについて" = "About";
+"プライバシーポリシー" = "Privacy Policy";
+"保存するデータ" = "Stored Data";
+"プロジェクト、ページ、時間記録、表示言語をこの端末内に保存します。" = "Projects, pages, time entries, and the display language are stored on this device.";
+"外部送信" = "Data Transmission";
+"TimeBranchは、解析、広告、アカウント機能を使用せず、データを開発者や第三者へ送信しません。" = "TimeBranch does not use analytics, advertising, or accounts, and does not send data to the developer or third parties.";
+"共有" = "Sharing";
+"JSONファイルは、共有ボタンを操作した場合に限り、選択した共有先へ渡されます。" = "A JSON file is sent to a destination you select only when you use the share button.";
+"設定画面の「すべてのデータを削除」、またはアプリの削除によって端末内のデータを削除できます。" = "You can delete on-device data with Delete All Data in Settings or by deleting the app.";
