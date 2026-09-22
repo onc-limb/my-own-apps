@@ -61,6 +61,7 @@ TypeScript（フロントエンド / バックエンド）・Node.js・Python・
 | [docs/concept.md](docs/concept.md) | コアコンセプトと学習科学のエビデンス（出典付き） |
 | [docs/architecture.md](docs/architecture.md) | インフラ構成、Cloudflare の制約、**後から変えにくい判断** |
 | [docs/features.md](docs/features.md) | 拡張マトリクス（学びたい技術 → 足す機能） |
+| [docs/learnings.md](docs/learnings.md) | 実装中に気づいたこと・学びのメモ（日付ごと） |
 | [roadmap/README.md](roadmap/README.md) | フェーズ概要と各フェーズの学習目標 |
 | [roadmap/phase0-top-page.md](roadmap/phase0-top-page.md) | **いま取り組むもの**: トップページ 1 枚とデプロイ |
 | [roadmap/phase0-learning-plan.md](roadmap/phase0-learning-plan.md) | Phase 0 の**学習テーマ 8 つ**（ゴールと到達判定つき）と、その下の細目 |
