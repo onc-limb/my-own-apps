@@ -1,0 +1,29 @@
+{
+  "name": "react-study",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "typecheck": "tsc --noEmit",
+    "show:jsx": "esbuild src/themes/t01-jsx/example.tsx --jsx=automatic",
+    "show:jsx:classic": "esbuild src/themes/t01-jsx/example.tsx --jsx=transform --tsconfig-raw={}"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.1.1",
+    "esbuild": "^0.28.2",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.0"
+  },
+  "private": true
+}
