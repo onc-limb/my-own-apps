@@ -3,42 +3,143 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>onclimbの実験場</title>
+    <title>onclimb's Lab — 技術の実験場</title>
     <meta name="description" content="技術学習のためのサイト">
-    <meta property="og:title" content="onclimbの実験場">
+    <meta property="og:title" content="onclimb's Lab — 技術の実験場">
     <meta property="og:description" content="技術学習のためのサイト">
     <meta property="og:image" content="https://lab.onc-limb.com/assets/images/onclimb-logo.png">
     <meta property="og:url" content="https://lab.onc-limb.com/">
     <meta property="og:type" content="website">
   </head>
   <body>
+    <a href="#main">本文へスキップ</a>
     <header>
-      <a href="/" aria-current="page"><img
-        src="https://lab.onc-limb.com/assets/images/onclimb-logo.png"
-        alt="onclimb's lab"
-        width="100"
-        height="100"
-      ></a>
+      <a href="/" aria-current="page">
+        <img src="/assets/images/onclimb-logo.png" alt="onclimb's Lab" width="100" height="100">
+      </a>
       <p>技術の実験場</p>
+      <fieldset>
+        <legend>テーマ</legend>
+        <input type="radio" id="theme-system" name="theme" value="system" checked>
+        <label for="theme-system">OS の設定に従う</label>
+        <input type="radio" id="theme-light" name="theme" value="light">
+        <label for="theme-light">ライト</label>
+        <input type="radio" id="theme-dark" name="theme" value="dark">
+        <label for="theme-dark">ダーク</label>
+      </fieldset>
     </header>
-    <main>
+    <main id="main">
       <h1>onclimb's Lab</h1>
       <section>
-        <p>onclimbが技術的に気になることを試して実践する場</p>
+        <h2>このサイトについて</h2>
+        <p>onclimb が技術的に気になることを試して実践する場です。</p>
+        <p>同じ機能を複数の言語・実装方式で並べ、切り替えて違いを体感できるようにすることが目的です。素の JS と React、TypeScript と Rust、JS と WASM を、同じ題材の上で比べます。</p>
+        <p>比較の測定装置として、アクセス解析も自作します。「速い気がする」を、自分で作った計測系で数字にするためです。</p>
       </section>
-      <section aria-label="lab-list">
-        <h2>Lab一覧</h2>
+      <section>
+        <h2>Lab 一覧</h2>
+        <search>
+          <form method="get">
+            <label for="q">キーワードで探す</label>
+            <input type="search" id="q" name="q">
+            <fieldset>
+              <legend>タグで絞り込む</legend>
+              <input type="checkbox" id="tag-vanilla" name="tag" value="vanilla">
+              <label for="tag-vanilla">Vanilla JS</label>
+              <input type="checkbox" id="tag-react" name="tag" value="react">
+              <label for="tag-react">React</label>
+              <input type="checkbox" id="tag-signals" name="tag" value="signals">
+              <label for="tag-signals">Signals</label>
+              <input type="checkbox" id="tag-rust" name="tag" value="rust">
+              <label for="tag-rust">Rust</label>
+              <input type="checkbox" id="tag-wasm" name="tag" value="wasm">
+              <label for="tag-wasm">WASM</label>
+              <input type="checkbox" id="tag-metrics" name="tag" value="metrics">
+              <label for="tag-metrics">計測</label>
+            </fieldset>
+            <label for="sort">並び順</label>
+            <select id="sort" name="sort">
+              <option value="phase">フェーズ順</option>
+              <option value="name">名前順</option>
+            </select>
+            <button type="submit">絞り込む</button>
+          </form>
+        </search>
+        <p role="status">5 件</p>
         <ul>
-          <li><a href="/lab/">Lab名</a></li>
+          <li>
+            <article>
+              <h3>本棚一覧 — 素の JS 版</h3>
+              <p>タグ・フィルタ・並び替え・無限スクロールを、フレームワークなしで組む。状態と DOM の二重管理が破綻する感覚を先に味わうための土台。</p>
+              <p>ステータス: 構想中</p>
+              <ul>
+                <li>素の JS</li>
+                <li>状態管理</li>
+              </ul>
+            </article>
+          </li>
+          <li>
+            <article>
+              <h3>本棚一覧 — React 版</h3>
+              <p>同じ画面を React で組み直す。素の JS 版で感じた痛みが、何によって解決されているのかを確かめる。</p>
+              <p>ステータス: 構想中</p>
+              <ul>
+                <li>React</li>
+                <li>状態管理</li>
+              </ul>
+            </article>
+          </li>
+          <li>
+            <article>
+              <h3>本棚一覧 — Signals 版</h3>
+              <p>三つめの実装。仮想 DOM を経由しない更新モデルが、React 版と何が違うのかを並べて見る。</p>
+              <p>ステータス: 構想中</p>
+              <ul>
+                <li>Signals</li>
+                <li>状態管理</li>
+              </ul>
+            </article>
+          </li>
+          <li>
+            <article>
+              <h3>観測ダッシュボード</h3>
+              <p>各実装の応答時間・バンドルサイズ・描画時間を自作のアクセス解析で集め、並べて表示する。比較のための測定装置。</p>
+              <p>ステータス: 構想中</p>
+              <ul>
+                <li>計測</li>
+              </ul>
+            </article>
+          </li>
+          <li>
+            <article>
+              <h3>書影の色抽出 — WASM 版</h3>
+              <p>画像から代表色を取り出す処理を JS と Rust／WASM の両方で書き、同じ入力に対する速度を比べる。</p>
+              <p>ステータス: 構想中</p>
+              <ul>
+                <li>Rust</li>
+                <li>WASM</li>
+              </ul>
+            </article>
+          </li>
         </ul>
       </section>
       <section>
         <h2>今使っている技術</h2>
+        <dl>
+          <dt>HTML / CSS / 素の JavaScript</dt>
+          <dd>フレームワークもビルドツールも使わない。状態と DOM を手で繋ぐ感覚を得るため。</dd>
+          <dt>Cloudflare Workers（Static Assets）</dt>
+          <dd>静的ファイルの配信。あとから Worker のコードを足せる形で始めている。</dd>
+          <dt>独自ドメイン</dt>
+          <dd>lab.onc-limb.com をルートで受ける。内部構成を組み替えても公開 URL が変わらない。</dd>
+        </dl>
       </section>
     </main>
     <footer>
-      <a href="https://github.com/onc-limb"><img src="https://lab.onc-limb.com/assets/images/github-logo.png" alt="GitHub"></a>
-      <div>© onclimb</div>
+      <a href="https://github.com/onc-limb">
+        <img src="/assets/images/github-logo.png" alt="GitHub" width="24" height="24">
+      </a>
+      <p><small>© onclimb</small></p>
     </footer>
   </body>
 </html>
