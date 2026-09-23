@@ -72,3 +72,76 @@ button {
   color: inherit;
   cursor: pointer;
 }
+
+/* ---- 1-補2（t02-state/preview）用 ---- */
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.row > * {
+  flex: 1 1 14rem;
+}
+
+.ng,
+.ok {
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 0 0.4rem;
+  border-radius: 4px;
+}
+
+.ng {
+  color: #c62828;
+  border: 1px solid #c62828;
+}
+
+.ok {
+  color: #2e7d32;
+  border: 1px solid #2e7d32;
+}
+
+.fancy {
+  font-weight: 700;
+  text-decoration: underline wavy;
+}
+
+.done {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+
+.panel {
+  margin-block: 0.4rem;
+}
+
+.pad {
+  position: relative;
+  height: 8rem;
+  border: 1px dashed color-mix(in srgb, currentColor 35%, transparent);
+  border-radius: 6px;
+  padding: 0.5rem;
+  overflow: hidden;
+  touch-action: none;
+}
+
+.dot {
+  position: absolute;
+  width: 0.8rem;
+  height: 0.8rem;
+  margin: -0.4rem 0 0 -0.4rem;
+  border-radius: 50%;
+  background: currentColor;
+  pointer-events: none;
+}
+
+.themed-light {
+  background: #fff;
+  color: #222;
+}
+
+.themed-dark {
+  background: #222;
+  color: #eee;
+}

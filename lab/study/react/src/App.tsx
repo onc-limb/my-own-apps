@@ -2,11 +2,13 @@ import { useState } from "react";
 import { Theme01 } from "./themes/t01-jsx/Theme01";
 import { Theme02 } from "./themes/t02-state/Theme02";
 import { Theme02Internals } from "./themes/t02-state/internals/Internals";
+import { Theme02Preview } from "./themes/t02-state/preview/Preview";
 
 // テーマ一覧。component には「関数そのもの」を入れる（呼び出さない）
 const THEMES = [
   { id: "t02", label: "1. state とイベント", component: Theme02 },
   { id: "t02i", label: "1-補. useState の内部", component: Theme02Internals },
+  { id: "t02p", label: "1-補2. state の発展（予習）", component: Theme02Preview },
   { id: "t01", label: "参考. 記述層（JSX / Element）", component: Theme01 },
 ] as const;
 

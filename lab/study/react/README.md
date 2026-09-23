@@ -17,6 +17,7 @@
 | --- | --- | --- | --- |
 | **1** | **state とイベント** | 全ての起点。React の書き味の 8 割 | **完了** → [t02-state](src/themes/t02-state/README.md) |
 | 1-補 | useState の内部（ミニ React 実装つき） | 「なぜ動くのか」が要るときに降りる | 完了 → [internals](src/themes/t02-state/internals/README.md) |
+| 1-補2 | state の発展（位置と key / 制御 / 設計 / useReducer・Context）の予習 | テーマ 2・3・5 の先取り | 完了 → [preview](src/themes/t02-state/preview/README.md) |
 | 2 | 条件分岐・リスト・key | 一覧画面。key の事故は実務で頻出 | 未着手 |
 | 3 | フォーム（制御 / 非制御） | 入力画面 | 未着手 |
 | 4 | 副作用とデータ取得 | API 連携。事故が最も多い | 未着手 |
@@ -77,10 +78,17 @@ src/
     ├── t02-state/        # テーマ 1: state とイベント
     │   ├── README.md     # ← 解説
     │   ├── Theme02.tsx   # 画面に出るコード
-    │   └── internals/    # 1-補: useState の内部
+    │   ├── internals/    # 1-補: useState の内部
+    │   │   ├── README.md
+    │   │   ├── miniReact.ts  # useState の最小再現実装（60 行）
+    │   │   └── Internals.tsx
+    │   └── preview/      # 1-補2: state の発展（後のテーマの予習）
     │       ├── README.md
-    │       ├── miniReact.ts  # useState の最小再現実装（60 行）
-    │       └── Internals.tsx
+    │       ├── Preview.tsx
+    │       ├── position.tsx      # 5. 位置と key
+    │       ├── controlled.tsx    # 6. 制御コンポーネントとリフトアップ
+    │       ├── design.tsx        # 7. state の設計
+    │       └── reducerContext.tsx# 8. useReducer と Context
     └── t01-jsx/          # 参考: 記述層
         ├── README.md
         ├── Theme01.tsx
