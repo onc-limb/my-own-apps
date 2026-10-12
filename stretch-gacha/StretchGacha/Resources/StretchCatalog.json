@@ -1,0 +1,418 @@
+{
+  "schemaVersion": 1,
+  "rarityWeights": [
+    { "rarity": "N", "weight": 60 },
+    { "rarity": "R", "weight": 27 },
+    { "rarity": "SR", "weight": 10 },
+    { "rarity": "UR", "weight": 3 }
+  ],
+  "items": [
+    {
+      "id": "neck-01",
+      "name": "首の前倒し",
+      "kind": "stretch",
+      "bodyPart": "neck",
+      "rarity": "N",
+      "durationSeconds": 30,
+      "emoji": "🙇",
+      "steps": [
+        "背すじを伸ばして座る",
+        "両手を後頭部に軽く添える",
+        "あごを引いてゆっくり前に倒す",
+        "首の後ろの伸びを感じてキープ"
+      ],
+      "caution": "手で強く押さえつけない"
+    },
+    {
+      "id": "neck-02",
+      "name": "首の横倒し",
+      "kind": "stretch",
+      "bodyPart": "neck",
+      "rarity": "N",
+      "durationSeconds": 60,
+      "emoji": "🙆",
+      "steps": [
+        "背すじを伸ばして座る",
+        "右手を頭の左側に添える",
+        "右にゆっくり倒してキープ",
+        "残り30秒になったら反対側へ"
+      ],
+      "caution": null
+    },
+    {
+      "id": "neck-03",
+      "name": "首まわし",
+      "kind": "stretch",
+      "bodyPart": "neck",
+      "rarity": "R",
+      "durationSeconds": 40,
+      "emoji": "🔄",
+      "steps": [
+        "肩の力を抜いて座る",
+        "あごで大きな円を描くようにまわす",
+        "左右の向きをときどき変えながら続ける"
+      ],
+      "caution": "めまいを感じたらすぐやめる"
+    },
+    {
+      "id": "neck-04",
+      "name": "チンタック",
+      "kind": "stretch",
+      "bodyPart": "neck",
+      "rarity": "N",
+      "durationSeconds": 30,
+      "emoji": "🐢",
+      "steps": [
+        "背すじを伸ばして前を向く",
+        "あごを水平にすっと引いて5秒キープ",
+        "ゆるめて、これを繰り返す"
+      ],
+      "caution": null
+    },
+    {
+      "id": "neck-05",
+      "name": "首の斜め前伸ばし",
+      "kind": "stretch",
+      "bodyPart": "neck",
+      "rarity": "R",
+      "durationSeconds": 60,
+      "emoji": "🧭",
+      "steps": [
+        "右手を頭の左後ろに添える",
+        "右斜め前に向かってゆっくり倒す",
+        "首すじの伸びを感じてキープ",
+        "残り30秒になったら反対側へ"
+      ],
+      "caution": null
+    },
+    {
+      "id": "shoulder-01",
+      "name": "肩のすくめ上げ",
+      "kind": "stretch",
+      "bodyPart": "shoulder",
+      "rarity": "N",
+      "durationSeconds": 30,
+      "emoji": "🤷",
+      "steps": [
+        "両肩を耳に近づけるようにすくめる",
+        "5秒キープしてストンと脱力",
+        "これを繰り返す"
+      ],
+      "caution": null
+    },
+    {
+      "id": "shoulder-02",
+      "name": "肩まわし",
+      "kind": "stretch",
+      "bodyPart": "shoulder",
+      "rarity": "N",
+      "durationSeconds": 40,
+      "emoji": "🌀",
+      "steps": [
+        "指先を肩に軽く乗せる",
+        "ひじで大きな円を描いて前にまわす",
+        "残り20秒になったら後ろまわしへ"
+      ],
+      "caution": null
+    },
+    {
+      "id": "shoulder-03",
+      "name": "腕の胸前引き寄せ",
+      "kind": "stretch",
+      "bodyPart": "shoulder",
+      "rarity": "R",
+      "durationSeconds": 60,
+      "emoji": "🤗",
+      "steps": [
+        "右腕を胸の前で水平に伸ばす",
+        "左腕で抱えて体に引き寄せる",
+        "肩の後ろの伸びを感じてキープ",
+        "残り30秒になったら反対側へ"
+      ],
+      "caution": null
+    },
+    {
+      "id": "shoulder-04",
+      "name": "肘の頭上引き",
+      "kind": "stretch",
+      "bodyPart": "shoulder",
+      "rarity": "R",
+      "durationSeconds": 60,
+      "emoji": "💪",
+      "steps": [
+        "右腕を上げてひじを曲げ、手を背中へ",
+        "左手で右ひじをつかみ頭の後ろへ引く",
+        "二の腕と脇の伸びを感じてキープ",
+        "残り30秒になったら反対側へ"
+      ],
+      "caution": null
+    },
+    {
+      "id": "shoulder-05",
+      "name": "背中で手つなぎ",
+      "kind": "stretch",
+      "bodyPart": "shoulder",
+      "rarity": "SR",
+      "durationSeconds": 60,
+      "emoji": "🤝",
+      "steps": [
+        "右手を上から、左手を下から背中へ",
+        "背中の後ろで指先を近づける",
+        "届かなければタオルをつかんでもよい",
+        "残り30秒になったら上下を持ち替える"
+      ],
+      "caution": "肩に強い張りを感じたら浅めにする"
+    },
+    {
+      "id": "lowback-01",
+      "name": "腰の後ろそらし",
+      "kind": "stretch",
+      "bodyPart": "lowerBack",
+      "rarity": "N",
+      "durationSeconds": 30,
+      "emoji": "🏹",
+      "steps": [
+        "立って足を腰幅に開く",
+        "両手を腰に当てる",
+        "息を吐きながら軽く後ろにそらす",
+        "そらしすぎない角度でキープ"
+      ],
+      "caution": "腰に痛みがある日はやらない"
+    },
+    {
+      "id": "lowback-02",
+      "name": "体側伸ばし",
+      "kind": "stretch",
+      "bodyPart": "lowerBack",
+      "rarity": "N",
+      "durationSeconds": 60,
+      "emoji": "🌙",
+      "steps": [
+        "足を腰幅に開いて立つ",
+        "右腕を頭上に伸ばして左へ倒れる",
+        "右の体側の伸びを感じてキープ",
+        "残り30秒になったら反対側へ"
+      ],
+      "caution": null
+    },
+    {
+      "id": "lowback-03",
+      "name": "座位ツイスト",
+      "kind": "stretch",
+      "bodyPart": "lowerBack",
+      "rarity": "R",
+      "durationSeconds": 60,
+      "emoji": "🪑",
+      "steps": [
+        "椅子に浅く座って背すじを伸ばす",
+        "上体をゆっくり右へひねる",
+        "背もたれに手を添えてキープ",
+        "残り30秒になったら反対側へ"
+      ],
+      "caution": null
+    },
+    {
+      "id": "lowback-04",
+      "name": "膝抱え",
+      "kind": "stretch",
+      "bodyPart": "lowerBack",
+      "rarity": "R",
+      "durationSeconds": 45,
+      "emoji": "🛌",
+      "steps": [
+        "仰向けに寝る",
+        "両膝を胸に引き寄せて抱える",
+        "腰がゆるむのを感じてキープ"
+      ],
+      "caution": null
+    },
+    {
+      "id": "lowback-05",
+      "name": "キャットアンドカウ",
+      "kind": "stretch",
+      "bodyPart": "lowerBack",
+      "rarity": "SR",
+      "durationSeconds": 60,
+      "emoji": "🐈",
+      "steps": [
+        "四つ這いになる",
+        "息を吐きながら背中を丸める",
+        "息を吸いながらゆっくりそらす",
+        "呼吸に合わせて繰り返す"
+      ],
+      "caution": null
+    },
+    {
+      "id": "upperback-01",
+      "name": "背中まるめ",
+      "kind": "stretch",
+      "bodyPart": "upperBack",
+      "rarity": "N",
+      "durationSeconds": 30,
+      "emoji": "🫂",
+      "steps": [
+        "両手を胸の前で組む",
+        "手を前に押し出して背中を丸める",
+        "肩甲骨の間が開くのを感じてキープ"
+      ],
+      "caution": null
+    },
+    {
+      "id": "upperback-02",
+      "name": "万歳のび",
+      "kind": "stretch",
+      "bodyPart": "upperBack",
+      "rarity": "N",
+      "durationSeconds": 30,
+      "emoji": "🙌",
+      "steps": [
+        "頭の上で両手を組む",
+        "手のひらを上に向けて伸び上がる",
+        "体側と背中の伸びを感じてキープ"
+      ],
+      "caution": null
+    },
+    {
+      "id": "upperback-03",
+      "name": "胸開き",
+      "kind": "stretch",
+      "bodyPart": "upperBack",
+      "rarity": "R",
+      "durationSeconds": 40,
+      "emoji": "🦋",
+      "steps": [
+        "背中の後ろで両手を組む",
+        "組んだ手を斜め下に引いて胸を張る",
+        "肩甲骨を寄せてキープ"
+      ],
+      "caution": null
+    },
+    {
+      "id": "upperback-04",
+      "name": "壁つかみ広背筋のばし",
+      "kind": "stretch",
+      "bodyPart": "upperBack",
+      "rarity": "SR",
+      "durationSeconds": 60,
+      "emoji": "🧱",
+      "steps": [
+        "壁やドア枠を右手でつかむ",
+        "腰を後ろに引いて背中を伸ばす",
+        "脇から背中の伸びを感じてキープ",
+        "残り30秒になったら反対側へ"
+      ],
+      "caution": null
+    },
+    {
+      "id": "legs-01",
+      "name": "ふくらはぎのばし",
+      "kind": "stretch",
+      "bodyPart": "legs",
+      "rarity": "N",
+      "durationSeconds": 60,
+      "emoji": "🦵",
+      "steps": [
+        "壁に両手をついて右足を後ろへ引く",
+        "かかとを床につけたまま体重を前へ",
+        "ふくらはぎの伸びを感じてキープ",
+        "残り30秒になったら反対側へ"
+      ],
+      "caution": null
+    },
+    {
+      "id": "legs-02",
+      "name": "もも裏のばし",
+      "kind": "stretch",
+      "bodyPart": "legs",
+      "rarity": "R",
+      "durationSeconds": 60,
+      "emoji": "🦩",
+      "steps": [
+        "椅子に浅く座り右脚を前に伸ばす",
+        "つま先を上に向け、股関節から前傾",
+        "もも裏の伸びを感じてキープ",
+        "残り30秒になったら反対側へ"
+      ],
+      "caution": "背中を丸めず股関節から倒す"
+    },
+    {
+      "id": "legs-03",
+      "name": "股関節前のばし",
+      "kind": "stretch",
+      "bodyPart": "legs",
+      "rarity": "SR",
+      "durationSeconds": 60,
+      "emoji": "🏃",
+      "steps": [
+        "右膝を床につけ左足を前に出す",
+        "腰を前にスライドさせる",
+        "右の股関節前の伸びを感じてキープ",
+        "残り30秒になったら反対側へ"
+      ],
+      "caution": "膝の下にタオルなどを敷くとよい"
+    },
+    {
+      "id": "eyeswrist-01",
+      "name": "手首の前後のばし",
+      "kind": "stretch",
+      "bodyPart": "eyesWrists",
+      "rarity": "N",
+      "durationSeconds": 60,
+      "emoji": "🖐",
+      "steps": [
+        "右腕を前に伸ばし手のひらを上へ",
+        "左手で指先を下に引いてキープ",
+        "残り30秒になったら手の甲側を伸ばす",
+        "終わったら左手も軽くまわしておく"
+      ],
+      "caution": null
+    },
+    {
+      "id": "eyeswrist-02",
+      "name": "目のピント切り替え",
+      "kind": "stretch",
+      "bodyPart": "eyesWrists",
+      "rarity": "N",
+      "durationSeconds": 30,
+      "emoji": "👀",
+      "steps": [
+        "親指を顔の30cm前に立てる",
+        "親指を5秒見つめる",
+        "窓の外など遠くを5秒眺める",
+        "これを交互に繰り返す"
+      ],
+      "caution": null
+    },
+    {
+      "id": "reward-01",
+      "name": "深呼吸ブレイク",
+      "kind": "reward",
+      "bodyPart": "rest",
+      "rarity": "UR",
+      "durationSeconds": 60,
+      "emoji": "🎁",
+      "steps": [
+        "当たり！ ストレッチはお休み",
+        "目を閉じて、鼻から4秒吸う",
+        "口から8秒かけて吐く",
+        "終わりのハプティクスまで繰り返す"
+      ],
+      "caution": null
+    },
+    {
+      "id": "reward-02",
+      "name": "遠くを見る休憩",
+      "kind": "reward",
+      "bodyPart": "rest",
+      "rarity": "UR",
+      "durationSeconds": 60,
+      "emoji": "🌈",
+      "steps": [
+        "当たり！ ストレッチはお休み",
+        "窓の外のいちばん遠くを探す",
+        "ぼんやり眺めて目を休ませる"
+      ],
+      "caution": null
+    }
+  ]
+}
