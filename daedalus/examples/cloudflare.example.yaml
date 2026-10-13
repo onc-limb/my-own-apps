@@ -1,0 +1,32 @@
+# daedalus インフラ構成スペックの例（Cloudflare）
+# 認証は terraform cloudflare プロバイダのデフォルトに委ねる:
+#   - CLOUDFLARE_API_TOKEN（推奨。リソースを絞ったスコープ付きトークン）
+# アカウントID / ゾーンID は spec に直書きせず、環境変数から変数経由で渡す:
+#   - CLOUDFLARE_ACCOUNT_ID / CLOUDFLARE_ZONE_ID
+
+name: demo-dns
+provider: cloudflare
+# Cloudflare にリージョンの概念はないため region は指定しない
+
+description: |
+  - 既存ゾーン（example.com）に DNS レコードを作成する
+  - A レコード: app -> 203.0.113.10（proxied）
+  - CNAME: www -> example.com（proxied）
+  - 出力としてレコードの FQDN を表示する
+
+constraints:
+  - zone_id / account_id は Terraform 変数で受け取り、デフォルト値は
+    環境変数 CLOUDFLARE_ZONE_ID / CLOUDFLARE_ACCOUNT_ID を使う
+  - 認証情報（トークン）は .tf に書かず、CLOUDFLARE_API_TOKEN に委ねる
+  - state はローカルバックエンド（検証用）
+  - provider（cloudflare/cloudflare）バージョンはピン留めする
+
+# このプロジェクトのコードを管理する GitHub リポジトリ（任意）
+# github:
+#   repo: demo-dns-infra
+#   owner: ${GITHUB_OWNER}
+#   branch: main
+
+terraform:
+  required_version: ">= 1.5.0"
+  backend: local

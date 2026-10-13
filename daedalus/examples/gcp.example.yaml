@@ -1,0 +1,30 @@
+# daedalus インフラ構成スペックの例（Google Cloud）
+# 認証は terraform google プロバイダのデフォルト認証チェーンに委ねる:
+#   - gcloud auth application-default login（ADC）、または
+#   - GOOGLE_APPLICATION_CREDENTIALS=/path/to/sa-key.json
+# プロジェクト/リージョンは環境変数 GOOGLE_PROJECT / GOOGLE_REGION から渡す。
+
+name: demo-gcs-site
+provider: gcp
+region: asia-northeast1
+
+description: |
+  - 静的サイト配信用の Cloud Storage バケットを 1 つ（バケット名はランダムサフィックス付き）
+  - 公開読み取り（allUsers に objectViewer）でウェブサイト設定（index.html / 404.html）
+  - 出力としてバケットの公開 URL を表示する
+
+constraints:
+  - project は Terraform 変数で受け取り、デフォルト値は環境変数 GOOGLE_PROJECT を使う
+  - すべてのリソースに labels { project = "daedalus-demo", managed_by = "daedalus" } を付ける
+  - state はローカルバックエンド（検証用。リモート state は使わない）
+  - provider（hashicorp/google）バージョンはピン留めする
+
+# このプロジェクトのコードを管理する GitHub リポジトリ（任意）
+# github:
+#   repo: demo-gcs-site-infra
+#   owner: ${GITHUB_OWNER}
+#   branch: main
+
+terraform:
+  required_version: ">= 1.5.0"
+  backend: local

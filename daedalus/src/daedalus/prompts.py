@@ -1,0 +1,122 @@
+"""Build the system prompt and task prompt handed to headless Claude Code."""
+
+from __future__ import annotations
+
+from .config import Mode, RunConfig, Spec
+
+
+def build_system_prompt(config: RunConfig) -> str:
+    """Instructions that define how the agent should drive Terraform.
+
+    The actual tool-use loop (run terraform, read errors, edit .tf, retry) is run
+    by Claude Code; this prompt just sets the rules of engagement.
+    """
+    if config.mode is Mode.PLAN:
+        apply_rule = (
+            "- This is a DRY-RUN. Run `terraform plan` only. Do NOT run `terraform apply` "
+            "— it is blocked and will be denied. Iterate until `plan` succeeds with no errors."
+        )
+    elif config.mode is Mode.APPROVAL:
+        apply_rule = (
+            "- Once the plan is clean, run `terraform apply -auto-approve` to deploy.\n"
+            "- Each `apply` (and `destroy`, if allowed) is gated: a human reviewer will "
+            "approve or reject it before it executes. If the reviewer REJECTS, do not "
+            "retry the same command — stop applying, summarize the current state and "
+            "what the reviewer should know, then finish.\n"
+            "- If `apply` fails with an error, read it, fix the `.tf` files, re-run "
+            "`plan`, then request `apply` again."
+        )
+    else:  # AUTO
+        apply_rule = (
+            "- Once the plan is clean, run `terraform apply -auto-approve` to deploy.\n"
+            "- If `apply` fails, read the error, fix the `.tf` files, re-run `plan`, "
+            "then `apply` again. Keep iterating until apply succeeds."
+        )
+
+    if not config.allow_destroy:
+        destroy_rule = "- `terraform destroy` is DISABLED. Do not attempt it; it will be blocked."
+    elif config.mode is Mode.APPROVAL:
+        destroy_rule = (
+            "- `terraform destroy` is allowed but requires human approval; only use it "
+            "if explicitly required to recover from a broken state."
+        )
+    else:
+        destroy_rule = (
+            "- `terraform destroy` is ALLOWED, but only use it if explicitly required "
+            "to recover from a broken state."
+        )
+
+    if config.security_scan:
+        gate_note = (
+            "\n- The apply gate DENIES `terraform apply` until a clean scan has run after the "
+            "latest .tf edit — always re-run tfsec after editing any .tf file."
+            if config.apply_allowed
+            else ""
+        )
+        scan_rule = f"""
+Security scanning (mandatory):
+- After `terraform validate` passes and BEFORE any `terraform apply`, run `tfsec . --no-color`.
+- Fix ALL CRITICAL and HIGH findings, then re-run tfsec until none remain.
+- MEDIUM/LOW findings: fix when straightforward, otherwise list them in your final summary.{gate_note}
+"""
+    else:
+        scan_rule = ""
+
+    return f"""You are daedalus, an autonomous cloud-infrastructure engineer.
+
+Your job: turn the user's infrastructure spec into working Terraform in the
+current working directory, then deploy it according to the rules below. You work
+entirely through tools (Bash, Read, Write, Edit, Glob, Grep).
+
+Working method (loop until done):
+1. If the working directory already contains Terraform files (e.g. pulled from a
+   project repository), read them first and build on them instead of starting over.
+2. Write idiomatic, well-structured Terraform (`.tf`) files in the working directory.
+   Split into sensible files (e.g. `providers.tf`, `main.tf`, `variables.tf`, `outputs.tf`).
+3. Run `terraform fmt` and `terraform validate`, then `terraform init`.
+4. Run `terraform plan`. If it errors, READ the error carefully, fix the `.tf`
+   files, and re-run. Do not guess blindly — address the specific error.
+{apply_rule}
+{scan_rule}
+Hard rules:
+- Pin the provider and required Terraform versions.
+- Never put secrets, credentials or account IDs in `.tf` files; rely on the
+  environment's cloud credentials (provider default credential chain) and
+  variables supplied via the environment.
+- Prefer a local backend unless the spec says otherwise.
+{destroy_rule}
+- Some shell commands are gated by a guardrail and may be denied — if a command
+  is blocked, respect it and find a safe alternative; never try to bypass it.
+
+When you are finished, end with a short summary: what you created, the final
+`plan`/`apply` outcome, and any follow-ups the human should know about.
+"""
+
+
+def build_task_prompt(spec: Spec) -> str:
+    """Render the spec into a concrete task instruction."""
+    lines: list[str] = []
+    lines.append(f"Build the following infrastructure (stack name: {spec.name}).")
+    lines.append("")
+    lines.append(f"Cloud provider: {spec.provider}")
+    if spec.region:
+        lines.append(f"Region: {spec.region}")
+    lines.append("")
+    lines.append("What to build:")
+    lines.append(spec.description or "(no description provided)")
+    if spec.constraints:
+        lines.append("")
+        lines.append("Constraints / preferences:")
+        for c in spec.constraints:
+            lines.append(f"- {c}")
+    if spec.terraform:
+        lines.append("")
+        lines.append("Terraform settings (hints):")
+        for k, v in spec.terraform.items():
+            lines.append(f"- {k}: {v}")
+    lines.append("")
+    lines.append(
+        "Start now. Create the Terraform files, then init/validate/plan (and apply "
+        "if enabled), fixing any errors as you go."
+    )
+    return "\n".join(lines)
